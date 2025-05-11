@@ -1,4 +1,4 @@
-import "./styles/global.css";
+import "./styles/globals.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
