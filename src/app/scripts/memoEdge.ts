@@ -1,31 +1,6 @@
-import next from "next";
 import { solvedCube, Cube, Color } from "react-rubiks-cube-utils";
+import { Speffz } from "./Speffz";
 
-export type Speffz =
-  | "A"
-  | "B"
-  | "C"
-  | "D"
-  | "E"
-  | "F"
-  | "G"
-  | "H"
-  | "I"
-  | "J"
-  | "K"
-  | "L"
-  | "M"
-  | "N"
-  | "O"
-  | "P"
-  | "Q"
-  | "R"
-  | "S"
-  | "T"
-  | "U"
-  | "V"
-  | "W"
-  | "X";
 type Edge = Exclude<
   `${Color}${Color}`,
   | "WY"
@@ -41,10 +16,6 @@ type Edge = Exclude<
   | "BB"
   | "OO"
 >;
-
-type Corner = "";
-
-export function SpeffzToKoreanEdge(speffz: Speffz, isEdge: boolean) {}
 
 export function EdgeToSpeffz(edge: Edge) {
   const edgeMap = {
@@ -75,6 +46,7 @@ export function EdgeToSpeffz(edge: Edge) {
   };
   return edgeMap[edge as keyof typeof edgeMap] as Speffz;
 }
+
 function SpeffzToColor(cube: Cube, c: Speffz) {
   const CubeMap = {
     A: cube.U[0][1],
@@ -104,6 +76,7 @@ function SpeffzToColor(cube: Cube, c: Speffz) {
   };
   return CubeMap[c as keyof typeof CubeMap];
 }
+
 function FlipEdge(c: Speffz) {
   const flipMap = {
     A: "Q",
@@ -154,20 +127,16 @@ export function solveEdge(cube: Cube, buffer: Speffz) {
     "X",
   ];
 
-  // const flippedEdge = soonseo.filter((c) => {
-  //   const t = EdgeToSpeffz(SpeffzToEdge(cube, c));
-  //   return t === FlipEdge(t);
-  // });
-  // console.log("flippedEdge", flippedEdge);
-
   const unsolvedEdge = soonseo.filter(
     (c) => SpeffzToEdge(cube, c) !== SpeffzToEdge(solved, c)
   );
-
   let isBlocked = (c: Speffz, start: Speffz) => {
     if (c === start || c === FlipEdge(start)) return true;
     else return false;
   };
+  for (const c of unsolvedEdge) {
+    if (isBlocked(c, buffer)) continue;
+  }
 
   const nextTarget = (c: Speffz) => EdgeToSpeffz(SpeffzToEdge(cube, c));
   const getCycle = (c: Speffz, start: Speffz): Speffz[] => {
