@@ -1,3 +1,4 @@
+import next from "next";
 import { solvedCube, Cube, Color } from "react-rubiks-cube-utils";
 
 export type Speffz =
@@ -139,9 +140,9 @@ function SpeffzToEdge(cube: Cube, c: Speffz) {
 export function solveEdge(cube: Cube, buffer: Speffz) {
   const solved = solvedCube({ type: "3x3" });
   const soonseo: Speffz[] = [
+    "C",
     "A",
     "B",
-    "C",
     "D",
     "L",
     "J",
@@ -152,6 +153,13 @@ export function solveEdge(cube: Cube, buffer: Speffz) {
     "W",
     "X",
   ];
+
+  // const flippedEdge = soonseo.filter((c) => {
+  //   const t = EdgeToSpeffz(SpeffzToEdge(cube, c));
+  //   return t === FlipEdge(t);
+  // });
+  // console.log("flippedEdge", flippedEdge);
+
   const unsolvedEdge = soonseo.filter(
     (c) => SpeffzToEdge(cube, c) !== SpeffzToEdge(solved, c)
   );
@@ -162,12 +170,47 @@ export function solveEdge(cube: Cube, buffer: Speffz) {
   };
 
   const nextTarget = (c: Speffz) => EdgeToSpeffz(SpeffzToEdge(cube, c));
-  let getCycle = (c: Speffz, start: Speffz): Speffz[] => {
-    if (isBlocked(c, start)) return [];
+  const getCycle = (c: Speffz, start: Speffz): Speffz[] => {
+    if (isBlocked(c, start)) return [c];
+    // if (c === start) return [c];
+
     const targetBlock = SpeffzToEdge(cube, c);
     const targetLocation = EdgeToSpeffz(targetBlock);
     return [c, ...getCycle(targetLocation, start)];
   };
+  let bufferBlocked = false;
 
-  console.log("getCycle", getCycle(nextTarget(buffer), buffer));
+  const solveAll = (remaining: Speffz[]): Speffz[][] => {
+    if (remaining.length === 0) return [];
+
+    const target = remaining[0];
+
+    // check if the buffer is blocked
+    if (bufferBlocked === false) bufferBlocked = isBlocked(target, buffer);
+    console.log("buffer", bufferBlocked);
+
+    let cycle = getCycle(nextTarget(target), target);
+
+    // if buffer is blocked, remove the last element from the cycle
+    if (bufferBlocked === false) cycle.pop();
+
+    console.log("cycle", cycle);
+    console.log("bufferBlocked", bufferBlocked);
+    console.log(
+      "remaining",
+      remaining.filter((c) => {
+        return !cycle.includes(c) && !cycle.includes(FlipEdge(c));
+      })
+    );
+    return [
+      cycle,
+      ...solveAll(
+        remaining.filter((c) => {
+          return !cycle.includes(c) && !cycle.includes(FlipEdge(c));
+        })
+      ),
+    ];
+  };
+  console.log("solveAll", solveAll(unsolvedEdge));
+  // console.log("getCycle", getCycle(nextTarget(buffer), buffer));
 }
