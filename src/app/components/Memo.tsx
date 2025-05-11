@@ -9,13 +9,7 @@ export default function Memo({ scramble }: { scramble: string }) {
     <div>
       <h1> Results </h1>
       <h2> Cube : {JSON.stringify(cube)} </h2>
-      <div
-        style={{
-          display: "flex",
-          backgroundColor: "black",
-          flexDirection: "column",
-        }}
-      >
+      <div>
         <DisplayCube cube={cube} size={28} />
       </div>
     </div>
