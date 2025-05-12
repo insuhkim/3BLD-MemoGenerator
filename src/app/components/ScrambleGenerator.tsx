@@ -18,7 +18,14 @@ export default function scrambleGenerator({
       <input
         type="text"
         value={scramble}
-        onChange={(e) => setScramble(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          // value only contains valid moves
+          const regex = /^[UDFBLR2' ]*$/;
+          if (regex.test(value)) {
+            setScramble(value);
+          }
+        }}
         placeholder="Enter scramble"
       />
       <br />
