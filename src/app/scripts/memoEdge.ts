@@ -19,7 +19,6 @@ type orientedEdge =
   | "BR";
 type flipped = boolean;
 type Edge = [orientedEdge, flipped];
-// WB // WR // WG // WO // GO // GR // BO // BR // YG // YR // YB // YO
 
 /**
  * Converts an edge to its corresponding Speffz notation.
@@ -27,7 +26,7 @@ type Edge = [orientedEdge, flipped];
  * @param {Edge} edge - The edge to convert.
  * @returns {Speffz} The Speffz notation for the edge.
  */
-function edgeToSpeffz(edge: Edge) {
+function edgeToSpeffz(edge: Edge): Speffz {
   const edgeMap = {
     UB: "AQ",
     UR: "BM",
@@ -51,7 +50,7 @@ function edgeToSpeffz(edge: Edge) {
  * @param {Edge} edge - The edge to flip.
  * @returns {Edge} The flipped edge.
  */
-function flipEdge(edge: Edge) {
+function flipEdge(edge: Edge): Edge {
   return [edge[0], !edge[1]] as Edge;
 }
 
@@ -61,7 +60,7 @@ function flipEdge(edge: Edge) {
  * @param {Speffz} speffz - The Speffz edge to flip.
  * @returns {Speffz} The flipped Speffz edge.
  */
-export function flipSpeffzEdge(speffz: Speffz) {
+export function flipSpeffzEdge(speffz: Speffz): Speffz {
   const flipMap = {
     A: "Q",
     B: "M",
@@ -97,7 +96,7 @@ export function flipSpeffzEdge(speffz: Speffz) {
  * @param {Speffz} speffz - The Speffz notation to convert.
  * @returns {Edge} The corresponding edge.
  */
-function speffzToEdge(speffz: Speffz) {
+function speffzToEdge(speffz: Speffz): Edge {
   const edgeMap = {
     A: "UB",
     B: "UR",
@@ -128,7 +127,7 @@ function speffzToEdge(speffz: Speffz) {
  * @param {Speffz} speffz - The Speffz notation.
  * @returns {Color} The color of the cube face.
  */
-function speffzToCubeColor(cube: Cube, speffz: Speffz) {
+function speffzToCubeColor(cube: Cube, speffz: Speffz): Color {
   const cubeMap = {
     A: cube.U[0][1],
     B: cube.U[1][2],
@@ -164,7 +163,7 @@ function speffzToCubeColor(cube: Cube, speffz: Speffz) {
  * @param {[Color, Color]} colors - The two colors to convert.
  * @returns {Edge} The corresponding edge.
  */
-function colorsToEdge(colors: [Color, Color]) {
+function colorsToEdge(colors: [Color, Color]): Edge {
   const getPrecedence = (color: Color) => {
     switch (color) {
       case "W":
@@ -201,7 +200,7 @@ function colorsToEdge(colors: [Color, Color]) {
  * @param {Speffz} speffz - The Speffz notation.
  * @returns {Edge} The corresponding edge on the cube.
  */
-function speffzToCubeEdge(cube: Cube, speffz: Speffz) {
+function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
   const color1 = speffzToCubeColor(cube, speffz);
   const color2 = speffzToCubeColor(cube, flipSpeffzEdge(speffz));
   // console.log("speffzToCubeEdge", speffz, color1, color2);
