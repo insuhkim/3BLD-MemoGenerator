@@ -1,6 +1,8 @@
 import { solvedCube, Cube, Color } from "react-rubiks-cube-utils";
 
 import { Speffz } from "./Speffz";
+import { get } from "http";
+import next from "next";
 
 type orientedEdge =
   | "UR"
@@ -234,86 +236,40 @@ export function solveEdges(cube: Cube, buffer: Speffz) {
     const solvedEdge = speffzToCubeEdge(solved, c);
     return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
   });
-  console.log("unsolvedEdge", unsolvedEdge);
 
   const flippedEdge = speffzEdges.filter((c) => {
     const edge = speffzToCubeEdge(cube, c);
     const solvedEdge = speffzToCubeEdge(solved, c);
     return edge[0] === solvedEdge[0] && edge[1] !== solvedEdge[1];
   });
-  console.log("flippedEdge", flippedEdge);
-  //////////////////////////////////////////////////
-
-  // TODO: complete solveEdges function
-  const bufferBlocked =
-    unsolvedEdge.includes(buffer) ||
-    unsolvedEdge.includes(flipSpeffzEdge(buffer));
-  let isBlocked = (c: Speffz, start: Speffz) => {
-    if (c === start || c === flipEdge(start)) return true;
-    else return false;
+  const nextTarget = (cube: Cube, current: Speffz) => {
+    return edgeToSpeffz(speffzToCubeEdge(cube, current));
   };
-  if (!bufferBlocked) {
-    const getCycle = (c: Speffz, start: Speffz): Speffz[] => {
-      if (c === start || c) return [c];
-      // if (c === start) return [c];
 
-      const targetBlock = speffzToEdge(cube, c);
-      const targetLocation = edgeToSpeffz(targetBlock);
-      return [c, ...getCycle(targetLocation, start)];
-    };
-  }
+  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] => {
+    if (target === cycleStart || target === flipSpeffzEdge(cycleStart))
+      return [];
 
-  return;
-  // let isBlocked = (c: Speffz, start: Speffz) => {
-  //   if (c === start || c === flipEdge(start)) return true;
-  //   else return false;
-  // };
-  // for (const c of unsolvedEdge) {
-  //   if (isBlocked(c, buffer)) continue;
-  // }
+    const nextTargetBlock = speffzToCubeEdge(cube, target);
+    const nextTargetLocation = edgeToSpeffz(nextTargetBlock);
+    return [target, ...getCycle(nextTargetLocation, cycleStart)];
+  };
+  const target = nextTarget(cube, buffer);
+  const cycle1 = getCycle(target, buffer);
 
-  // const nextTarget = (c: Speffz) => edgeToSpeffz(speffzToEdge(cube, c));
-  // const getCycle = (c: Speffz, start: Speffz): Speffz[] => {
-  //   if (isBlocked(c, start)) return [c];
-  //   // if (c === start) return [c];
+  console.log("-------------------------- log start -------------------------");
+  console.log("unsolvedEdge", unsolvedEdge);
+  console.log("flippedEdge", flippedEdge);
+  console.log("cycle1", cycle1);
+  console.log("-------------------------- log end -------------------------");
 
-  //   const targetBlock = speffzToEdge(cube, c);
-  //   const targetLocation = edgeToSpeffz(targetBlock);
-  //   return [c, ...getCycle(targetLocation, start)];
-  // };
-  // let bufferBlocked = false;
+  //////////////////////////////////////////////////
+  // TODO: complete solveEdges function
+  /*
+  1 2 3 4 5
+  2 3 1 5 4 
 
-  // const solveAll = (remaining: Speffz[]): Speffz[][] => {
-  //   if (remaining.length === 0) return [];
-
-  //   const target = remaining[0];
-
-  //   // check if the buffer is blocked
-  //   if (bufferBlocked === false) bufferBlocked = isBlocked(target, buffer);
-  //   console.log("buffer", bufferBlocked);
-
-  //   let cycle = getCycle(nextTarget(target), target);
-
-  //   // if buffer is blocked, remove the last element from the cycle
-  //   if (bufferBlocked === false) cycle.pop();
-
-  //   console.log("cycle", cycle);
-  //   console.log("bufferBlocked", bufferBlocked);
-  //   console.log(
-  //     "remaining",
-  //     remaining.filter((c) => {
-  //       return !cycle.includes(c) && !cycle.includes(flipEdge(c));
-  //     })
-  //   );
-  //   return [
-  //     cycle,
-  //     ...solveAll(
-  //       remaining.filter((c) => {
-  //         return !cycle.includes(c) && !cycle.includes(flipEdge(c));
-  //       })
-  //     ),
-  //   ];
-  // };
-  // console.log("solveAll", solveAll(unsolvedEdge));
-  // // console.log("getCycle", getCycle(nextTarget(buffer), buffer));
+  -> (2 3) (4 5 4)
+  
+  */
 }
