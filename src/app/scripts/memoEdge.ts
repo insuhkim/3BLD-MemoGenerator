@@ -61,7 +61,7 @@ function flipEdge(edge: Edge) {
  * @param {Speffz} speffz - The Speffz edge to flip.
  * @returns {Speffz} The flipped Speffz edge.
  */
-function flipSpeffzEdge(speffz: Speffz) {
+export function flipSpeffzEdge(speffz: Speffz) {
   const flipMap = {
     A: "Q",
     B: "M",
