@@ -30,7 +30,7 @@ function rotateCorner(corner: Corner, CW: boolean = true) {
   return [corner[0], (corner[1] + (CW ? 1 : 2)) % 3] as Corner;
 }
 
-function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true) {
+function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
   const cornerMap = ["CIF", "AER", "BQN", "DMJ", "UGL", "XSH", "WOT", "VKP"];
   for (let i = 0; i < cornerMap.length; i++) {
     if (cornerMap[i].includes(speffz)) {
@@ -38,13 +38,49 @@ function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true) {
       return cornerMap[i][(orientation + (CW ? 1 : 2)) % 3] as Speffz;
     }
   }
+  return speffz; //never happens
+}
+
+function speffzToCorner(speffz: Speffz) {
+  // ULB: "AER",
+  // UBR: "BQN",
+  // UFL: "CIF",
+  // URF: "DMJ",
+  // DLF: "UGL",
+  // DFR: "VKP",
+  // DRB: "WOT",
+  // DBL: "XSH",
+  const cornerMap = {
+    A: "ULB",
+    B: "UBR",
+    C: "UFL",
+    D: "URF",
+    U: "DLF",
+    V: "DFR",
+    W: "DRB",
+    X: "DBL",
+  };
+  const CWorientations = "EQIMGKOS";
+  const orientation = Object.keys(cornerMap).includes(speffz)
+    ? 0
+    : CWorientations.includes(speffz)
+    ? 1
+    : 2;
+  const orientedCorner =
+    cornerMap[
+      (orientation === 0
+        ? speffz
+        : rotateSpeffzCorner(
+            speffz,
+            orientation === 2
+          )) as keyof typeof cornerMap
+    ];
+  return [orientedCorner, orientation] as Corner;
 }
 
 ///////////////////////////////////
 // TODO: implement section below
 ///////////////////////////////////
-function speffzToCorner(speffz: Speffz) {}
-
 function speffzToCubeColor(cube: Cube, speffz: Speffz) {}
 
 function colorsToCorner(colors: [Color, Color, Color]) {}
