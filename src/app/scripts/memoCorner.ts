@@ -134,9 +134,14 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
   return colorsToCorner([color1, color2, color3]);
 }
 
-export default function solveCorners(cube: Cube, buffer: Speffz) {
+export default function solveCorners(
+  cube: Cube,
+  buffer: Speffz,
+  priority: Speffz[] = []
+) {
   const solved = solvedCube({ type: "3x3" });
-  const speffzCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
+  const allOrientedCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
+  const to_visit: Speffz[] = priority.concat(allOrientedCorners);
   const nextTarget = (cube: Cube, current: Speffz) =>
     cornerToSpeffz(speffzToCubeCorner(cube, current));
 
@@ -145,7 +150,7 @@ export default function solveCorners(cube: Cube, buffer: Speffz) {
       ? [target]
       : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
-  let unsolvedCorners = speffzCorners.filter((c) => {
+  let unsolvedCorners = to_visit.filter((c) => {
     const corner = speffzToCubeCorner(cube, c);
     const solvedCorner = speffzToCubeCorner(solved, c);
     return corner[0] !== solvedCorner[0] || corner[1] !== solvedCorner[1];
