@@ -4,6 +4,8 @@ import ScrambleGenerator from "./ScrambleGenerator";
 import { useEffect, useState } from "react";
 import ShowCubeState from "./ShowCubeState";
 import styles from "./HomePage.module.css";
+import { Speffz } from "../scripts/Speffz";
+import BufferSelection from "./BufferSelection";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
@@ -11,6 +13,8 @@ export default function HomePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [edgePriority, setEdgePriority] = useState("");
   const [cornerPriority, setCornerPriority] = useState("");
+  const [edgeBuffer, setEdgeBuffer] = useState<Speffz>("C");
+  const [cornerBuffer, setCornerBuffer] = useState<Speffz>("C");
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -79,8 +83,19 @@ export default function HomePage() {
               }}
             ></input>
           </div>
+          <hr />
           <div>
-            <h4>Option 2</h4>
+            <h4>Buffer Selection</h4>
+            <BufferSelection
+              buffer={edgeBuffer}
+              setBuffer={setEdgeBuffer}
+              bufferType="edge"
+            />
+            <BufferSelection
+              buffer={cornerBuffer}
+              setBuffer={setCornerBuffer}
+              bufferType="corner"
+            />
           </div>
         </div>
       </div>
