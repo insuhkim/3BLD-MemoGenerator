@@ -112,7 +112,11 @@ export default function HomePage() {
           Toggle Cube State
         </button>
       </div>
-      <Memo scramble={scramble} />
+      <Memo
+        scramble={scramble}
+        edgeBuffer={edgeBuffer}
+        cornerBuffer={cornerBuffer}
+      />
       {displayCube && <ShowCubeState scramble={scramble} size={28} />}
     </div>
   );
