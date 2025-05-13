@@ -3,6 +3,7 @@ import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
 import { useEffect, useState } from "react";
 import ShowCubeState from "./ShowCubeState";
+import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
@@ -12,14 +13,18 @@ export default function HomePage() {
     setSolve(false);
   }, [scramble]);
   return (
-    <div>
+    <div className={styles["homepage-container"]}>
       <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
-      <hr />
-      <div>
-        <button onClick={() => setDisplayCube((b) => !b)}>
+      <hr className={styles.divider} />
+      <div className={styles["button-row"]}>
+        <button
+          className={styles["toggle-btn"]}
+          onClick={() => setDisplayCube((b) => !b)}
+        >
           Toggle Cube State
         </button>
         <button
+          className={styles["solve-btn"]}
           onClick={() => {
             setSolve(true);
           }}

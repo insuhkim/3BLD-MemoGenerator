@@ -1,0 +1,37 @@
+.homepage-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #181a20;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: #e3e6ee;
+}
+
+.divider {
+  margin: 24px 0;
+  border: none;
+  border-top: 2px solid #3a3f4b;
+}
+
+.button-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.toggle-btn, .solve-btn {
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4e9cff;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-btn:hover, .solve-btn:hover {
+  background: #357ae8;
+}
