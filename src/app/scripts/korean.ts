@@ -42,13 +42,13 @@ export function SpeffzToKoreanCorner(speffz: Speffz) {
     X: "보",
     W: "소",
     ///////
-    I: "가",
-    R: "나",
-    Q: "다",
-    J: "라",
-    L: "마",
-    S: "바",
-    T: "사",
+    I: "가+종",
+    R: "나+종",
+    Q: "다+종",
+    J: "라+종",
+    L: "마+종",
+    S: "바+종",
+    T: "사+종",
   };
   return koreanMap[speffz as keyof typeof koreanMap];
 }
