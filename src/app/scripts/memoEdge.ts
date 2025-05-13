@@ -211,9 +211,13 @@ function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
  * @param {Cube} cube - The cube to solve.
  * @param {Speffz} buffer - The buffer position to start solving from.
  */
-export default function solveEdges(cube: Cube, buffer: Speffz) {
+export default function solveEdges(
+  cube: Cube,
+  buffer: Speffz,
+  priority: Speffz[] = []
+) {
   const solved = solvedCube({ type: "3x3" });
-  const speffzEdges: Speffz[] = [
+  const allOrientedEdges: Speffz[] = [
     "A",
     "B",
     "C",
@@ -227,6 +231,7 @@ export default function solveEdges(cube: Cube, buffer: Speffz) {
     "W",
     "X",
   ];
+  const to_visit: Speffz[] = priority.concat(allOrientedEdges);
 
   const nextTarget = (cube: Cube, current: Speffz) =>
     edgeToSpeffz(speffzToCubeEdge(cube, current));
@@ -235,7 +240,7 @@ export default function solveEdges(cube: Cube, buffer: Speffz) {
       ? [target]
       : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
-  let unsolvedEdges = speffzEdges.filter((c) => {
+  let unsolvedEdges = to_visit.filter((c) => {
     const edge = speffzToCubeEdge(cube, c);
     const solvedEdge = speffzToCubeEdge(solved, c);
     return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
