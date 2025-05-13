@@ -7,7 +7,6 @@ import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
-  const [solve, setSolve] = useState(false);
   const [displayCube, setDisplayCube] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [edgePriority, setEdgePriority] = useState("");
@@ -29,9 +28,6 @@ export default function HomePage() {
     localStorage.setItem("cornerPriority", cornerPriority);
   }, [cornerPriority]);
 
-  useEffect(() => {
-    setSolve(false);
-  }, [scramble]);
   return (
     <div className={styles["homepage-container"]}>
       <button
@@ -100,16 +96,8 @@ export default function HomePage() {
         >
           Toggle Cube State
         </button>
-        <button
-          className={styles["solve-btn"]}
-          onClick={() => {
-            setSolve(true);
-          }}
-        >
-          Solve!!
-        </button>
       </div>
-      {solve && <Memo scramble={scramble} />}
+      <Memo scramble={scramble} />
       {displayCube && <ShowCubeState scramble={scramble} size={28} />}
     </div>
   );
