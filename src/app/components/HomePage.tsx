@@ -1,11 +1,16 @@
 "use client";
+
+// React imports
+import { useEffect, useState } from "react";
+// components
 import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
-import { useEffect, useState } from "react";
 import ShowCubeState from "./ShowCubeState";
-import styles from "./HomePage.module.css";
-import { Speffz } from "../scripts/Speffz";
 import BufferSelection from "./BufferSelection";
+// type imports
+import { Speffz } from "../scripts/Speffz";
+// css imports
+import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
