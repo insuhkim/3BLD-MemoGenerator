@@ -61,3 +61,13 @@ input {
     width: 100%;
     box-sizing: border-box;
 }
+
+.top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #222;
+  color: #fff;
+}
