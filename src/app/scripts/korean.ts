@@ -15,6 +15,8 @@ export function SpeffzToKoreanEdge(speffz: Speffz) {
     W: "차",
     V: "카",
   };
-  if (!Object.keys(koreanMap).includes(speffz)) speffz = flipSpeffzEdge(speffz);
-  return koreanMap[speffz as keyof typeof koreanMap];
+
+  const oriented = Object.keys(koreanMap).includes(speffz);
+  if (!oriented) speffz = flipSpeffzEdge(speffz);
+  return koreanMap[speffz as keyof typeof koreanMap] + (oriented ? "" : "+종");
 }
