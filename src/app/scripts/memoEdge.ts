@@ -187,10 +187,8 @@ function colorsToEdge(colors: [Color, Color]): Edge {
     O: "L",
     Y: "D",
   };
-  const orientedFaces = orientedColors.map(
-    (color) => colorToFace[color as keyof typeof colorToFace]
-  );
-  return [orientedFaces.join("") as orientedEdge, isFlipped] as Edge;
+  const orientedFaces = orientedColors.map((color) => colorToFace[color]);
+  return [orientedFaces.join(""), isFlipped] as Edge;
 }
 
 /**
@@ -213,7 +211,7 @@ function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
  * @param {Cube} cube - The cube to solve.
  * @param {Speffz} buffer - The buffer position to start solving from.
  */
-export function solveEdges(cube: Cube, buffer: Speffz) {
+export default function solveEdges(cube: Cube, buffer: Speffz) {
   const solved = solvedCube({ type: "3x3" });
   const speffzEdges: Speffz[] = [
     "A",
@@ -230,30 +228,30 @@ export function solveEdges(cube: Cube, buffer: Speffz) {
     "X",
   ];
 
-  const nextTarget = (cube: Cube, current: Speffz) => {
-    return edgeToSpeffz(speffzToCubeEdge(cube, current));
-  };
+  const nextTarget = (cube: Cube, current: Speffz) =>
+    edgeToSpeffz(speffzToCubeEdge(cube, current));
+  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
+    target === cycleStart || target === flipSpeffzEdge(cycleStart)
+      ? [target]
+      : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
-  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] => {
-    if (target === cycleStart || target === flipSpeffzEdge(cycleStart))
-      return [target];
-
-    const nextTargetBlock = speffzToCubeEdge(cube, target);
-    const nextTargetLocation = edgeToSpeffz(nextTargetBlock);
-    return [target, ...getCycle(nextTargetLocation, cycleStart)];
-  };
-
-  let unsolvedEdge = speffzEdges.filter((c) => {
+  let unsolvedEdges = speffzEdges.filter((c) => {
     const edge = speffzToCubeEdge(cube, c);
     const solvedEdge = speffzToCubeEdge(solved, c);
     return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
   });
 
-  const flippedEdge = speffzEdges.filter((c) => {
-    const edge = speffzToCubeEdge(cube, c);
-    const solvedEdge = speffzToCubeEdge(solved, c);
-    return edge[0] === solvedEdge[0] && edge[1] !== solvedEdge[1];
-  });
+  // const flippedEdges = speffzEdges.filter((c) => {
+  //   const edge = speffzToCubeEdge(cube, c);
+  //   const solvedEdge = speffzToCubeEdge(solved, c);
+  //   return edge[0] === solvedEdge[0] && edge[1] !== solvedEdge[1];
+  // });
+
+  const isSameEdgeSpeffz = (c1: Speffz, c2: Speffz) => {
+    const edge1 = speffzToEdge(c1);
+    const edge2 = speffzToEdge(c2);
+    return edge1[0] === edge2[0];
+  };
 
   const bufferBlocked =
     speffzToCubeEdge(cube, buffer)[0] === speffzToCubeEdge(solved, buffer)[0];
@@ -263,8 +261,9 @@ export function solveEdges(cube: Cube, buffer: Speffz) {
   if (!bufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
     console.log("cycle1", firstCycle);
-    unsolvedEdge = unsolvedEdge.filter(
-      (c) => !firstCycle.includes(c) && !firstCycle.includes(flipSpeffzEdge(c))
+
+    unsolvedEdges = unsolvedEdges.filter((c) =>
+      firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1))
     );
   }
 
@@ -273,15 +272,15 @@ export function solveEdges(cube: Cube, buffer: Speffz) {
     const start = unsolvedEdge[0];
     const target = nextTarget(cube, start);
     const cycle = getCycle(target, start);
-    unsolvedEdge = unsolvedEdge.filter(
-      (c) => !cycle.includes(c) && !cycle.includes(flipSpeffzEdge(c))
+    unsolvedEdge = unsolvedEdge.filter((c) =>
+      cycle.every((c1) => !isSameEdgeSpeffz(c, c1))
     );
     cycle.unshift(start);
     console.log("unsolvedEdge", unsolvedEdge);
     return [cycle, ...solveAll(unsolvedEdge)];
   };
 
-  let result = solveAll(unsolvedEdge);
+  let result = solveAll(unsolvedEdges);
   if (!bufferBlocked) {
     firstCycle.pop();
     result.unshift(firstCycle);
