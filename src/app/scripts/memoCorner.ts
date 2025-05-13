@@ -1,14 +1,14 @@
 import { Speffz } from "./Speffz";
 import { Color, Cube, solvedCube } from "react-rubiks-cube-utils";
 type orientedCorner =
-  | "UFL"
   | "ULB"
   | "UBR"
   | "URF"
+  | "UFL"
   | "DLF"
-  | "DBL"
+  | "DFR"
   | "DRB"
-  | "DFR";
+  | "DBL";
 type orientation = 0 | 1 | 2; // 0: normal, 1: CW, 2: CCW
 type Corner = [orientedCorner, orientation];
 
@@ -16,7 +16,7 @@ function cornerToSpeffz(corner: Corner) {
   const cornerMap = {
     ULB: "AER",
     UBR: "BQN",
-    URF: "CJM",
+    URF: "CMJ",
     UFL: "DIF",
     DLF: "UGL",
     DFR: "VKP",
@@ -31,7 +31,8 @@ function rotateCorner(corner: Corner, CW: boolean = true) {
 }
 
 function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
-  const cornerMap = ["CIF", "AER", "BQN", "DMJ", "UGL", "XSH", "WOT", "VKP"];
+  const cornerMap = ["AER", "BQN", "CMJ", "DIF", "UGL", "VKP", "WOT", "XSH"];
+
   for (let i = 0; i < cornerMap.length; i++) {
     if (cornerMap[i].includes(speffz)) {
       const orientation = cornerMap[i].indexOf(speffz);
@@ -137,41 +138,6 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
 }
 
 export default function solveCorners(cube: Cube, buffer: Speffz) {
-  //////////////////////////////////
-  /////////// Debuging ///////
-  //////////////////////////////////
-
-  const test = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-  ];
-  for (let i of test) {
-    console.log(i, rotateSpeffzCorner(i as Speffz));
-  }
-
-  //////////////////////////////////
   const solved = solvedCube({ type: "3x3" });
   const speffzCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
   const nextTarget = (cube: Cube, current: Speffz) =>
