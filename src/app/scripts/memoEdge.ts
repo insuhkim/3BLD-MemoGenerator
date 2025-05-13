@@ -127,7 +127,7 @@ function speffzToEdge(speffz: Speffz): Edge {
  * @param {Speffz} speffz - The Speffz notation.
  * @returns {Color} The color of the cube face.
  */
-function speffzToCubeColor(cube: Cube, speffz: Speffz): Color {
+function speffzToCubeColorEdge(cube: Cube, speffz: Speffz): Color {
   const cubeMap = {
     A: cube.U[0][1],
     B: cube.U[1][2],
@@ -201,8 +201,8 @@ function colorsToEdge(colors: [Color, Color]): Edge {
  * @returns {Edge} The corresponding edge on the cube.
  */
 function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
-  const color1 = speffzToCubeColor(cube, speffz);
-  const color2 = speffzToCubeColor(cube, flipSpeffzEdge(speffz));
+  const color1 = speffzToCubeColorEdge(cube, speffz);
+  const color2 = speffzToCubeColorEdge(cube, flipSpeffzEdge(speffz));
   // console.log("speffzToCubeEdge", speffz, color1, color2);
   return colorsToEdge([color1, color2]);
 }
