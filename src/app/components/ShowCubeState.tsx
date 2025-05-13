@@ -11,7 +11,7 @@ export default function ShowCubeState({
   return (
     <div>
       <h1> Cube State </h1>
-      <DisplayCube cube={cube} size={size} />
+      {cube && <DisplayCube cube={cube} size={size} />}
     </div>
   );
 }
