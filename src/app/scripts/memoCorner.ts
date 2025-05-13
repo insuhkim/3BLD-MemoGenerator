@@ -48,28 +48,24 @@ function speffzToCorner(speffz: Speffz) {
   const cornerMap = {
     A: "ULB",
     B: "UBR",
-    C: "UFL",
-    D: "URF",
+    C: "URF",
+    D: "UFL",
     U: "DLF",
     V: "DFR",
     W: "DRB",
     X: "DBL",
   };
-  const CWorientations = "EQIMGKOS";
+  const CWorientations = "EQMIGKOS";
   const orientation = Object.keys(cornerMap).includes(speffz)
     ? 0
     : CWorientations.includes(speffz)
     ? 1
     : 2;
-  const orientedCorner =
-    cornerMap[
-      (orientation === 0
-        ? speffz
-        : rotateSpeffzCorner(
-            speffz,
-            orientation === 2
-          )) as keyof typeof cornerMap
-    ];
+  const orientedSpeffz = (
+    orientation === 0 ? speffz : rotateSpeffzCorner(speffz, orientation === 2)
+  ) as keyof typeof cornerMap;
+
+  const orientedCorner = cornerMap[orientedSpeffz];
   return [orientedCorner, orientation] as Corner;
 }
 
@@ -123,7 +119,9 @@ function colorsToCorner(colors: [Color, Color, Color]) {
   if (idx === -1) throw new Error("No W or Y in colors" + colors);
   const orientedColors = colors.slice(idx).concat(colors.slice(0, idx));
   const orientedFaces = orientedColors.map((color) => colorToFace[color]);
-  return [orientedFaces.join(""), idx] as Corner;
+  const corner = [orientedFaces.join(""), (3 - idx) % 3] as Corner;
+  if (corner === undefined) throw new Error("corner is undefined");
+  return corner;
 }
 
 function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
@@ -133,7 +131,6 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
     cube,
     rotateSpeffzCorner(speffz, false)
   );
-  console.log("speffzToCubeCorner", speffz, color1, color2, color3);
   return colorsToCorner([color1, color2, color3]);
 }
 
