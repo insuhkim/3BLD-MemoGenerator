@@ -12,6 +12,15 @@ A tool designed to assist in generating memo sequences for solving a 3x3 Rubik's
 
 ---
 
+## TODO
+
+- [ ] use [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) to show preview
+- [ ] custom Buffer option
+- [ ] custom cycle break priority option
+- [ ] M2R2, OP, M2OP preset
+
+---
+
 ## Installation
 
 1. Clone the repository:
