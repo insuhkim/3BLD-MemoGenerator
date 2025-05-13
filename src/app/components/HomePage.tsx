@@ -25,8 +25,12 @@ export default function HomePage() {
   useEffect(() => {
     const edge = localStorage.getItem("edgePriority");
     const corner = localStorage.getItem("cornerPriority");
+    const edgeBuffer = localStorage.getItem("edgeBuffer");
+    const cornerBuffer = localStorage.getItem("cornerBuffer");
     if (edge !== null) setEdgePriority(edge);
     if (corner !== null) setCornerPriority(corner);
+    if (edgeBuffer !== null) setEdgeBuffer(edgeBuffer as Speffz);
+    if (cornerBuffer !== null) setCornerBuffer(cornerBuffer as Speffz);
   }, []);
 
   // Save to localStorage on change
@@ -36,6 +40,12 @@ export default function HomePage() {
   useEffect(() => {
     localStorage.setItem("cornerPriority", cornerPriority);
   }, [cornerPriority]);
+  useEffect(() => {
+    localStorage.setItem("edgeBuffer", edgeBuffer);
+  }, [edgeBuffer]);
+  useEffect(() => {
+    localStorage.setItem("cornerBuffer", cornerBuffer);
+  }, [cornerBuffer]);
 
   return (
     <div className={styles["homepage-container"]}>
