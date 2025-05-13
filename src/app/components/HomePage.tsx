@@ -116,6 +116,8 @@ export default function HomePage() {
         scramble={scramble}
         edgeBuffer={edgeBuffer}
         cornerBuffer={cornerBuffer}
+        edgePriority={edgePriority}
+        cornerPriority={cornerPriority}
       />
       {displayCube && <ShowCubeState scramble={scramble} size={28} />}
     </div>

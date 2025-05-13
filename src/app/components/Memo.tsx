@@ -8,20 +8,15 @@ export default function Memo({
   scramble,
   edgeBuffer = "C",
   cornerBuffer = "C",
+  edgePriority = "",
+  cornerPriority = "",
 }: {
   scramble: string;
   edgeBuffer: Speffz;
   cornerBuffer: Speffz;
+  edgePriority: string;
+  cornerPriority: string;
 }) {
-  // Read priorities from localStorage
-  const edgePriority =
-    typeof window !== "undefined"
-      ? localStorage.getItem("edgePriority") || ""
-      : "";
-  const cornerPriority =
-    typeof window !== "undefined"
-      ? localStorage.getItem("cornerPriority") || ""
-      : "";
   const regex = /^[A-X]*$/;
 
   const cube = applyScramble({ type: "3x3", scramble: scramble });
