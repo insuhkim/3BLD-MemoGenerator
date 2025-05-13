@@ -10,6 +10,25 @@ export default function HomePage() {
   const [solve, setSolve] = useState(false);
   const [displayCube, setDisplayCube] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [edgePriority, setEdgePriority] = useState("");
+  const [cornerPriority, setCornerPriority] = useState("");
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const edge = localStorage.getItem("edgePriority");
+    const corner = localStorage.getItem("cornerPriority");
+    if (edge !== null) setEdgePriority(edge);
+    if (corner !== null) setCornerPriority(corner);
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("edgePriority", edgePriority);
+  }, [edgePriority]);
+  useEffect(() => {
+    localStorage.setItem("cornerPriority", cornerPriority);
+  }, [cornerPriority]);
+
   useEffect(() => {
     setSolve(false);
   }, [scramble]);
@@ -35,8 +54,34 @@ export default function HomePage() {
           <h3>Options</h3>
           <div>
             <h4>Cycle Break Priority</h4>
-            <p> Determine priority after buffer block </p>
-            <input type="text"></input>
+            <p>
+              Determine priority after buffer blocked. Write speffz letter
+              scheme with seprated space.
+            </p>
+            <input
+              type="text"
+              placeholder="edge"
+              value={edgePriority}
+              onChange={(e) => {
+                const value = e.target.value;
+                const regex = /^[A-X ]*$/;
+                if (regex.test(value)) {
+                  setEdgePriority(value);
+                }
+              }}
+            ></input>
+            <input
+              type="text"
+              placeholder="corner"
+              value={cornerPriority}
+              onChange={(e) => {
+                const value = e.target.value;
+                const regex = /^[A-X ]*$/;
+                if (regex.test(value)) {
+                  setCornerPriority(value);
+                }
+              }}
+            ></input>
           </div>
           <div>
             <h4>Option 2</h4>
