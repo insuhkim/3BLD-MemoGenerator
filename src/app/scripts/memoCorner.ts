@@ -16,8 +16,8 @@ function cornerToSpeffz(corner: Corner) {
   const cornerMap = {
     ULB: "AER",
     UBR: "BQN",
-    UFL: "CIF",
-    URF: "DMJ",
+    URF: "CJM",
+    UFL: "DIF",
     DLF: "UGL",
     DFR: "VKP",
     DRB: "WOT",
@@ -38,7 +38,9 @@ function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
       return cornerMap[i][(orientation + (CW ? 1 : 2)) % 3] as Speffz;
     }
   }
-  return speffz; //never happens
+  throw new Error(
+    "rotateSpeffzCorner: speffz not found in cornerMap: " + speffz
+  );
 }
 
 function speffzToCorner(speffz: Speffz) {
@@ -76,22 +78,27 @@ function speffzToCubeColorCorner(cube: Cube, speffz: Speffz) {
     B: cube.U[0][2],
     C: cube.U[2][2],
     D: cube.U[2][0],
+    ///////////////
     E: cube.L[0][0],
     F: cube.L[0][2],
     G: cube.L[2][2],
     H: cube.L[2][0],
+    ///////////////
     I: cube.F[0][0],
     J: cube.F[0][2],
     K: cube.F[2][2],
     L: cube.F[2][0],
+    ///////////////
     M: cube.R[0][0],
     N: cube.R[0][2],
     O: cube.R[2][2],
     P: cube.R[2][0],
+    ///////////////
     Q: cube.B[0][0],
     R: cube.B[0][2],
     S: cube.B[2][2],
     T: cube.B[2][0],
+    ///////////////
     U: cube.D[0][0],
     V: cube.D[0][2],
     W: cube.D[2][2],
@@ -100,14 +107,129 @@ function speffzToCubeColorCorner(cube: Cube, speffz: Speffz) {
   return cubeMap[speffz as keyof typeof cubeMap];
 }
 
-///////////////////////////////////
-// TODO: implement section below
-///////////////////////////////////
+function colorsToCorner(colors: [Color, Color, Color]) {
+  // colors[0]: primary color
+  // colors[1], colors[2]: secondary colors in CW order
+  const colorToFace = {
+    W: "U",
+    G: "F",
+    B: "B",
+    R: "R",
+    O: "L",
+    Y: "D",
+  };
+  const idx = colors.findIndex((c) => c === "W" || c === "Y");
+  if (idx === -1) throw new Error("No W or Y in colors" + colors);
+  const orientedColors = colors.slice(idx).concat(colors.slice(0, idx));
+  const orientedFaces = orientedColors.map((color) => colorToFace[color]);
+  return [orientedFaces.join(""), idx] as Corner;
+}
 
-function colorsToCorner(colors: [Color, Color, Color]) {}
+function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
+  const color1 = speffzToCubeColorCorner(cube, speffz);
+  const color2 = speffzToCubeColorCorner(cube, rotateSpeffzCorner(speffz));
+  const color3 = speffzToCubeColorCorner(
+    cube,
+    rotateSpeffzCorner(speffz, false)
+  );
+  console.log("speffzToCubeCorner", speffz, color1, color2, color3);
+  return colorsToCorner([color1, color2, color3]);
+}
 
-function speffzToCubeCorner(cube: Cube, speffz: Speffz) {}
+export default function solveCorners(cube: Cube, buffer: Speffz) {
+  //////////////////////////////////
+  /////////// Debuging ///////
+  //////////////////////////////////
 
-function solveCorners(cube: Cube, corner: Corner) {
+  const test = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+  ];
+  for (let i of test) {
+    console.log(i, rotateSpeffzCorner(i as Speffz));
+  }
+
+  //////////////////////////////////
   const solved = solvedCube({ type: "3x3" });
+  const speffzCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
+  const nextTarget = (cube: Cube, current: Speffz) =>
+    cornerToSpeffz(speffzToCubeCorner(cube, current));
+
+  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
+    speffzToCorner(target)[0] === speffzToCorner(cycleStart)[0]
+      ? [target]
+      : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
+
+  let unsolvedCorners = speffzCorners.filter((c) => {
+    const corner = speffzToCubeCorner(cube, c);
+    const solvedCorner = speffzToCubeCorner(solved, c);
+    return corner[0] !== solvedCorner[0] || corner[1] !== solvedCorner[1];
+  });
+
+  // const unorientedCorners = speffzCorners.filter((c) => {
+  //   const corner = speffzToCubeCorner(cube, c);
+  //   const solvedCorner = speffzToCubeCorner(solved, c);
+  //   return corner[0] === solvedCorner[0] && corner[1] !== solvedCorner[1];
+  // });
+
+  const isSameCornerSpeffz = (c1: Speffz, c2: Speffz) => {
+    const corner1 = speffzToCorner(c1);
+    const corner2 = speffzToCorner(c2);
+    return corner1[0] === corner2[0];
+  };
+
+  const bufferBlocked =
+    speffzToCubeCorner(cube, buffer)[0] ===
+    speffzToCubeCorner(solved, buffer)[0];
+
+  let firstCycle: Speffz[] = [];
+  if (!bufferBlocked) {
+    firstCycle = getCycle(nextTarget(cube, buffer), buffer);
+    console.log("cycle1", firstCycle);
+    unsolvedCorners = unsolvedCorners.filter(
+      (c) => firstCycle.every((c1) => !isSameCornerSpeffz(c, c1)) // remove the cycle from unsolved corners
+    );
+  }
+
+  const solveAll = (unsolvedEdge: Speffz[]): Speffz[][] => {
+    if (unsolvedEdge.length === 0) return [];
+    const start = unsolvedEdge[0];
+    const target = nextTarget(cube, start);
+    const cycle = getCycle(target, start);
+    unsolvedEdge = unsolvedEdge.filter(
+      (c) => cycle.every((c1) => !isSameCornerSpeffz(c, c1)) // remove the cycle from unsolved corners
+    );
+    cycle.unshift(start);
+    console.log("unsolvedEdge", unsolvedEdge);
+    return [cycle, ...solveAll(unsolvedEdge)];
+  };
+
+  let result = solveAll(unsolvedCorners);
+  if (!bufferBlocked) {
+    firstCycle.pop();
+    result.unshift(firstCycle);
+  }
+  return result;
 }
