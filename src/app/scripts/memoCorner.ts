@@ -42,14 +42,6 @@ function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
 }
 
 function speffzToCorner(speffz: Speffz) {
-  // ULB: "AER",
-  // UBR: "BQN",
-  // UFL: "CIF",
-  // URF: "DMJ",
-  // DLF: "UGL",
-  // DFR: "VKP",
-  // DRB: "WOT",
-  // DBL: "XSH",
   const cornerMap = {
     A: "ULB",
     B: "UBR",
@@ -78,10 +70,39 @@ function speffzToCorner(speffz: Speffz) {
   return [orientedCorner, orientation] as Corner;
 }
 
+function speffzToCubeColorCorner(cube: Cube, speffz: Speffz) {
+  const cubeMap = {
+    A: cube.U[0][0],
+    B: cube.U[0][2],
+    C: cube.U[2][2],
+    D: cube.U[2][0],
+    E: cube.L[0][0],
+    F: cube.L[0][2],
+    G: cube.L[2][2],
+    H: cube.L[2][0],
+    I: cube.F[0][0],
+    J: cube.F[0][2],
+    K: cube.F[2][2],
+    L: cube.F[2][0],
+    M: cube.R[0][0],
+    N: cube.R[0][2],
+    O: cube.R[2][2],
+    P: cube.R[2][0],
+    Q: cube.B[0][0],
+    R: cube.B[0][2],
+    S: cube.B[2][2],
+    T: cube.B[2][0],
+    U: cube.D[0][0],
+    V: cube.D[0][2],
+    W: cube.D[2][2],
+    X: cube.D[2][0],
+  };
+  return cubeMap[speffz as keyof typeof cubeMap];
+}
+
 ///////////////////////////////////
 // TODO: implement section below
 ///////////////////////////////////
-function speffzToCubeColor(cube: Cube, speffz: Speffz) {}
 
 function colorsToCorner(colors: [Color, Color, Color]) {}
 
