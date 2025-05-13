@@ -19,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="top-bar">
-          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-            Memo Generator
+          <span style={{ fontWeight: "bold", fontSize: "2rem" }}>
+            3x3 Memo Generator
           </span>
           <Link
             href="https://github.com/insuhkim/3BLD-MemoGenerator"
