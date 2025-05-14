@@ -21,6 +21,7 @@ This project utilizes [react-rubiks-cube-utils](https://github.com/UmerKazi/reac
 - [x] Custom cycle break priority
 - [ ] Integrate [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) for interactive cube visualization
 - [ ] Add memo presets (M2R2, OP, M2OP)
+- [ ] Add `Show Flipped Edge/Corner Seperately` Option
 - [ ] Refactor and clean up codebase
 - [ ] Improve and polish the UI
 
