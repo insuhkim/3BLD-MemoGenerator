@@ -1,57 +1,40 @@
-# Blindfolded 333 Cube Memo Generator
+# 🧠 Blindfolded 3x3x3 Cube Memo Generator
 
-A tool designed to assist in generating memo sequences for solving a 3x3 Rubik's Cube blindfolded. This application leverages the [React Rubiks Cube](https://github.com/UmerKazi/react-rubiks-cube-utils) package for cube manipulation and visualization.
+A web tool for generating memo sequences to solve a 3x3 Rubik's Cube blindfolded.  
+Heavily inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/apps/details?id=de.jojo.memogenerator) Android app.
 
----
-
-## Features
-
-- Generate memo sequences for edges and corners.
-- Visualize cube states interactively.
-- User-friendly interface for blindfolded cubers.
+This project utilizes [react-rubiks-cube-utils](https://github.com/UmerKazi/react-rubiks-cube-utils) for cube logic and manipulation.
 
 ---
 
-## TODO
+## ✨ Features
 
-- [ ] use [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) to show preview
-- [x] custom Buffer option
-- [x] custom cycle break priority option
-- [ ] M2R2, OP, M2OP preset
+- 🧩 Generate memo sequences for both edges and corners
+- 🔧 Custom buffer and cycle break priority options
+- 🖥️ Clean, user-friendly interface for blindfolded cubers
 
 ---
 
-## Installation
+## 🛠️ TODO
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/insuhkim/3bld-memogenerator.git
-   cd 3bld-memogenerator
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+- [x] Custom buffer option
+- [x] Custom cycle break priority
+- [ ] Integrate [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) for interactive cube visualization
+- [ ] Add memo presets (M2R2, OP, M2OP)
+- [ ] Refactor and clean up codebase
+- [ ] Improve and polish the UI
 
 ---
 
 ## Usage
 
-1. Open the application in your browser at `http://localhost:3000`.
-2. Input your cube's scrambled state.
+1. Open the application in your browser at `https://3bld-memo-generator.vercel.app/`.
+2. In Option, set your buffer and priority.
 3. Generate and review the memo sequence for solving the cube blindfolded.
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! To contribute:
 
@@ -72,6 +55,6 @@ Contributions are welcome! To contribute:
 
 ---
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
