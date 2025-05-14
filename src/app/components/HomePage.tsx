@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 // components
 import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
-import ShowCubeState from "./ShowCubeState";
+import TwistyPlayer from "./CubePreview";
 import Option from "./Option";
 // type imports
 import { Speffz } from "../scripts/Speffz";
 // css imports
 import styles from "./HomePage.module.css";
+import CubePreview from "./CubePreview";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
@@ -65,9 +66,10 @@ export default function HomePage() {
           className={styles["toggle-btn"]}
           onClick={() => setDisplayCube((b) => !b)}
         >
-          Toggle Cube State
+          {displayCube ? "Hide Cube" : "Show Cube"}
         </button>
       </div>
+      <div>{displayCube && <CubePreview alg={scramble} />}</div>
       <Memo
         scramble={scramble}
         edgeBuffer={edgeBuffer}
@@ -75,7 +77,6 @@ export default function HomePage() {
         edgePriority={edgePriority}
         cornerPriority={cornerPriority}
       />
-      {displayCube && <ShowCubeState scramble={scramble} size={28} />}
     </div>
   );
 }
