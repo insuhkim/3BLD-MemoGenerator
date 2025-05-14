@@ -2,7 +2,7 @@
 import styles from "./Option.module.css";
 import BufferSelection from "./BufferSelection";
 import { Speffz } from "../scripts/Speffz";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 export default function Option({
   edgePriority,
   setEdgePriority,
@@ -35,16 +35,32 @@ export default function Option({
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
         tabIndex={-1}
       >
-        <button
-          className={styles["sidebar-close"]}
-          onClick={() => setSidebarOpen(false)}
-        >
-          ×
-        </button>
+        <div className={styles["sidebar-header"]}>
+          <h2>Options</h2>
+          <button
+            className={styles["sidebar-close"]}
+            onClick={() => setSidebarOpen(false)}
+          >
+            ×
+          </button>
+        </div>
         <div className={styles["sidebar-content"]}>
-          <h3>Options</h3>
           <div>
-            <h4>Cycle Break Priority</h4>
+            <h3>Buffer Selection</h3>
+            <BufferSelection
+              buffer={edgeBuffer}
+              setBuffer={setEdgeBuffer}
+              bufferType="edge"
+            />
+            <BufferSelection
+              buffer={cornerBuffer}
+              setBuffer={setCornerBuffer}
+              bufferType="corner"
+            />
+          </div>
+          <hr />
+          <div>
+            <h3>Cycle Break Priority</h3>
             <p>
               Determine priority after buffer blocked. Write speffz letter
               scheme with seprated space.
@@ -73,20 +89,6 @@ export default function Option({
                 }
               }}
             ></input>
-          </div>
-          <hr />
-          <div>
-            <h4>Buffer Selection</h4>
-            <BufferSelection
-              buffer={edgeBuffer}
-              setBuffer={setEdgeBuffer}
-              bufferType="edge"
-            />
-            <BufferSelection
-              buffer={cornerBuffer}
-              setBuffer={setCornerBuffer}
-              bufferType="corner"
-            />
           </div>
         </div>
       </div>

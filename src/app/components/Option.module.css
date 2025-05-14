@@ -11,10 +11,10 @@
   transition: background 0.2s;
   display: inline-block;
 }
-
 .sidebar-toggle:hover {
   background: #357ae8;
 }
+
 
 .sidebar {
   position: fixed;
@@ -34,18 +34,104 @@
   left: 0;
 }
 .sidebar-close {
-  position: absolute;
-  top: 18px;
-  right: 18px;
   background: none;
   border: none;
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.7rem;
   cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.sidebar-content {
-  margin-top: 40px;
+.sidebar-close:hover {
+  background: #357ae8;
+}
+
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  /* padding-bottom: 12px; */.sidebar-content h4 {
+  color: #4e9cff;
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.sidebar-content p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #bfc4d1;
+  font-size: 0.97rem;
+}
+
+.sidebar-content input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #35373f;
+  background: #23252c;
   color: #e3e6ee;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.sidebar-content input[type="text"]:focus {
+  border: 1.5px solid #4e9cff;
+  outline: none;
+}
+  border-bottom: 1px solid #35373f;
+}
+
+.sidebar-header h2 {
+  color: #e3e6ee;
+  font-size: 1.4rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+
+.sidebar-content {
+  margin-top: 6px;
+  color: #e3e6ee;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.sidebar-content h3 {
+  color: #4e9cff;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-size: 1.5rem;
+}
+
+.sidebar-content p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #bfc4d1;
+  font-size: 0.97rem;
+}
+
+.sidebar-content input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #35373f;
+  background: #23252c;
+  color: #e3e6ee;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.sidebar-content input[type="text"]:focus {
+  border: 1.5px solid #4e9cff;
+  outline: none;
 }
 .overlay {
   position: fixed;
@@ -55,4 +141,15 @@
   height: 100vh;
   background: rgba(30,32,40,0.45);
   z-index: 1150;
+}
+
+@media (max-width: 500px) {
+  .sidebar {
+    width: 100vw;
+    left: -100vw;
+    padding: 32px 8px 20px 8px;
+  }
+  .sidebar.open {
+    left: 0;
+  }
 }

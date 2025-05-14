@@ -57,7 +57,6 @@ export default function scrambleGenerator({
           }}
         ></textarea>
       </div>
-      <br />
       <button
         onClick={() => {
           setScramble(
