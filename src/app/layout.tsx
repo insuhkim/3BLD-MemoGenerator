@@ -1,6 +1,7 @@
 import Link from "next/link";
 import "./styles/globals.css";
 import { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Memo Generator",
@@ -50,6 +51,7 @@ export default function RootLayout({
           </Link>
         </div>
         {children}
+        <Analytics />
       </body>
     </html>
   );
