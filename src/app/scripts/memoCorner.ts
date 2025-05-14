@@ -178,7 +178,10 @@ export default function solveCorners(
     unsolvedCorners = unsolvedCorners.filter(
       (c) => firstCycle.every((c1) => !isSameCornerSpeffz(c, c1)) // remove the cycle from unsolved corners
     );
-  }
+  } else
+    unsolvedCorners = unsolvedCorners.filter(
+      (c) => !isSameCornerSpeffz(c, buffer) // remove the buffer from unsolved corners
+    );
 
   const solveAll = (unsolvedEdge: Speffz[]): Speffz[][] => {
     if (unsolvedEdge.length === 0) return [];

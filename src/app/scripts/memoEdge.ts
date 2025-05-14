@@ -267,7 +267,10 @@ export default function solveEdges(
     unsolvedEdges = unsolvedEdges.filter((c) =>
       firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1))
     );
-  }
+  } else
+    unsolvedEdges = unsolvedEdges.filter(
+      (c) => !isSameEdgeSpeffz(c, buffer) // remove the buffer from unsolved corners
+    );
 
   const solveAll = (unsolvedEdge: Speffz[]): Speffz[][] => {
     if (unsolvedEdge.length === 0) return [];
