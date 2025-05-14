@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { generateScramble } from "react-rubiks-cube-utils";
 export default function scrambleGenerator({
   scramble,
@@ -9,19 +9,26 @@ export default function scrambleGenerator({
   setScramble: (scramble: string) => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const handleClick = () => {
+  const adjustHeight = () => {
     const el = textareaRef.current;
     if (el) {
       el.style.height = "auto"; // Reset height
       el.style.height = `${el.scrollHeight}px`; // Set to content height
     }
-
-    setScramble(
-      generateScramble({
-        type: "3x3",
-      })
-    );
   };
+
+  // Adjust height on initial render
+  useEffect(() => {
+    adjustHeight();
+  }, [scramble]);
+
+  // Adjust height on Screen Resize
+  useEffect(() => {
+    window.addEventListener("resize", adjustHeight);
+    return () => {
+      window.removeEventListener("resize", adjustHeight);
+    };
+  }, []);
 
   return (
     <div>
@@ -51,7 +58,17 @@ export default function scrambleGenerator({
         ></textarea>
       </div>
       <br />
-      <button onClick={handleClick}> Generate Scramble </button>
+      <button
+        onClick={() => {
+          setScramble(
+            generateScramble({
+              type: "3x3",
+            })
+          );
+        }}
+      >
+        Generate Scramble
+      </button>
     </div>
   );
 }
