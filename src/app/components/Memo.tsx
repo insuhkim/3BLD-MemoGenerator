@@ -10,12 +10,16 @@ export default function Memo({
   cornerBuffer = "C",
   edgePriority = "",
   cornerPriority = "",
+  resultSeparator = ", ",
+  showCycleBreak = false,
 }: {
   scramble: string;
   edgeBuffer: Speffz;
   cornerBuffer: Speffz;
   edgePriority: string;
   cornerPriority: string;
+  resultSeparator: string;
+  showCycleBreak: boolean;
 }) {
   const regex = /^[A-X]*$/;
 
@@ -32,8 +36,16 @@ export default function Memo({
       .split(" ")
       .filter((e) => e !== "" && regex.test(e)) as Speffz[]
   );
-  const [edgeString, parityEdge] = makeLetterpair(edge);
-  const [cornerString, parityCorner] = makeLetterpair(corner);
+  const [edgeString, parityEdge] = makeLetterpair(
+    edge,
+    resultSeparator,
+    showCycleBreak
+  );
+  const [cornerString, parityCorner] = makeLetterpair(
+    corner,
+    resultSeparator,
+    showCycleBreak
+  );
   if (parityCorner !== parityEdge) {
     throw new Error("Parity error: edges and corners have different parity");
   } //

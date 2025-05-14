@@ -5,13 +5,12 @@ import { useEffect, useState } from "react";
 // components
 import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
-import TwistyPlayer from "./CubePreview";
+import CubePreview from "./CubePreview";
 import Option from "./Option";
-// type imports
+//
 import { Speffz } from "../scripts/Speffz";
 // css imports
 import styles from "./HomePage.module.css";
-import CubePreview from "./CubePreview";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
@@ -20,6 +19,8 @@ export default function HomePage() {
   const [cornerPriority, setCornerPriority] = useState("");
   const [edgeBuffer, setEdgeBuffer] = useState<Speffz>("C");
   const [cornerBuffer, setCornerBuffer] = useState<Speffz>("C");
+  const [resultSeparator, setResultSeparator] = useState(" ");
+  const [showCycleBreak, setShowCycleBreak] = useState(false);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -27,6 +28,10 @@ export default function HomePage() {
     const corner = localStorage.getItem("cornerPriority");
     const edgeBuffer = localStorage.getItem("edgeBuffer");
     const cornerBuffer = localStorage.getItem("cornerBuffer");
+    const resultSeparator = localStorage.getItem("resultSeparator");
+    const showCycleBreak = localStorage.getItem("showCycleBreak");
+    if (resultSeparator !== null) setResultSeparator(resultSeparator);
+    if (showCycleBreak !== null) setShowCycleBreak(showCycleBreak === "true");
     if (edge !== null) setEdgePriority(edge);
     if (corner !== null) setCornerPriority(corner);
     if (edgeBuffer !== null) setEdgeBuffer(edgeBuffer as Speffz);
@@ -46,6 +51,12 @@ export default function HomePage() {
   useEffect(() => {
     localStorage.setItem("cornerBuffer", cornerBuffer);
   }, [cornerBuffer]);
+  useEffect(() => {
+    localStorage.setItem("resultSeparator", resultSeparator);
+  }, [resultSeparator]);
+  useEffect(() => {
+    localStorage.setItem("showCycleBreak", showCycleBreak.toString());
+  }, [showCycleBreak]);
 
   return (
     <div className={styles["homepage-container"]}>
@@ -58,6 +69,10 @@ export default function HomePage() {
         setEdgeBuffer={setEdgeBuffer}
         cornerBuffer={cornerBuffer}
         setCornerBuffer={setCornerBuffer}
+        resultSeparator={resultSeparator}
+        setResultSeparator={setResultSeparator}
+        showCycleBreak={showCycleBreak}
+        setShowCycleBreak={setShowCycleBreak}
       />
       <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
       <hr className={styles.divider} />
@@ -76,6 +91,8 @@ export default function HomePage() {
         cornerBuffer={cornerBuffer}
         edgePriority={edgePriority}
         cornerPriority={cornerPriority}
+        resultSeparator={resultSeparator}
+        showCycleBreak={showCycleBreak}
       />
     </div>
   );

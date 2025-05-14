@@ -12,6 +12,10 @@ export default function Option({
   setEdgeBuffer,
   cornerBuffer,
   setCornerBuffer,
+  resultSeparator,
+  setResultSeparator,
+  showCycleBreak,
+  setShowCycleBreak,
 }: {
   edgePriority: string;
   setEdgePriority: (value: string) => void;
@@ -21,6 +25,10 @@ export default function Option({
   setEdgeBuffer: (value: Speffz) => void;
   cornerBuffer: Speffz;
   setCornerBuffer: (value: Speffz) => void;
+  resultSeparator: string;
+  setResultSeparator: (value: string) => void;
+  showCycleBreak: boolean;
+  setShowCycleBreak: (value: boolean) => void;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
@@ -35,6 +43,7 @@ export default function Option({
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
         tabIndex={-1}
       >
+        {/* HEADER */}
         <div className={styles["sidebar-header"]}>
           <h2>Options</h2>
           <button
@@ -44,7 +53,10 @@ export default function Option({
             ×
           </button>
         </div>
+
+        {/* CONTENTS */}
         <div className={styles["sidebar-content"]}>
+          {/* BUFFER SELECTION */}
           <div>
             <h3>Buffer Selection</h3>
             <BufferSelection
@@ -59,6 +71,8 @@ export default function Option({
             />
           </div>
           <hr />
+
+          {/* CYCLE BREAK PRIORITY */}
           <div>
             <h3>Cycle Break Priority</h3>
             <p>
@@ -89,6 +103,34 @@ export default function Option({
                 }
               }}
             ></input>
+          </div>
+          <hr />
+
+          {/* Results */}
+          <div>
+            <h3>Results</h3>
+            <p>Show parenthesis for cycle break</p>
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                const value = e.target.checked;
+                setShowCycleBreak(value);
+              }}
+              checked={showCycleBreak}
+            ></input>
+            <p> Select Seperator for Results </p>
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                setResultSeparator(value);
+              }}
+              value={resultSeparator}
+            >
+              <option value=",">Comma</option>
+              <option value=", ">Comma + Space</option>
+              <option value=" ">Space</option>
+              <option value="">None</option>
+            </select>
           </div>
         </div>
       </div>
