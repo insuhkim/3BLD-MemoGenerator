@@ -175,7 +175,6 @@ export default function solveCorners(
   let firstCycle: Speffz[] = [];
   if (!bufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
-    console.log("cycle1", firstCycle);
     unsolvedCorners = unsolvedCorners.filter(
       (c) => firstCycle.every((c1) => !isSameCornerSpeffz(c, c1)) // remove the cycle from unsolved corners
     );
@@ -190,7 +189,6 @@ export default function solveCorners(
       (c) => cycle.every((c1) => !isSameCornerSpeffz(c, c1)) // remove the cycle from unsolved corners
     );
     cycle.unshift(start);
-    console.log("unsolvedEdge", unsolvedEdge);
     return [cycle, ...solveAll(unsolvedEdge)];
   };
 

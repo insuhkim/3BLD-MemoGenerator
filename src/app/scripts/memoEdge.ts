@@ -201,7 +201,6 @@ function colorsToEdge(colors: [Color, Color]): Edge {
 function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
   const color1 = speffzToCubeColorEdge(cube, speffz);
   const color2 = speffzToCubeColorEdge(cube, flipSpeffzEdge(speffz));
-  // console.log("speffzToCubeEdge", speffz, color1, color2);
   return colorsToEdge([color1, color2]);
 }
 
@@ -260,12 +259,10 @@ export default function solveEdges(
 
   const bufferBlocked =
     speffzToCubeEdge(cube, buffer)[0] === speffzToCubeEdge(solved, buffer)[0];
-  console.log("bufferBlocked", bufferBlocked);
 
   let firstCycle: Speffz[] = [];
   if (!bufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
-    console.log("cycle1", firstCycle);
 
     unsolvedEdges = unsolvedEdges.filter((c) =>
       firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1))
@@ -281,7 +278,6 @@ export default function solveEdges(
       cycle.every((c1) => !isSameEdgeSpeffz(c, c1))
     );
     cycle.unshift(start);
-    console.log("unsolvedEdge", unsolvedEdge);
     return [cycle, ...solveAll(unsolvedEdge)];
   };
 
