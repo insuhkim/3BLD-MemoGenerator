@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { generateScramble } from "react-rubiks-cube-utils";
 export default function scrambleGenerator({
   scramble,
   setScramble,
@@ -33,7 +32,7 @@ export default function scrambleGenerator({
   return (
     <div>
       <div>
-        <label htmlFor="scramble">Enter scramble or Generate Scramble</label>
+        {/* <label htmlFor="scramble">Enter scramble or Generate Scramble</label> */}
         <textarea
           id="scramble"
           ref={textareaRef}
@@ -57,17 +56,6 @@ export default function scrambleGenerator({
           }}
         ></textarea>
       </div>
-      <button
-        onClick={() => {
-          setScramble(
-            generateScramble({
-              type: "3x3",
-            })
-          );
-        }}
-      >
-        Generate Scramble
-      </button>
     </div>
   );
 }

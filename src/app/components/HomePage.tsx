@@ -9,6 +9,7 @@ import CubePreview from "./CubePreview";
 import Option from "./Option";
 // css imports
 import styles from "./HomePage.module.css";
+import { generateScramble } from "react-rubiks-cube-utils";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
@@ -18,16 +19,24 @@ export default function HomePage() {
     <div className={styles["homepage-container"]}>
       <Option />
       <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
-      <hr className={styles.divider} />
       <div className={styles["button-row"]}>
         <button
-          className={styles["toggle-btn"]}
-          onClick={() => setDisplayCube((b) => !b)}
+          onClick={() => {
+            setScramble(
+              generateScramble({
+                type: "3x3",
+              })
+            );
+          }}
         >
+          Generate Scramble
+        </button>
+        <button onClick={() => setDisplayCube((b) => !b)}>
           {displayCube ? "Hide Cube" : "Show Cube"}
         </button>
       </div>
       <div>{displayCube && <CubePreview alg={scramble} />}</div>
+      <hr className={styles.divider} />
       <Memo scramble={scramble} />
     </div>
   );

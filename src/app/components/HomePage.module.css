@@ -20,18 +20,3 @@
   gap: 16px;
   margin-bottom: 24px;
 }
-
-.toggle-btn{
-  padding: 10px 22px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 8px;
-  background: #4e9cff;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.toggle-btn:hover {
-  background: #357ae8;
-}
