@@ -1,25 +1,7 @@
 import { solvedCube, Cube, Color } from "react-rubiks-cube-utils";
 
-import { Speffz } from "./Speffz";
-import { get } from "http";
-import next from "next";
-
-type orientedEdge =
-  | "UR"
-  | "UF"
-  | "UL"
-  | "UB"
-  | "DF"
-  | "DR"
-  | "DL"
-  | "DB"
-  | "FR"
-  | "FL"
-  | "BL"
-  | "BR";
-type flipped = boolean;
-type Edge = [orientedEdge, flipped];
-
+import { Speffz } from "./types/Speffz";
+import { Edge } from "./types/Edge";
 /**
  * Converts an edge to its corresponding Speffz notation.
  *
@@ -210,7 +192,7 @@ function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
  * @param {Cube} cube - The cube to solve.
  * @param {Speffz} buffer - The buffer position to start solving from.
  */
-export default function solveEdges(
+export default function makeEdgeMemo(
   cube: Cube,
   buffer: Speffz,
   priority: Speffz[] = []

@@ -8,8 +8,8 @@ import ScrambleGenerator from "./ScrambleGenerator";
 import CubePreview from "./CubePreview";
 import Option from "./Option";
 //types
-import { Speffz } from "../scripts/Speffz";
-import { CycleNotationStyle } from "../scripts/makeLetterpair";
+import { Speffz } from "../scripts/types/Speffz";
+import { CycleNotationStyle } from "../scripts/types/Settings";
 // css imports
 import styles from "./HomePage.module.css";
 

@@ -1,9 +1,9 @@
 "use client";
 import styles from "./Option.module.css";
 import BufferSelection from "./BufferSelection";
-import { Speffz } from "../scripts/Speffz";
 import { useState } from "react";
-import { CycleNotationStyle } from "../scripts/makeLetterpair";
+import { Speffz } from "../scripts/types/Speffz";
+import { CycleNotationStyle } from "../scripts/types/Settings";
 
 export default function Option({
   edgePriority,

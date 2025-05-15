@@ -1,16 +1,6 @@
-import { Speffz } from "./Speffz";
 import { Color, Cube, solvedCube } from "react-rubiks-cube-utils";
-type orientedCorner =
-  | "ULB"
-  | "UBR"
-  | "URF"
-  | "UFL"
-  | "DLF"
-  | "DFR"
-  | "DRB"
-  | "DBL";
-type orientation = 0 | 1 | 2; // 0: normal, 1: CW, 2: CCW
-type Corner = [orientedCorner, orientation];
+import { Speffz } from "./types/Speffz";
+import { Corner } from "./types/Corner";
 
 function cornerToSpeffz(corner: Corner) {
   const cornerMap = {
@@ -134,7 +124,7 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
   return colorsToCorner([color1, color2, color3]);
 }
 
-export default function solveCorners(
+export default function makeCornerMemo(
   cube: Cube,
   buffer: Speffz,
   priority: Speffz[] = []

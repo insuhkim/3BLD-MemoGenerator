@@ -1,4 +1,4 @@
-import { Speffz } from "../scripts/Speffz";
+import { Speffz } from "../scripts/types/Speffz";
 export default function BufferSelection({
   buffer,
   setBuffer,
