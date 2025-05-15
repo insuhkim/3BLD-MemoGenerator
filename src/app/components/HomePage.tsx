@@ -7,8 +7,9 @@ import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
 import CubePreview from "./CubePreview";
 import Option from "./Option";
-//
+//types
 import { Speffz } from "../scripts/Speffz";
+import { CycleNotationStyle } from "../scripts/makeLetterpair";
 // css imports
 import styles from "./HomePage.module.css";
 
@@ -20,7 +21,8 @@ export default function HomePage() {
   const [edgeBuffer, setEdgeBuffer] = useState<Speffz>("C");
   const [cornerBuffer, setCornerBuffer] = useState<Speffz>("C");
   const [resultSeparator, setResultSeparator] = useState(" ");
-  const [showCycleBreak, setShowCycleBreak] = useState(false);
+  const [cycleStyle, setCycleStyle] =
+    useState<CycleNotationStyle>("parenthesis");
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -29,9 +31,9 @@ export default function HomePage() {
     const edgeBuffer = localStorage.getItem("edgeBuffer");
     const cornerBuffer = localStorage.getItem("cornerBuffer");
     const resultSeparator = localStorage.getItem("resultSeparator");
-    const showCycleBreak = localStorage.getItem("showCycleBreak");
+    const cycleStyle = localStorage.getItem("cycleStyle");
     if (resultSeparator !== null) setResultSeparator(resultSeparator);
-    if (showCycleBreak !== null) setShowCycleBreak(showCycleBreak === "true");
+    if (cycleStyle !== null) setCycleStyle(cycleStyle as CycleNotationStyle);
     if (edge !== null) setEdgePriority(edge);
     if (corner !== null) setCornerPriority(corner);
     if (edgeBuffer !== null) setEdgeBuffer(edgeBuffer as Speffz);
@@ -55,8 +57,8 @@ export default function HomePage() {
     localStorage.setItem("resultSeparator", resultSeparator);
   }, [resultSeparator]);
   useEffect(() => {
-    localStorage.setItem("showCycleBreak", showCycleBreak.toString());
-  }, [showCycleBreak]);
+    localStorage.setItem("showCycleBreak", cycleStyle.toString());
+  }, [cycleStyle]);
 
   return (
     <div className={styles["homepage-container"]}>
@@ -71,8 +73,8 @@ export default function HomePage() {
         setCornerBuffer={setCornerBuffer}
         resultSeparator={resultSeparator}
         setResultSeparator={setResultSeparator}
-        showCycleBreak={showCycleBreak}
-        setShowCycleBreak={setShowCycleBreak}
+        cycleStyle={cycleStyle}
+        setCycleStyle={setCycleStyle}
       />
       <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
       <hr className={styles.divider} />
@@ -92,7 +94,7 @@ export default function HomePage() {
         edgePriority={edgePriority}
         cornerPriority={cornerPriority}
         resultSeparator={resultSeparator}
-        showCycleBreak={showCycleBreak}
+        cycleStyle={cycleStyle}
       />
     </div>
   );

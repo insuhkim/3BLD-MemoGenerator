@@ -3,6 +3,8 @@ import styles from "./Option.module.css";
 import BufferSelection from "./BufferSelection";
 import { Speffz } from "../scripts/Speffz";
 import { useState } from "react";
+import { CycleNotationStyle } from "../scripts/makeLetterpair";
+
 export default function Option({
   edgePriority,
   setEdgePriority,
@@ -14,8 +16,8 @@ export default function Option({
   setCornerBuffer,
   resultSeparator,
   setResultSeparator,
-  showCycleBreak,
-  setShowCycleBreak,
+  cycleStyle,
+  setCycleStyle,
 }: {
   edgePriority: string;
   setEdgePriority: (value: string) => void;
@@ -27,8 +29,8 @@ export default function Option({
   setCornerBuffer: (value: Speffz) => void;
   resultSeparator: string;
   setResultSeparator: (value: string) => void;
-  showCycleBreak: boolean;
-  setShowCycleBreak: (value: boolean) => void;
+  cycleStyle: CycleNotationStyle;
+  setCycleStyle: (value: CycleNotationStyle) => void;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
@@ -106,18 +108,21 @@ export default function Option({
           </div>
           <hr />
 
-          {/* Results */}
+          {/* Result Style*/}
           <div>
-            <h3>Results</h3>
-            <p>Show parenthesis for cycle break</p>
-            <input
-              type="checkbox"
+            <h3>Result Style</h3>
+            <p> Select Cycle Break for Results </p>
+            <select
               onChange={(e) => {
-                const value = e.target.checked;
-                setShowCycleBreak(value);
+                const value = e.target.value;
+                setCycleStyle(value as CycleNotationStyle);
               }}
-              checked={showCycleBreak}
-            ></input>
+              value={cycleStyle}
+            >
+              <option value="parenthesis">parenthesis</option>
+              <option value="vertical">vertical</option>
+              <option value="none">none</option>
+            </select>
             <p> Select Seperator for Results </p>
             <select
               onChange={(e) => {

@@ -2,6 +2,7 @@ import { applyScramble, Cube } from "react-rubiks-cube-utils";
 import solveEdges from "../scripts/memoEdge";
 import solveCorners from "../scripts/memoCorner";
 import makeLetterpair from "../scripts/makeLetterpair";
+import { CycleNotationStyle, hasParity } from "../scripts/makeLetterpair";
 import { Speffz } from "../scripts/Speffz";
 
 export default function Memo({
@@ -11,7 +12,7 @@ export default function Memo({
   edgePriority = "",
   cornerPriority = "",
   resultSeparator = ", ",
-  showCycleBreak = false,
+  cycleStyle = "parenthesis",
 }: {
   scramble: string;
   edgeBuffer: Speffz;
@@ -19,7 +20,7 @@ export default function Memo({
   edgePriority: string;
   cornerPriority: string;
   resultSeparator: string;
-  showCycleBreak: boolean;
+  cycleStyle: CycleNotationStyle;
 }) {
   const regex = /^[A-X]*$/;
 
@@ -36,25 +37,20 @@ export default function Memo({
       .split(" ")
       .filter((e) => e !== "" && regex.test(e)) as Speffz[]
   );
-  const [edgeString, parityEdge] = makeLetterpair(
-    edge,
-    resultSeparator,
-    showCycleBreak
-  );
-  const [cornerString, parityCorner] = makeLetterpair(
-    corner,
-    resultSeparator,
-    showCycleBreak
-  );
-  if (parityCorner !== parityEdge) {
+  const edgeString = makeLetterpair(edge, resultSeparator, cycleStyle);
+  const cornerString = makeLetterpair(corner, resultSeparator, cycleStyle);
+
+  // Check if the edge and corner have the same parity
+  const hasEdgeParity = hasParity(edge);
+  const hasCornerParity = hasParity(corner);
+  if (hasCornerParity !== hasEdgeParity) {
     throw new Error("Parity error: edges and corners have different parity");
   } //
-  const isParity = parityEdge;
   return (
     <div>
       <h1> Results </h1>
       <div>
-        {isParity && <h3>Parity</h3>}
+        {hasEdgeParity && <h3>Parity</h3>}
         <h3>{edgeString} </h3>
         <h3>{cornerString} </h3>
       </div>

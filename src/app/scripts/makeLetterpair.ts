@@ -1,21 +1,36 @@
 import { Speffz } from "./Speffz";
 
+export type CycleNotationStyle = "parenthesis" | "vertical" | "none";
+
+export function hasParity(memo: Speffz[][]): boolean {
+  let count = 0;
+  for (let i = 0; i < memo.length; i++) count += memo[i].length;
+  return count % 2 === 1;
+}
+
 export default function makeLetterpair(
   memo: Speffz[][],
   seperator: string = ", ",
-  showCycle: boolean = true
-): [string, boolean] {
-  let memoString = "";
+  cycleStyle: CycleNotationStyle = "parenthesis"
+): string {
+  let cycleMemo: string[] = [];
   let count = 0;
-  for (let i = 0; i < memo.length; i++) {
-    if (showCycle) memoString += "(";
-    for (let j = 0; j < memo[i].length; j++) {
-      if (j > 0 && count % 2 === 0) memoString += seperator;
-      memoString += memo[i][j];
+  for (let cycle of memo) {
+    let cycleString = "";
+    for (let j = 0; j < cycle.length; j++) {
+      if (j > 0 && count % 2 === 0) cycleString += seperator;
+      cycleString += cycle[j];
       count++;
     }
-    if (showCycle) memoString += ")";
+    cycleMemo.push(cycleString);
   }
-  const isParity = count % 2 === 1;
-  return [memoString, isParity];
+
+  const joinString =
+    cycleStyle === "parenthesis" ? ")(" : cycleStyle === "vertical" ? "|" : "";
+  let result = cycleMemo.join(joinString);
+  if (cycleStyle === "parenthesis") {
+    result = "(" + result + ")";
+  }
+
+  return result;
 }
