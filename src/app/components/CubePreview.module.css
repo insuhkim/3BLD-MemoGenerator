@@ -1,0 +1,16 @@
+/* Sidebar.module.css */
+.cube-preview {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.cube-preview > twisty-player {
+  width: 100% !important;
+  max-width: 100%; /* or 100%, or a value that fits your sidebar */
+  /* height: auto !important; */
+  min-width: 0;
+}

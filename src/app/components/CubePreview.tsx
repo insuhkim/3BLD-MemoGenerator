@@ -1,6 +1,7 @@
 "use client";
 import { TwistyPlayer } from "cubing/twisty";
 import { useEffect, useRef } from "react";
+import style from "./CubePreview.module.css";
 
 export default function CubePreview({ alg }: { alg: string }) {
   const twistyRef = useRef<HTMLDivElement>(null);
@@ -19,5 +20,5 @@ export default function CubePreview({ alg }: { alg: string }) {
       }
     };
   }, [alg]);
-  return <div ref={twistyRef} />;
+  return <div ref={twistyRef} className={style["cube-preview"]} />;
 }
