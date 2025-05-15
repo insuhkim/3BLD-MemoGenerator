@@ -1,5 +1,5 @@
 "use client";
-import styles from "./Sidebar.module.css";
+import styles from "./Option.module.css";
 import BufferSelection from "./BufferSelection";
 import { useContext, useState } from "react";
 import { SettingsContext } from "./SettingsProvider";
