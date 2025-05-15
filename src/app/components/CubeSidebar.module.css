@@ -1,0 +1,97 @@
+.sidebar-wrapper {
+  position: relative;
+}
+
+.sidebar {
+  position: fixed;
+  top: 100px; /* move a bit further down to avoid overlap */
+  right: 24px; /* add some space from the right edge */
+  left: auto;
+  width: 350px;
+  min-height: 400px; /* ensure background covers content */
+  background: #222;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: transform 0.3s;
+  /* Fix: Hide sidebar completely when closed */
+  transform: translateX(calc(100% + 24px));
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  padding: 8px 0 8px 0; /* add vertical padding */
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+.sidebar-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.7rem;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-close:hover {
+  background: #357ae8;
+}
+
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: transparent; /* or #222 for solid header */
+  padding: 16px 20px 0 20px;
+}
+
+
+.sidebar-content {
+  margin-top: 6px;
+  color: #e3e6ee;
+  padding: 16px 20px 20px 20px;
+  min-width: 250px;
+  min-height: 200px;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: visible; /* allow content to expand */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30,32,40,0.45);
+  z-index: 1150;
+}
+
+@media (max-width: 500px) {
+  .sidebar {
+    width: 100vw;
+    right: 0;
+    left: auto;
+    top: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 32px 8px 20px 8px;
+    min-height: 100vh;
+    /* Already correct: slides fully out of view */
+    transform: translateX(100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
