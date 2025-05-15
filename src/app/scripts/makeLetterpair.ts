@@ -18,7 +18,8 @@ export default function makeLetterpair(
   for (let cycle of memo) {
     let cycleString = "";
     for (let j = 0; j < cycle.length; j++) {
-      if (j > 0 && count % 2 === 0) cycleString += seperator;
+      if ((j > 0 || cycleStyle === "none") && count % 2 === 0 && count !== 0)
+        cycleString += seperator;
       cycleString += cycle[j];
       count++;
     }
