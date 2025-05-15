@@ -5,7 +5,11 @@ import { useEffect, useRef } from "react";
 export default function CubePreview({ alg }: { alg: string }) {
   const twistyRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const twisty = new TwistyPlayer({ alg: alg });
+    const twisty = new TwistyPlayer({
+      alg: alg,
+      background: "none",
+      controlPanel: "none",
+    });
     if (twistyRef.current) {
       twistyRef.current.appendChild(twisty);
     }
