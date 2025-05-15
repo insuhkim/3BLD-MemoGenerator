@@ -1,81 +1,22 @@
 "use client";
 
 // React imports
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // components
 import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
 import CubePreview from "./CubePreview";
 import Option from "./Option";
-//types
-import { Speffz } from "../scripts/types/Speffz";
-import { CycleNotationStyle } from "../scripts/types/Settings";
 // css imports
 import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState("R U R' U'");
   const [displayCube, setDisplayCube] = useState(false);
-  const [edgePriority, setEdgePriority] = useState("");
-  const [cornerPriority, setCornerPriority] = useState("");
-  const [edgeBuffer, setEdgeBuffer] = useState<Speffz>("C");
-  const [cornerBuffer, setCornerBuffer] = useState<Speffz>("C");
-  const [resultSeparator, setResultSeparator] = useState(" ");
-  const [cycleStyle, setCycleStyle] =
-    useState<CycleNotationStyle>("parenthesis");
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const edge = localStorage.getItem("edgePriority");
-    const corner = localStorage.getItem("cornerPriority");
-    const edgeBuffer = localStorage.getItem("edgeBuffer");
-    const cornerBuffer = localStorage.getItem("cornerBuffer");
-    const resultSeparator = localStorage.getItem("resultSeparator");
-    const cycleStyle = localStorage.getItem("cycleStyle");
-    if (resultSeparator !== null) setResultSeparator(resultSeparator);
-    if (cycleStyle !== null) setCycleStyle(cycleStyle as CycleNotationStyle);
-    if (edge !== null) setEdgePriority(edge);
-    if (corner !== null) setCornerPriority(corner);
-    if (edgeBuffer !== null) setEdgeBuffer(edgeBuffer as Speffz);
-    if (cornerBuffer !== null) setCornerBuffer(cornerBuffer as Speffz);
-  }, []);
-
-  // Save to localStorage on change
-  useEffect(() => {
-    localStorage.setItem("edgePriority", edgePriority);
-  }, [edgePriority]);
-  useEffect(() => {
-    localStorage.setItem("cornerPriority", cornerPriority);
-  }, [cornerPriority]);
-  useEffect(() => {
-    localStorage.setItem("edgeBuffer", edgeBuffer);
-  }, [edgeBuffer]);
-  useEffect(() => {
-    localStorage.setItem("cornerBuffer", cornerBuffer);
-  }, [cornerBuffer]);
-  useEffect(() => {
-    localStorage.setItem("resultSeparator", resultSeparator);
-  }, [resultSeparator]);
-  useEffect(() => {
-    localStorage.setItem("showCycleBreak", cycleStyle.toString());
-  }, [cycleStyle]);
 
   return (
     <div className={styles["homepage-container"]}>
-      <Option
-        edgePriority={edgePriority}
-        setEdgePriority={setEdgePriority}
-        cornerPriority={cornerPriority}
-        setCornerPriority={setCornerPriority}
-        edgeBuffer={edgeBuffer}
-        setEdgeBuffer={setEdgeBuffer}
-        cornerBuffer={cornerBuffer}
-        setCornerBuffer={setCornerBuffer}
-        resultSeparator={resultSeparator}
-        setResultSeparator={setResultSeparator}
-        cycleStyle={cycleStyle}
-        setCycleStyle={setCycleStyle}
-      />
+      <Option />
       <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
       <hr className={styles.divider} />
       <div className={styles["button-row"]}>
@@ -87,15 +28,7 @@ export default function HomePage() {
         </button>
       </div>
       <div>{displayCube && <CubePreview alg={scramble} />}</div>
-      <Memo
-        scramble={scramble}
-        edgeBuffer={edgeBuffer}
-        cornerBuffer={cornerBuffer}
-        edgePriority={edgePriority}
-        cornerPriority={cornerPriority}
-        resultSeparator={resultSeparator}
-        cycleStyle={cycleStyle}
-      />
+      <Memo scramble={scramble} />
     </div>
   );
 }

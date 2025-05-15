@@ -1,38 +1,20 @@
 "use client";
 import styles from "./Option.module.css";
 import BufferSelection from "./BufferSelection";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SettingsContext } from "./SettingsProvider";
 import { Speffz } from "../scripts/types/Speffz";
 import { CycleNotationStyle } from "../scripts/types/Settings";
 
-export default function Option({
-  edgePriority,
-  setEdgePriority,
-  cornerPriority,
-  setCornerPriority,
-  edgeBuffer,
-  setEdgeBuffer,
-  cornerBuffer,
-  setCornerBuffer,
-  resultSeparator,
-  setResultSeparator,
-  cycleStyle,
-  setCycleStyle,
-}: {
-  edgePriority: string;
-  setEdgePriority: (value: string) => void;
-  cornerPriority: string;
-  setCornerPriority: (value: string) => void;
-  edgeBuffer: Speffz;
-  setEdgeBuffer: (value: Speffz) => void;
-  cornerBuffer: Speffz;
-  setCornerBuffer: (value: Speffz) => void;
-  resultSeparator: string;
-  setResultSeparator: (value: string) => void;
-  cycleStyle: CycleNotationStyle;
-  setCycleStyle: (value: CycleNotationStyle) => void;
-}) {
+export default function Option() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("SettingsPanel must be used within a SettingsProvider");
+  }
+
+  const { settings, setSettings } = context;
+
   return (
     <div>
       <button
@@ -62,13 +44,23 @@ export default function Option({
           <div>
             <h3>Buffer Selection</h3>
             <BufferSelection
-              buffer={edgeBuffer}
-              setBuffer={setEdgeBuffer}
+              buffer={settings.edgeBuffer}
+              setBuffer={(buffer) =>
+                setSettings((prev) => ({
+                  ...prev,
+                  edgeBuffer: buffer,
+                }))
+              }
               bufferType="edge"
             />
             <BufferSelection
-              buffer={cornerBuffer}
-              setBuffer={setCornerBuffer}
+              buffer={settings.cornerBuffer}
+              setBuffer={(buffer) =>
+                setSettings((prev) => ({
+                  ...prev,
+                  cornerBuffer: buffer,
+                }))
+              }
               bufferType="corner"
             />
           </div>
@@ -78,31 +70,33 @@ export default function Option({
           <div>
             <h3>Cycle Break Priority</h3>
             <p>
-              Determine priority after buffer blocked. Write speffz letter
-              scheme with seprated space.
+              Determine which cycle to break first after buffer blocked. Enter
+              the cycle in order of priority.
             </p>
             <input
               type="text"
               placeholder="edge"
-              value={edgePriority}
+              value={settings.edgePriority}
               onChange={(e) => {
                 const value = e.target.value;
-                const regex = /^[A-X ]*$/;
-                if (regex.test(value)) {
-                  setEdgePriority(value);
-                }
+                const arr = [...value].filter((v) => "A" <= v && v <= "X");
+                setSettings((prev) => ({
+                  ...prev,
+                  edgePriority: arr as Speffz[],
+                }));
               }}
             ></input>
             <input
               type="text"
               placeholder="corner"
-              value={cornerPriority}
+              value={settings.cornerPriority}
               onChange={(e) => {
                 const value = e.target.value;
-                const regex = /^[A-X ]*$/;
-                if (regex.test(value)) {
-                  setCornerPriority(value);
-                }
+                const arr = [...value].filter((v) => "A" <= v && v <= "X");
+                setSettings((prev) => ({
+                  ...prev,
+                  cornerPriority: arr as Speffz[],
+                }));
               }}
             ></input>
           </div>
@@ -115,9 +109,12 @@ export default function Option({
             <select
               onChange={(e) => {
                 const value = e.target.value;
-                setCycleStyle(value as CycleNotationStyle);
+                setSettings((prev) => ({
+                  ...prev,
+                  cycleStyle: value as CycleNotationStyle,
+                }));
               }}
-              value={cycleStyle}
+              value={settings.cycleStyle}
             >
               <option value="parenthesis">parenthesis</option>
               <option value="vertical">vertical</option>
@@ -127,9 +124,12 @@ export default function Option({
             <select
               onChange={(e) => {
                 const value = e.target.value;
-                setResultSeparator(value);
+                setSettings((prev) => ({
+                  ...prev,
+                  resultSeparator: value,
+                }));
               }}
-              value={resultSeparator}
+              value={settings.resultSeparator}
             >
               <option value=",">Comma</option>
               <option value=", ">Comma + Space</option>

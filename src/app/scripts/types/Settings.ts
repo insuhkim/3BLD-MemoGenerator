@@ -1,9 +1,10 @@
 export type CycleNotationStyle = "parenthesis" | "vertical" | "none";
+import { Speffz } from "./Speffz";
 export type Settings = {
-  edgePriority: string;
-  cornerPriority: string;
-  edgeBuffer: string;
-  cornerBuffer: string;
+  edgePriority: Speffz[];
+  cornerPriority: Speffz[];
+  edgeBuffer: Speffz;
+  cornerBuffer: Speffz;
   resultSeparator: string;
   cycleStyle: CycleNotationStyle;
 };

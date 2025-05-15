@@ -3,41 +3,33 @@ import makeEdgeMemo from "../scripts/makeEdgeMemo";
 import makeCornerMemo from "../scripts/makeCornerMemo";
 import makeLetterpair from "../scripts/makeLetterpair";
 import { hasParity } from "../scripts/makeLetterpair";
+import { useContext } from "react";
+import { SettingsContext } from "./SettingsProvider";
 
-export default function Memo({
-  scramble,
-  edgeBuffer = "C",
-  cornerBuffer = "C",
-  edgePriority = "",
-  cornerPriority = "",
-  resultSeparator = ", ",
-  cycleStyle = "parenthesis",
-}: {
-  scramble: string;
-  edgeBuffer: Speffz;
-  cornerBuffer: Speffz;
-  edgePriority: string;
-  cornerPriority: string;
-  resultSeparator: string;
-  cycleStyle: CycleNotationStyle;
-}) {
-  const regex = /^[A-X]*$/;
+export default function Memo({ scramble }: { scramble: string }) {
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("SettingsPanel must be used within a SettingsProvider");
+  }
 
+  const { settings } = context;
   const cube = applyScramble({ type: "3x3", scramble: scramble });
-  const edge = makeEdgeMemo(
-    cube,
-    edgeBuffer,
-    edgePriority.split(" ").filter((e) => e !== "" && regex.test(e)) as Speffz[]
-  );
+  const edge = makeEdgeMemo(cube, settings.edgeBuffer, settings.edgePriority);
   const corner = makeCornerMemo(
     cube,
-    cornerBuffer,
-    cornerPriority
-      .split(" ")
-      .filter((e) => e !== "" && regex.test(e)) as Speffz[]
+    settings.cornerBuffer,
+    settings.cornerPriority
   );
-  const edgeString = makeLetterpair(edge, resultSeparator, cycleStyle);
-  const cornerString = makeLetterpair(corner, resultSeparator, cycleStyle);
+  const edgeString = makeLetterpair(
+    edge,
+    settings.resultSeparator,
+    settings.cycleStyle
+  );
+  const cornerString = makeLetterpair(
+    corner,
+    settings.resultSeparator,
+    settings.cycleStyle
+  );
 
   // Check if the edge and corner have the same parity
   const hasEdgeParity = hasParity(edge);
