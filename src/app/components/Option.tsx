@@ -4,7 +4,11 @@ import BufferSelection from "./BufferSelection";
 import { useContext, useState } from "react";
 import { SettingsContext } from "./SettingsProvider";
 import { Speffz } from "../scripts/types/Speffz";
-import { CycleNotationStyle } from "../scripts/types/Settings";
+import {
+  CycleNotationStyle,
+  flippedCornerStyle,
+  flippedEdgeStyle,
+} from "../scripts/types/Settings";
 
 export default function Option() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -135,6 +139,43 @@ export default function Option() {
               <option value=", ">Comma + Space</option>
               <option value=" ">Space</option>
               <option value="">None</option>
+            </select>
+            <p> Show Flipped Edge/Corners Seperately </p>
+            <p>Edges </p>
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                setSettings((prev) => ({
+                  ...prev,
+                  showFlippedEdge: value as flippedEdgeStyle,
+                }));
+              }}
+              value={settings.showFlippedEdge}
+            >
+              <option value="none">None</option>
+              <option value="unoriented">
+                unoriented Edge (e.g. (VO) to [V])
+              </option>
+              <option value="oriented">oriented Edge (e.g. (VO) to [O])</option>
+            </select>
+            <p> Corners</p>
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                setSettings((prev) => ({
+                  ...prev,
+                  showFlippedCorner: value as flippedCornerStyle,
+                }));
+              }}
+              value={settings.showFlippedCorner}
+            >
+              <option value="none"> None</option>
+              <option value="top/bottom">
+                Where the top/bottom face belongs to (e.g. (XH) to [H])
+              </option>
+              <option value="W/Y">
+                Where the W/Y face is (e.g. (XH) to [S])
+              </option>
             </select>
           </div>
         </div>
