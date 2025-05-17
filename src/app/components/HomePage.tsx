@@ -13,7 +13,11 @@ import styles from "./HomePage.module.css";
 import { generateScramble } from "react-rubiks-cube-utils";
 
 export default function HomePage() {
-  const [scramble, setScramble] = useState("R U R' U'");
+  const [scramble, setScramble] = useState(
+    // "R U R' U'"
+    // "U' L' U' F' R2 B' R F U B2 U B' L U' F U R F'"
+    "F2 R' B' U R' L F' L F' B D' R B L2"
+  );
 
   return (
     <div className={styles["homepage-container"]}>
