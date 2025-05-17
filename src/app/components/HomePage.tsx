@@ -7,15 +7,13 @@ import Memo from "./Memo";
 import ScrambleGenerator from "./ScrambleGenerator";
 // import CubePreview from "./CubePreview";
 import CubeSidebar from "./CubeSidebar";
-import Option from "./Option";
+import Option from "./Option/Option";
 // css imports
-import styles from "./HomePage.module.css";
 import { generateScramble } from "react-rubiks-cube-utils";
+import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState(
-    // "R U R' U'"
-    // "U' L' U' F' R2 B' R F U B2 U B' L U' F U R F'"
     "F2 R' B' U R' L F' L F' B D' R B L2"
   );
 
