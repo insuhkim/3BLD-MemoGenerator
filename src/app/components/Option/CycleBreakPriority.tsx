@@ -19,7 +19,7 @@ export default function CycleBreakPriority() {
         After visiting all provided locations, the rest will be visited in
         oriented, alphabetical Speffz order.
       </p>
-      <div className={styles.sectionFlex}>
+      <div>
         <div>
           <label htmlFor="edgePriority" className={styles.label}>
             Edge Priority

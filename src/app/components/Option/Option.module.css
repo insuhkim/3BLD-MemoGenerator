@@ -14,7 +14,6 @@
   background: #357ae8;
 }
 
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -22,10 +21,10 @@
   width: 400px;
   height: 100%;
   background: #23252c;
-  box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
   z-index: 1200;
   padding: 32px 20px 20px 20px;
-  transition: left 0.3s cubic-bezier(.4,0,.2,1);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
 }
@@ -49,42 +48,42 @@
   background: #357ae8;
 }
 
-
 .sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  /* padding-bottom: 12px; */.sidebar-content h4 {
-  color: #4e9cff;
-  margin-top: 0;
-  margin-bottom: 6px;
-  font-size: 1.1rem;
-}
+  /* padding-bottom: 12px; */
+  .sidebar-content h4 {
+    color: #4e9cff;
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+  }
 
-.sidebar-content p {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #bfc4d1;
-  font-size: 0.97rem;
-}
+  .sidebar-content p {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #bfc4d1;
+    font-size: 0.97rem;
+  }
 
-.sidebar-content input[type="text"] {
-  width: 100%;
-  padding: 8px 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #35373f;
-  background: #23252c;
-  color: #e3e6ee;
-  font-size: 1rem;
-  transition: border 0.2s;
-}
+  .sidebar-content input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #35373f;
+    background: #23252c;
+    color: #e3e6ee;
+    font-size: 1rem;
+    transition: border 0.2s;
+  }
 
-.sidebar-content input[type="text"]:focus {
-  border: 1.5px solid #4e9cff;
-  outline: none;
-}
+  .sidebar-content input[type="text"]:focus {
+    border: 1.5px solid #4e9cff;
+    outline: none;
+  }
   border-bottom: 1px solid #35373f;
 }
 
@@ -94,7 +93,6 @@
   margin: 0;
   font-weight: 600;
 }
-
 
 .sidebar-content {
   margin-top: 6px;
@@ -138,7 +136,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30,32,40,0.45);
+  background: rgba(30, 32, 40, 0.45);
   z-index: 1150;
 }
 
@@ -178,7 +176,8 @@
   min-width: 0;
 }
 
-.input, .select {
+.input,
+.select {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 0.5em;

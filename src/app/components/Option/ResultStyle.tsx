@@ -9,15 +9,14 @@ import styles from "./Option.module.css";
 
 export default function ResultStyle() {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
-  }
-
   const { settings, setSettings } = context;
+
   return (
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Result Style</legend>
-      <div className={styles.sectionRow}>
+      <div>
         <label htmlFor="cycleStyle" className={styles.label}>
           Cycle Break Style:
         </label>
@@ -38,7 +37,7 @@ export default function ResultStyle() {
           <option value="none">None</option>
         </select>
       </div>
-      <div className={styles.sectionRow}>
+      <div>
         <label htmlFor="resultSeparator" className={styles.label}>
           Separator:
         </label>
@@ -65,7 +64,7 @@ export default function ResultStyle() {
           Show Flipped Edge/Corners Separately
         </label>
         <div className={styles.flippedSection}>
-          <div className={styles.flippedRow}>
+          <div>
             <span>Edges: </span>
             <select
               className={styles.select}
@@ -85,7 +84,7 @@ export default function ResultStyle() {
               <option value="oriented">Oriented Edge (e.g. (VO) to [O])</option>
             </select>
           </div>
-          <div className={styles.flippedRow}>
+          <div>
             <span>Corners: </span>
             <select
               className={styles.select}
