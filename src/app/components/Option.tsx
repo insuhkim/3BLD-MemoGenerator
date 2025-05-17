@@ -79,7 +79,9 @@ export default function Option() {
               value={settings.edgePriority}
               onChange={(e) => {
                 const value = e.target.value;
-                const arr = [...value].filter((v) => "A" <= v && v <= "X");
+                const arr = [...value.toUpperCase()].filter(
+                  (v) => "A" <= v && v <= "X"
+                );
                 setSettings((prev) => ({
                   ...prev,
                   edgePriority: arr as Speffz[],
@@ -92,7 +94,9 @@ export default function Option() {
               value={settings.cornerPriority}
               onChange={(e) => {
                 const value = e.target.value;
-                const arr = [...value].filter((v) => "A" <= v && v <= "X");
+                const arr = [...value.toUpperCase()].filter(
+                  (v) => "A" <= v && v <= "X"
+                );
                 setSettings((prev) => ({
                   ...prev,
                   cornerPriority: arr as Speffz[],
