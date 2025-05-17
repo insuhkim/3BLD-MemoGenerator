@@ -17,8 +17,8 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: -420px;
-  width: 400px;
+  left: -520px;
+  width: 500px;
   height: 100%;
   background: #23252c;
   box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
