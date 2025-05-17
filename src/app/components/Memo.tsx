@@ -34,17 +34,14 @@ export default function Memo({ scramble }: { scramble: string }) {
   // Check if the edge and corner have the same parity
   const hasEdgeParity = hasParity(edge);
   const hasCornerParity = hasParity(corner);
-  if (hasCornerParity !== hasEdgeParity) {
+  if (hasCornerParity !== hasEdgeParity)
     throw new Error("Parity error: edges and corners have different parity");
-  } //
+
   return (
     <div>
-      <h1> Results </h1>
-      <div>
-        {hasEdgeParity && <h3>Parity</h3>}
-        <h3>{edgeString} </h3>
-        <h3>{cornerString} </h3>
-      </div>
+      <h3>{edgeString} </h3>
+      <h3>{cornerString} </h3>
+      {hasEdgeParity && <h2>Parity</h2>}
     </div>
   );
 }
