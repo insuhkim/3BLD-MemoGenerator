@@ -38,6 +38,15 @@ export default function BufferSelection() {
   return (
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Buffer Selection</legend>
+      <p className={styles.sectionDescription}>
+        Select a buffer.
+        <br />
+        M2R2: U for edge, V for corner
+        <br />
+        Old Pochmann: B for edge, A for corner
+        <br />
+        3Style: C for both edge and corner
+      </p>
       <div className={styles.sectionFlex}>
         <div>
           <label className={styles.label}>Edge Buffer</label>
