@@ -19,6 +19,7 @@ Heavily inspired by the [MemoGenerator for Blindsolving](https://play.google.com
 - [x] Custom cycle break priority
 - [x] Integrate [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) for interactive cube visualization
 - [x] `Show Flipped Edge/Corner Seperately` Option
+- [ ] Scramble only edges/corners
 - [ ] Presets (M2R2, OP, M2OP)
 - [ ] Refactor and clean up codebase
 - [ ] Improve and polish the UI
