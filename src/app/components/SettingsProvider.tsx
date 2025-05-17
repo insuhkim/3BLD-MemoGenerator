@@ -1,7 +1,12 @@
 "use client";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-import { Settings, CycleNotationStyle } from "../scripts/types/Settings";
+import {
+  Settings,
+  CycleNotationStyle,
+  flippedEdgeStyle,
+  flippedCornerStyle,
+} from "../scripts/types/Settings";
 import { Speffz } from "../scripts/types/Speffz";
 
 // Define the shape of the context value
@@ -29,6 +34,8 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cornerBuffer: "C" as Speffz,
     resultSeparator: " ",
     cycleStyle: "parenthesis" as CycleNotationStyle,
+    showFlippedEdge: "none" as flippedEdgeStyle,
+    showFlippedCorner: "none" as flippedCornerStyle,
   };
   // const getInitialSettings = (): Settings => {
   //   const saved = localStorage.getItem("settings");
