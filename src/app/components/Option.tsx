@@ -45,143 +45,193 @@ export default function Option() {
         {/* CONTENTS */}
         <div className={styles["sidebar-content"]}>
           {/* BUFFER SELECTION */}
-          <div>
-            <h3>Buffer Selection</h3>
-            <BufferSelection
-              buffer={settings.edgeBuffer}
-              setBuffer={(buffer) =>
-                setSettings((prev) => ({
-                  ...prev,
-                  edgeBuffer: buffer,
-                }))
-              }
-              bufferType="edge"
-            />
-            <BufferSelection
-              buffer={settings.cornerBuffer}
-              setBuffer={(buffer) =>
-                setSettings((prev) => ({
-                  ...prev,
-                  cornerBuffer: buffer,
-                }))
-              }
-              bufferType="corner"
-            />
-          </div>
-          <hr />
+          <fieldset className={styles.section}>
+            <legend className={styles.sectionLegend}>Buffer Selection</legend>
+            <div className={styles.sectionFlex}>
+              <div>
+                <label className={styles.label}>Edge Buffer</label>
+                <BufferSelection
+                  buffer={settings.edgeBuffer}
+                  setBuffer={(buffer) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      edgeBuffer: buffer,
+                    }))
+                  }
+                />
+              </div>
+              <div>
+                <label className={styles.label}>Corner Buffer</label>
+                <BufferSelection
+                  buffer={settings.cornerBuffer}
+                  setBuffer={(buffer) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      cornerBuffer: buffer,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+          </fieldset>
 
           {/* CYCLE BREAK PRIORITY */}
-          <div>
-            <h3>Cycle Break Priority</h3>
-            <p>
-              Determine which cycle to break first after buffer blocked. Enter
-              the cycle in order of priority.
+          <fieldset className={styles.section}>
+            <legend className={styles.sectionLegend}>
+              Cycle Break Priority
+            </legend>
+            <p className={styles.sectionDescription}>
+              Choose which cycle to break first after buffer is blocked.
+              <br />
+              After visiting all provided locations, the rest will be visited in
+              oriented, alphabetical Speffz order.
             </p>
-            <input
-              type="text"
-              placeholder="edge"
-              value={settings.edgePriority}
-              onChange={(e) => {
-                const value = e.target.value;
-                const arr = [...value.toUpperCase()].filter(
-                  (v) => "A" <= v && v <= "X"
-                );
-                setSettings((prev) => ({
-                  ...prev,
-                  edgePriority: arr as Speffz[],
-                }));
-              }}
-            ></input>
-            <input
-              type="text"
-              placeholder="corner"
-              value={settings.cornerPriority}
-              onChange={(e) => {
-                const value = e.target.value;
-                const arr = [...value.toUpperCase()].filter(
-                  (v) => "A" <= v && v <= "X"
-                );
-                setSettings((prev) => ({
-                  ...prev,
-                  cornerPriority: arr as Speffz[],
-                }));
-              }}
-            ></input>
-          </div>
-          <hr />
+            <div className={styles.sectionFlex}>
+              <div>
+                <label htmlFor="edgePriority" className={styles.label}>
+                  Edge Priority
+                </label>
+                <input
+                  id="edgePriority"
+                  type="text"
+                  placeholder="e.g. ABC"
+                  value={settings.edgePriority}
+                  className={styles.input}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const arr = [...value.toUpperCase()].filter(
+                      (v) => "A" <= v && v <= "X"
+                    );
+                    setSettings((prev) => ({
+                      ...prev,
+                      edgePriority: arr as Speffz[],
+                    }));
+                  }}
+                />
+              </div>
+              <div>
+                <label htmlFor="cornerPriority" className={styles.label}>
+                  Corner Priority
+                </label>
+                <input
+                  id="cornerPriority"
+                  type="text"
+                  placeholder="e.g. ABC"
+                  value={settings.cornerPriority}
+                  className={styles.input}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const arr = [...value.toUpperCase()].filter(
+                      (v) => "A" <= v && v <= "X"
+                    );
+                    setSettings((prev) => ({
+                      ...prev,
+                      cornerPriority: arr as Speffz[],
+                    }));
+                  }}
+                />
+              </div>
+            </div>
+          </fieldset>
 
-          {/* Result Style*/}
-          <div>
-            <h3>Result Style</h3>
-            <p> Select Cycle Break for Results </p>
-            <select
-              onChange={(e) => {
-                const value = e.target.value;
-                setSettings((prev) => ({
-                  ...prev,
-                  cycleStyle: value as CycleNotationStyle,
-                }));
-              }}
-              value={settings.cycleStyle}
-            >
-              <option value="parenthesis">parenthesis</option>
-              <option value="vertical">vertical</option>
-              <option value="none">none</option>
-            </select>
-            <p> Select Seperator for Results </p>
-            <select
-              onChange={(e) => {
-                const value = e.target.value;
-                setSettings((prev) => ({
-                  ...prev,
-                  resultSeparator: value,
-                }));
-              }}
-              value={settings.resultSeparator}
-            >
-              <option value=",">Comma</option>
-              <option value=", ">Comma + Space</option>
-              <option value=" ">Space</option>
-              <option value="">None</option>
-            </select>
-            <p> Show Flipped Edge/Corners Seperately </p>
-            <p>Edges </p>
-            <select
-              onChange={(e) => {
-                const value = e.target.value;
-                setSettings((prev) => ({
-                  ...prev,
-                  showFlippedEdge: value as flippedEdgeStyle,
-                }));
-              }}
-              value={settings.showFlippedEdge}
-            >
-              <option value="none">None</option>
-              <option value="unoriented">
-                unoriented Edge (e.g. (VO) to [V])
-              </option>
-              <option value="oriented">oriented Edge (e.g. (VO) to [O])</option>
-            </select>
-            <p> Corners</p>
-            <select
-              onChange={(e) => {
-                const value = e.target.value;
-                setSettings((prev) => ({
-                  ...prev,
-                  showFlippedCorner: value as flippedCornerStyle,
-                }));
-              }}
-              value={settings.showFlippedCorner}
-            >
-              <option value="none"> None</option>
-              <option value="top/bottom">
-                Where the top/bottom face belongs to (e.g. (XH) to [H])
-              </option>
-              <option value="W/Y">
-                Where the W/Y face is (e.g. (XH) to [S])
-              </option>
-            </select>
-          </div>
+          {/* RESULT STYLE */}
+          <fieldset className={styles.section}>
+            <legend className={styles.sectionLegend}>Result Style</legend>
+            <div className={styles.sectionRow}>
+              <label htmlFor="cycleStyle" className={styles.label}>
+                Cycle Break Style:
+              </label>
+              <select
+                id="cycleStyle"
+                className={styles.select}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSettings((prev) => ({
+                    ...prev,
+                    cycleStyle: value as CycleNotationStyle,
+                  }));
+                }}
+                value={settings.cycleStyle}
+              >
+                <option value="parenthesis">Parenthesis</option>
+                <option value="vertical">Vertical</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+            <div className={styles.sectionRow}>
+              <label htmlFor="resultSeparator" className={styles.label}>
+                Separator:
+              </label>
+              <select
+                id="resultSeparator"
+                className={styles.select}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSettings((prev) => ({
+                    ...prev,
+                    resultSeparator: value,
+                  }));
+                }}
+                value={settings.resultSeparator}
+              >
+                <option value=",">Comma</option>
+                <option value=", ">Comma + Space</option>
+                <option value=" ">Space</option>
+                <option value="">None</option>
+              </select>
+            </div>
+            <div>
+              <label className={styles.label}>
+                Show Flipped Edge/Corners Separately
+              </label>
+              <div className={styles.flippedSection}>
+                <div className={styles.flippedRow}>
+                  <span>Edges: </span>
+                  <select
+                    className={styles.select}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSettings((prev) => ({
+                        ...prev,
+                        showFlippedEdge: value as flippedEdgeStyle,
+                      }));
+                    }}
+                    value={settings.showFlippedEdge}
+                  >
+                    <option value="none">None</option>
+                    <option value="unoriented">
+                      Unoriented Edge (e.g. (VO) to [V])
+                    </option>
+                    <option value="oriented">
+                      Oriented Edge (e.g. (VO) to [O])
+                    </option>
+                  </select>
+                </div>
+                <div className={styles.flippedRow}>
+                  <span>Corners: </span>
+                  <select
+                    className={styles.select}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSettings((prev) => ({
+                        ...prev,
+                        showFlippedCorner: value as flippedCornerStyle,
+                      }));
+                    }}
+                    value={settings.showFlippedCorner}
+                  >
+                    <option value="none">None</option>
+                    <option value="top/bottom">
+                      Where the top/bottom face belongs to (e.g. (XH) to [H])
+                    </option>
+                    <option value="W/Y">
+                      Where the W/Y face is (e.g. (XH) to [S])
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
         </div>
       </div>
       {sidebarOpen && (

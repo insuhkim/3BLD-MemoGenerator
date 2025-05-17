@@ -1,4 +1,3 @@
-
 .sidebar-toggle {
   margin-bottom: 18px;
   background: #4e9cff;
@@ -141,6 +140,68 @@
   height: 100vh;
   background: rgba(30,32,40,0.45);
   z-index: 1150;
+}
+
+.section {
+  margin-bottom: 1.5em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1em;
+}
+
+.sectionLegend {
+  font-weight: bold;
+  padding: 0 8px;
+}
+
+.sectionFlex {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.sectionFlex > div {
+  flex: 1 1 0;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sectionDescription {
+  margin-bottom: 0.5em;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  min-width: 0;
+}
+
+.input, .select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  margin-left: 0;
+}
+
+.sectionRow {
+  margin-bottom: 1em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.flippedSection {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.flippedRow {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
 }
 
 @media (max-width: 500px) {
