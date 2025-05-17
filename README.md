@@ -3,8 +3,6 @@
 A web tool for generating memo sequences to solve a 3x3 Rubik's Cube blindfolded.  
 Heavily inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/apps/details?id=de.jojo.memogenerator) Android app.
 
-This project utilizes [react-rubiks-cube-utils](https://github.com/UmerKazi/react-rubiks-cube-utils) for cube logic and manipulation.
-
 ---
 
 ## ✨ Features
@@ -20,8 +18,8 @@ This project utilizes [react-rubiks-cube-utils](https://github.com/UmerKazi/reac
 - [x] Custom buffer option
 - [x] Custom cycle break priority
 - [x] Integrate [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) for interactive cube visualization
-- [ ] Add memo presets (M2R2, OP, M2OP)
-- [ ] Add `Show Flipped Edge/Corner Seperately` Option
+- [x] `Show Flipped Edge/Corner Seperately` Option
+- [ ] Presets (M2R2, OP, M2OP)
 - [ ] Refactor and clean up codebase
 - [ ] Improve and polish the UI
 
