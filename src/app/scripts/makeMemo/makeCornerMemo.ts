@@ -1,8 +1,8 @@
 import { Color, Cube, solvedCube } from "react-rubiks-cube-utils";
-import { Speffz } from "./types/Speffz";
-import { Corner } from "./types/Corner";
+import { Speffz } from "../types/Speffz";
+import { Corner } from "../types/Corner";
 
-function cornerToSpeffz(corner: Corner) {
+export function cornerToSpeffz(corner: Corner) {
   const cornerMap = {
     ULB: "AER",
     UBR: "BQN",
@@ -34,7 +34,7 @@ function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
   );
 }
 
-function speffzToCorner(speffz: Speffz) {
+export function speffzToCorner(speffz: Speffz) {
   const cornerMap = {
     A: "ULB",
     B: "UBR",
@@ -124,6 +124,12 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
   return colorsToCorner([color1, color2, color3]);
 }
 
+export function isSameCornerSpeffz(c1: Speffz, c2: Speffz) {
+  const corner1 = speffzToCorner(c1);
+  const corner2 = speffzToCorner(c2);
+  return corner1[0] === corner2[0];
+}
+
 export default function makeCornerMemo(
   cube: Cube,
   buffer: Speffz,
@@ -151,12 +157,6 @@ export default function makeCornerMemo(
   //   const solvedCorner = speffzToCubeCorner(solved, c);
   //   return corner[0] === solvedCorner[0] && corner[1] !== solvedCorner[1];
   // });
-
-  const isSameCornerSpeffz = (c1: Speffz, c2: Speffz) => {
-    const corner1 = speffzToCorner(c1);
-    const corner2 = speffzToCorner(c2);
-    return corner1[0] === corner2[0];
-  };
 
   const bufferBlocked =
     speffzToCubeCorner(cube, buffer)[0] ===

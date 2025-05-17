@@ -1,5 +1,5 @@
-import { Speffz } from "./types/Speffz";
-import { CycleNotationStyle } from "./types/Settings";
+import { Speffz } from "../types/Speffz";
+import { CycleNotationStyle } from "../types/Settings";
 
 export function hasParity(memo: Speffz[][]): boolean {
   let count = 0;

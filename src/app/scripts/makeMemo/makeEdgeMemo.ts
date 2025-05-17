@@ -1,14 +1,14 @@
 import { solvedCube, Cube, Color } from "react-rubiks-cube-utils";
 
-import { Speffz } from "./types/Speffz";
-import { Edge } from "./types/Edge";
+import { Speffz } from "../types/Speffz";
+import { Edge } from "../types/Edge";
 /**
  * Converts an edge to its corresponding Speffz notation.
  *
  * @param {Edge} edge - The edge to convert.
  * @returns {Speffz} The Speffz notation for the edge.
  */
-function edgeToSpeffz(edge: Edge): Speffz {
+export function edgeToSpeffz(edge: Edge): Speffz {
   const edgeMap = {
     UB: "AQ",
     UR: "BM",
@@ -78,7 +78,7 @@ export function flipSpeffzEdge(speffz: Speffz): Speffz {
  * @param {Speffz} speffz - The Speffz notation to convert.
  * @returns {Edge} The corresponding edge.
  */
-function speffzToEdge(speffz: Speffz): Edge {
+export function speffzToEdge(speffz: Speffz): Edge {
   const edgeMap = {
     A: "UB",
     B: "UR",
@@ -186,6 +186,12 @@ function speffzToCubeEdge(cube: Cube, speffz: Speffz): Edge {
   return colorsToEdge([color1, color2]);
 }
 
+export function isSameEdgeSpeffz(c1: Speffz, c2: Speffz) {
+  const edge1 = speffzToEdge(c1);
+  const edge2 = speffzToEdge(c2);
+  return edge1[0] === edge2[0];
+}
+
 /**
  * Solves the edges of a cube starting from a buffer position.
  *
@@ -232,12 +238,6 @@ export default function makeEdgeMemo(
   //   const solvedEdge = speffzToCubeEdge(solved, c);
   //   return edge[0] === solvedEdge[0] && edge[1] !== solvedEdge[1];
   // });
-
-  const isSameEdgeSpeffz = (c1: Speffz, c2: Speffz) => {
-    const edge1 = speffzToEdge(c1);
-    const edge2 = speffzToEdge(c2);
-    return edge1[0] === edge2[0];
-  };
 
   const bufferBlocked =
     speffzToCubeEdge(cube, buffer)[0] === speffzToCubeEdge(solved, buffer)[0];

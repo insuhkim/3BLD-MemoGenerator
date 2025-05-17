@@ -2,7 +2,7 @@
 // who uses M2R2 method (U for edge, V for corner buffer)
 
 import { Speffz } from "./types/Speffz";
-import { flipSpeffzEdge } from "./makeEdgeMemo";
+import { flipSpeffzEdge } from "./makeMemo/makeEdgeMemo";
 
 export function SpeffzToKoreanEdge(speffz: Speffz) {
   const koreanMap = {
