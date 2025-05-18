@@ -1,5 +1,7 @@
 "use client";
+
 import { useEffect, useRef } from "react";
+
 export default function scrambleInputField({
   scramble,
   setScramble,
@@ -24,9 +26,7 @@ export default function scrambleInputField({
   // Adjust height on Screen Resize
   useEffect(() => {
     window.addEventListener("resize", adjustHeight);
-    return () => {
-      window.removeEventListener("resize", adjustHeight);
-    };
+    return () => window.removeEventListener("resize", adjustHeight);
   }, []);
 
   return (
@@ -48,7 +48,7 @@ export default function scrambleInputField({
           }}
           value={scramble}
           onChange={(e) => {
-            const value = e.target.value;
+            const value = e.target.value.toUpperCase();
             const regex = /^[UDFBLR2' ]*$/;
             if (regex.test(value)) {
               setScramble(value);
