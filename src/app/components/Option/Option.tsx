@@ -10,12 +10,7 @@ export default function Option() {
 
   return (
     <div>
-      <button
-        className={styles["sidebar-toggle"]}
-        onClick={() => setSidebarOpen(true)}
-      >
-        ☰ Options
-      </button>
+      <button onClick={() => setSidebarOpen(true)}>☰ Options</button>
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
         tabIndex={-1}

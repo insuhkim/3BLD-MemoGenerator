@@ -1,19 +1,3 @@
-.sidebar-toggle {
-  margin-bottom: 18px;
-  background: #4e9cff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  display: inline-block;
-}
-.sidebar-toggle:hover {
-  background: #357ae8;
-}
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -53,37 +37,6 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  /* padding-bottom: 12px; */
-  .sidebar-content h4 {
-    color: #4e9cff;
-    margin-top: 0;
-    margin-bottom: 6px;
-    font-size: 1.1rem;
-  }
-
-  .sidebar-content p {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #bfc4d1;
-    font-size: 0.97rem;
-  }
-
-  .sidebar-content input[type="text"] {
-    width: 100%;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #35373f;
-    background: #23252c;
-    color: #e3e6ee;
-    font-size: 1rem;
-    transition: border 0.2s;
-  }
-
-  .sidebar-content input[type="text"]:focus {
-    border: 1.5px solid #4e9cff;
-    outline: none;
-  }
   border-bottom: 1px solid #35373f;
 }
 
@@ -99,6 +52,9 @@
   color: #e3e6ee;
   max-height: calc(100vh - 60px);
   overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+  padding-right: 12px;
+  box-sizing: border-box;
 }
 .sidebar-content h3 {
   color: #4e9cff;
@@ -130,6 +86,19 @@
   border: 1.5px solid #4e9cff;
   outline: none;
 }
+
+/* Optional: Style the scrollbar for Webkit browsers */
+.sidebar-content::-webkit-scrollbar {
+  width: 10px;
+}
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: #35373f;
+  border-radius: 6px;
+}
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .overlay {
   position: fixed;
   top: 0;
