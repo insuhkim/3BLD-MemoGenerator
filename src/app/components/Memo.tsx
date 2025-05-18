@@ -44,7 +44,11 @@ export default function Memo({ scramble }: { scramble: string }) {
     <div>
       <h3>{edgeString} </h3>
       <h3>{cornerString} </h3>
-      {hasEdgeParity && <h2>Parity</h2>}
+      {hasEdgeParity ? (
+        <h2 style={{ color: "red" }}>Parity</h2>
+      ) : (
+        <h2 style={{ color: "gray" }}>No Parity</h2>
+      )}
     </div>
   );
 }
