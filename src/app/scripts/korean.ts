@@ -17,6 +17,9 @@ export function SpeffzToKoreanEdge(speffz: Speffz) {
     X: "자",
     W: "차",
     V: "카",
+    ///////
+    // added for generalization
+    U: "타",
   };
 
   const oriented = Object.keys(koreanMap).includes(speffz);
@@ -49,6 +52,11 @@ export function SpeffzToKoreanCorner(speffz: Speffz) {
     L: "마+종",
     S: "바+종",
     T: "사+종",
+    ///////
+    // added for generalization
+    P: "아",
+    V: "오",
+    K: "오+종",
   };
   return koreanMap[speffz as keyof typeof koreanMap];
 }
