@@ -15,12 +15,14 @@ export default function HomePage() {
 
   return (
     <div className={styles["homepage-container"]}>
-      <Option />
-      <ScrambleInputField scramble={scramble} setScramble={setScramble} />
       <div className={styles["button-row"]}>
-        <ScrambleButton setScramble={setScramble} />
+        <Option />
         <CubeSidebar alg={scramble} />
       </div>
+      <ScrambleInputField scramble={scramble} setScramble={setScramble} />
+      {/* <div className={styles["button-row"]}> */}
+      <ScrambleButton setScramble={setScramble} />
+      {/* </div> */}
       <hr className={styles.divider} />
       <Memo scramble={scramble} />
     </div>
