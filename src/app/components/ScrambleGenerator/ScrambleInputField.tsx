@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-export default function scrambleGenerator({
+export default function scrambleInputField({
   scramble,
   setScramble,
 }: {

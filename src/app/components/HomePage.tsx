@@ -1,16 +1,12 @@
 "use client";
 
-// React imports
 import { useState } from "react";
-// components
-import Memo from "./Memo";
-import ScrambleGenerator from "./ScrambleGenerator";
-// import CubePreview from "./CubePreview";
-import CubeSidebar from "./CubeSidebar";
-import Option from "./Option/Option";
-// css imports
-import { generateScramble } from "react-rubiks-cube-utils";
+import CubeSidebar from "./CubePreview/CubeSidebar";
 import styles from "./HomePage.module.css";
+import Memo from "./Memo";
+import Option from "./Option/Option";
+import ScrambleInputField from "./ScrambleGenerator/ScrambleInputField";
+import ScrambleButton from "./ScrambleGenerator/ScrambleButton";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState(
@@ -20,19 +16,9 @@ export default function HomePage() {
   return (
     <div className={styles["homepage-container"]}>
       <Option />
-      <ScrambleGenerator scramble={scramble} setScramble={setScramble} />
+      <ScrambleInputField scramble={scramble} setScramble={setScramble} />
       <div className={styles["button-row"]}>
-        <button
-          onClick={() => {
-            setScramble(
-              generateScramble({
-                type: "3x3",
-              })
-            );
-          }}
-        >
-          Generate Scramble
-        </button>
+        <ScrambleButton setScramble={setScramble} />
         <CubeSidebar alg={scramble} />
       </div>
       <hr className={styles.divider} />
