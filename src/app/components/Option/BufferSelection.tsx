@@ -2,6 +2,7 @@ import { Speffz } from "../../scripts/types/Speffz";
 import styles from "./Option.module.css";
 import { useContext } from "react";
 import { SettingsContext } from "../SettingsProvider";
+import "@/app/styles/table.css";
 
 function BufferSelectionBox({
   buffer,
@@ -38,15 +39,32 @@ export default function BufferSelection() {
   return (
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Buffer Selection</legend>
-      <p className={styles.sectionDescription}>
-        Select a buffer.
-        <br />
-        M2R2: U for edge, V for corner
-        <br />
-        Old Pochmann: B for edge, A for corner
-        <br />
-        3Style: C for both edge and corner
-      </p>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Edge Buffer</th>
+            <th>Corner Buffer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>M2R2</td>
+            <td>U</td>
+            <td>V</td>
+          </tr>
+          <tr>
+            <td>Old Pochmann</td>
+            <td>B</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>3Style</td>
+            <td>C</td>
+            <td>C</td>
+          </tr>
+        </tbody>
+      </table>
       <div className={styles.sectionFlex}>
         <div>
           <label className={styles.label}>Edge Buffer</label>
