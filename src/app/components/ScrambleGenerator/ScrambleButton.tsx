@@ -2,6 +2,7 @@
 
 import cstimer from "cstimer_module";
 import { useState } from "react";
+import ScrambleType from "./ScrambleType";
 
 export default function ScrambleButton({
   setScramble,
@@ -12,7 +13,13 @@ export default function ScrambleButton({
   const [scrambleType, setScrambleType] = useState<scrambleType>("333");
 
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "1rem",
+      }}
+    >
       <button
         onClick={() => {
           setScramble(cstimer.getScramble(scrambleType));
@@ -20,17 +27,12 @@ export default function ScrambleButton({
       >
         Generate Scramble
       </button>
-      <select
-        value={scrambleType}
-        onChange={(e) => {
-          const value = e.target.value as scrambleType;
-          setScrambleType(value);
+      <ScrambleType
+        scrambleType={scrambleType}
+        setScrambleType={(type) => {
+          setScrambleType(type);
         }}
-      >
-        <option value="333">Normal Scramble</option>
-        <option value="edges">Edges Only</option>
-        <option value="corners"> Corners Only</option>
-      </select>
+      />
     </div>
   );
 }
