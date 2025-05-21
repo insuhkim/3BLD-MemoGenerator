@@ -3,10 +3,6 @@
   margin-bottom: 1rem;
   border-collapse: collapse;
   font-size: 0.95em;
-  /* background: #23262e;
-  color: #e6e6e6;
-  border-radius: 10px;
-  overflow: hidden; */
 }
 
 .bufferTh {
@@ -20,7 +16,3 @@
   padding: 0.25em 0.5em;
   border-top: 1px solid #333;
 }
-
-/* .bufferTr:first-child .bufferTd {
-  border-top: none;
-} */
