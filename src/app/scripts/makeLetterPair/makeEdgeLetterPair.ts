@@ -24,7 +24,7 @@ export default function makeLetterpairEdge(
   const nonFlippedEdge = memo.filter((cycle) => !isFlippedEdge(cycle));
 
   let flippedEdgeString = "";
-  for (let cycle of flippedEdge) {
+  for (const cycle of flippedEdge) {
     const edge = speffzToEdge(cycle[0]);
     const showingEdge = [edge[0], flippedEdgeStyle === "unoriented"] as Edge;
     flippedEdgeString += " [" + edgeToSpeffz(showingEdge) + "]";

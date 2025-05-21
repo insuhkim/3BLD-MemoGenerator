@@ -24,7 +24,7 @@ export default function makeCornerLetterPair(
   const nonFlippedCorner = memo.filter((cycle) => !isFlippedCorner(cycle));
 
   let flippedCornerString = "";
-  for (let cycle of flippedCorner) {
+  for (const cycle of flippedCorner) {
     const cornerFrom = speffzToCorner(cycle[0]);
     const cornerTo = speffzToCorner(cycle[1]);
     const CW = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;

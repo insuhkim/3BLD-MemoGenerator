@@ -185,7 +185,7 @@ export default function makeCornerMemo(
     return [cycle, ...solveAll(unsolvedEdge)];
   };
 
-  let result = solveAll(unsolvedCorners);
+  const result = solveAll(unsolvedCorners);
   if (!bufferBlocked) {
     firstCycle.pop();
     result.unshift(firstCycle);

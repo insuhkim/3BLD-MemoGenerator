@@ -266,7 +266,7 @@ export default function makeEdgeMemo(
     return [cycle, ...solveAll(unsolvedEdge)];
   };
 
-  let result = solveAll(unsolvedEdges);
+  const result = solveAll(unsolvedEdges);
   if (!bufferBlocked) {
     firstCycle.pop();
     result.unshift(firstCycle);

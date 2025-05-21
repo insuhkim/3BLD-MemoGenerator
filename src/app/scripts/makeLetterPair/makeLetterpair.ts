@@ -12,9 +12,9 @@ export default function makeLetterpair(
   seperator: string = ", ",
   cycleStyle: CycleNotationStyle = "parenthesis"
 ): string {
-  let cycleMemo: string[] = [];
+  const cycleMemo: string[] = [];
   let count = 0;
-  for (let cycle of memo) {
+  for (const cycle of memo) {
     let cycleString = "";
     for (let j = 0; j < cycle.length; j++) {
       if ((j > 0 || cycleStyle === "none") && count % 2 === 0 && count !== 0)
