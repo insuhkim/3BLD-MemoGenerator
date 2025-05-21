@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function scrambleInputField({
+export default function ScrambleInputField({
   scramble,
   setScramble,
 }: {
