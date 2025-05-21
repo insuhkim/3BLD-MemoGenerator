@@ -1,4 +1,4 @@
-.sidebar-wrapper {
+.sidebarWrapper {
   position: relative;
 }
 
@@ -11,7 +11,7 @@
   min-height: 400px; /* ensure background covers content */
   background: #222;
   border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   transition: transform 0.3s;
   /* Fix: Hide sidebar completely when closed */
@@ -24,7 +24,7 @@
 .sidebar.open {
   transform: translateX(0);
 }
-.sidebar-close {
+.sidebarClose {
   background: none;
   border: none;
   color: #fff;
@@ -37,12 +37,11 @@
   align-items: center;
   justify-content: center;
 }
-.sidebar-close:hover {
+.sidebarClose:hover {
   background: #357ae8;
 }
 
-
-.sidebar-header {
+.sidebarHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,8 +50,7 @@
   padding: 16px 20px 0 20px;
 }
 
-
-.sidebar-content {
+.sidebarContent {
   margin-top: 6px;
   color: #e3e6ee;
   padding: 16px 20px 20px 20px;
@@ -74,7 +72,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30,32,40,0.45);
+  background: rgba(30, 32, 40, 0.45);
   z-index: 1150;
 }
 
