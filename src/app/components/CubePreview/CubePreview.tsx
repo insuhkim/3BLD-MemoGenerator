@@ -1,24 +1,30 @@
 "use client";
 import { TwistyPlayer } from "cubing/twisty";
 import { useEffect, useRef } from "react";
-import style from "./CubePreview.module.css";
 
 export default function CubePreview({ alg }: { alg: string }) {
   const twistyRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    if (!twistyRef.current) return;
+
+    // Remove any existing children to prevent duplicates
+    twistyRef.current.innerHTML = "";
+
     const twisty = new TwistyPlayer({
-      alg: alg,
+      alg,
       background: "none",
       controlPanel: "none",
     });
-    if (twistyRef.current) {
-      twistyRef.current.appendChild(twisty);
-    }
+
+    twistyRef.current.appendChild(twisty);
+
     return () => {
-      if (twistyRef.current) {
+      if (twistyRef.current && twistyRef.current.contains(twisty)) {
         twistyRef.current.removeChild(twisty);
       }
     };
   }, [alg]);
-  return <div ref={twistyRef} className={style["cube-preview"]} />;
+
+  return <div ref={twistyRef} />;
 }
