@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
 import Link from "next/link";
-import "./styles/globals.css";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Memo Generator",

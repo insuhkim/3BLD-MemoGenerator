@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import {
   CycleNotationStyle,
-  flippedCornerStyle,
-  flippedEdgeStyle,
-} from "../../scripts/types/Settings";
+  FlippedCornerStyle,
+  FlippedEdgeStyle,
+} from "@/scripts/types/Settings";
 import { SettingsContext } from "../SettingsProvider";
 import styles from "./Option.module.css";
 
@@ -72,7 +72,7 @@ export default function ResultStyle() {
                 const value = e.target.value;
                 setSettings((prev) => ({
                   ...prev,
-                  showFlippedEdge: value as flippedEdgeStyle,
+                  showFlippedEdge: value as FlippedEdgeStyle,
                 }));
               }}
               value={settings.showFlippedEdge}
@@ -92,7 +92,7 @@ export default function ResultStyle() {
                 const value = e.target.value;
                 setSettings((prev) => ({
                   ...prev,
-                  showFlippedCorner: value as flippedCornerStyle,
+                  showFlippedCorner: value as FlippedCornerStyle,
                 }));
               }}
               value={settings.showFlippedCorner}
