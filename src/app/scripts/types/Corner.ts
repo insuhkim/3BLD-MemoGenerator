@@ -1,4 +1,4 @@
-type orientedCorner =
+export type OrientedCorner =
   | "ULB"
   | "UBR"
   | "URF"
@@ -7,5 +7,7 @@ type orientedCorner =
   | "DFR"
   | "DRB"
   | "DBL";
-type orientation = 0 | 1 | 2; // 0: normal, 1: CW, 2: CCW
-export type Corner = [orientedCorner, orientation];
+
+export type CornerOrientation = 0 | 1 | 2; // 0: normal, 1: CW, 2: CCW
+
+export type Corner = [OrientedCorner, CornerOrientation];

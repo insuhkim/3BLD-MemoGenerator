@@ -1,13 +1,7 @@
 "use client";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-import {
-  Settings,
-  CycleNotationStyle,
-  flippedEdgeStyle,
-  flippedCornerStyle,
-} from "../scripts/types/Settings";
-import { Speffz } from "../scripts/types/Speffz";
+import { Settings } from "../scripts/types/Settings";
 
 // Define the shape of the context value
 type SettingsContextType = {
@@ -26,31 +20,30 @@ type SettingsProviderProps = {
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   children,
 }) => {
-  // Helper to load from localStorage or use default
-  const defaultSettings = {
-    edgePriority: [] as Speffz[],
-    cornerPriority: [] as Speffz[],
-    edgeBuffer: "C" as Speffz,
-    cornerBuffer: "C" as Speffz,
+  const defaultSettings: Settings = {
+    edgePriority: [],
+    cornerPriority: [],
+    edgeBuffer: "C",
+    cornerBuffer: "C",
     resultSeparator: " ",
-    cycleStyle: "parenthesis" as CycleNotationStyle,
-    showFlippedEdge: "none" as flippedEdgeStyle,
-    showFlippedCorner: "none" as flippedCornerStyle,
+    cycleStyle: "parenthesis",
+    showFlippedEdge: "none",
+    showFlippedCorner: "none",
   };
-  // const getInitialSettings = (): Settings => {
-  //   const saved = localStorage.getItem("settings");
-  //   return saved ? JSON.parse(saved) : defaultSettings;
-  // };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
+  // Load settings from localStorage on mount
   useEffect(() => {
-    const saved =
-      typeof window !== "undefined" ? localStorage.getItem("settings") : null;
-    if (saved) {
-      setSettings(JSON.parse(saved));
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("settings");
+      if (saved) {
+        setSettings(JSON.parse(saved));
+      }
     }
   }, []);
+
+  // Save settings to localStorage on change
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("settings", JSON.stringify(settings));

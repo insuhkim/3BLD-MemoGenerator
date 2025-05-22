@@ -1,4 +1,4 @@
-type orientedEdge =
+export type OrientedEdge =
   | "UR"
   | "UF"
   | "UL"
@@ -11,5 +11,5 @@ type orientedEdge =
   | "FL"
   | "BL"
   | "BR";
-type flipped = boolean;
-export type Edge = [orientedEdge, flipped];
+
+export type Edge = [OrientedEdge, boolean];

@@ -1,3 +1,4 @@
+// Speffz type: single-letter stickers for 3x3 cube (A-X)
 export type Speffz =
   | "A"
   | "B"

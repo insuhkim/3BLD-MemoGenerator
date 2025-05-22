@@ -4,18 +4,19 @@ import {
   speffzToCorner,
 } from "../makeMemo/makeCornerMemo";
 import { Corner } from "../types/Corner";
-import { CycleNotationStyle, flippedCornerStyle } from "../types/Settings";
+import { CycleNotationStyle, FlippedCornerStyle } from "../types/Settings";
 import { Speffz } from "../types/Speffz";
 import makeLetterpair from "./makeLetterpair";
 
 export default function makeCornerLetterPair(
   memo: Speffz[][],
-  seperator: string = ", ",
+  separator: string = ", ",
   cycleStyle: CycleNotationStyle = "parenthesis",
-  flippedCornerStyle: flippedCornerStyle = "none"
+  flippedCornerStyle: FlippedCornerStyle = "none"
 ): string {
-  if (flippedCornerStyle === "none")
-    return makeLetterpair(memo, seperator, cycleStyle);
+  if (flippedCornerStyle === "none") {
+    return makeLetterpair(memo, separator, cycleStyle);
+  }
 
   const isFlippedCorner = (cycle: Speffz[]) =>
     cycle.length === 2 && isSameCornerSpeffz(cycle[0], cycle[1]);
@@ -23,23 +24,23 @@ export default function makeCornerLetterPair(
   const flippedCorner = memo.filter(isFlippedCorner);
   const nonFlippedCorner = memo.filter((cycle) => !isFlippedCorner(cycle));
 
-  let flippedCornerString = "";
-  for (const cycle of flippedCorner) {
-    const cornerFrom = speffzToCorner(cycle[0]);
-    const cornerTo = speffzToCorner(cycle[1]);
-    const CW = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;
-    const orientation =
-      (CW && flippedCornerStyle === "W/Y") ||
-      (!CW && flippedCornerStyle === "top/bottom")
-        ? 1
-        : 2;
-
-    const showingCorner = [cornerFrom[0], orientation] as Corner;
-    flippedCornerString += " [" + cornerToSpeffz(showingCorner) + "]";
-  }
+  const flippedCornerString = flippedCorner
+    .map((cycle) => {
+      const cornerFrom = speffzToCorner(cycle[0]);
+      const cornerTo = speffzToCorner(cycle[1]);
+      const CW = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;
+      const orientation =
+        (CW && flippedCornerStyle === "W/Y") ||
+        (!CW && flippedCornerStyle === "top/bottom")
+          ? 1
+          : 2;
+      const showingCorner = [cornerFrom[0], orientation] as Corner;
+      return ` [${cornerToSpeffz(showingCorner)}]`;
+    })
+    .join("");
 
   return (
-    makeLetterpair(nonFlippedCorner, seperator, cycleStyle) +
+    makeLetterpair(nonFlippedCorner, separator, cycleStyle) +
     flippedCornerString
   );
 }

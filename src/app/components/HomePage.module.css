@@ -1,21 +1,35 @@
-.homepage-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 32px;
-  background: #181a20;
-  border-radius: 18px;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
-  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-  color: #e3e6ee;
+/* Homepage Styles */
+
+:root {
+  --background-color: #181a20;
+  --text-color: #e3e6ee;
+  --divider-color: #3a3f4b;
+  --max-width: 800px;
+  --margin: 40px auto;
+  --padding: 32px;
+  --border-radius: 18px;
+  --box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  --font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+}
+
+.homepageContainer {
+  max-width: var(--max-width);
+  margin: var(--margin);
+  padding: var(--padding);
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  font-family: var(--font-family);
+  color: var(--text-color);
 }
 
 .divider {
   margin: 24px 0;
   border: none;
-  border-top: 2px solid #3a3f4b;
+  border-top: 2px solid var(--divider-color);
 }
 
-.button-row {
+.buttonRow {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
