@@ -3,10 +3,10 @@ import { SettingsProvider } from "./components/SettingsProvider";
 
 export default function Root() {
   return (
-    <main>
-      <SettingsProvider>
+    <SettingsProvider>
+      <main>
         <HomePage />
-      </SettingsProvider>
-    </main>
+      </main>
+    </SettingsProvider>
   );
 }
