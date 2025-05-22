@@ -1,16 +1,21 @@
 "use client";
 
 import cstimer from "cstimer_module";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ScrambleType from "./ScrambleType";
+
+type ScrambleTypeOption = "333" | "edges" | "corners";
 
 export default function ScrambleButton({
   setScramble,
 }: {
   setScramble: (scramble: string) => void;
 }) {
-  type scrambleType = "333" | "edges" | "corners";
-  const [scrambleType, setScrambleType] = useState<scrambleType>("333");
+  const [scrambleType, setScrambleType] = useState<ScrambleTypeOption>("333");
+
+  const handleGenerate = useCallback(() => {
+    setScramble(cstimer.getScramble(scrambleType));
+  }, [scrambleType, setScramble]);
 
   return (
     <div
@@ -20,18 +25,10 @@ export default function ScrambleButton({
         gap: "1rem",
       }}
     >
-      <button
-        onClick={() => {
-          setScramble(cstimer.getScramble(scrambleType));
-        }}
-      >
-        Generate Scramble
-      </button>
+      <button onClick={handleGenerate}>Generate Scramble</button>
       <ScrambleType
         scrambleType={scrambleType}
-        setScrambleType={(type) => {
-          setScrambleType(type);
-        }}
+        setScrambleType={setScrambleType}
       />
     </div>
   );

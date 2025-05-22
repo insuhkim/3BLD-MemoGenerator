@@ -1,38 +1,31 @@
-type scrambleType = "333" | "edges" | "corners";
-const scrambleTypeLabels: Record<scrambleType, string> = {
+export type ScrambleTypeOption = "333" | "edges" | "corners";
+
+const SCRAMBLE_TYPES: ScrambleTypeOption[] = ["333", "edges", "corners"];
+const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
   "333": "Normal Scramble",
   edges: "Edges Only",
   corners: "Corners Only",
 };
 
-export default function ScrambleType({
+interface ScrambleTypeProps {
+  scrambleType: ScrambleTypeOption;
+  setScrambleType: (type: ScrambleTypeOption) => void;
+}
+
+const ScrambleType: React.FC<ScrambleTypeProps> = ({
   scrambleType,
   setScrambleType,
-}: {
-  scrambleType: scrambleType;
-  setScrambleType: (type: scrambleType) => void;
-}) {
-  const types: scrambleType[] = ["333", "edges", "corners"];
+}) => {
   const handleClick = () => {
-    const idx = types.indexOf(scrambleType);
-    setScrambleType(types[(idx + 1) % types.length]);
+    const idx = SCRAMBLE_TYPES.indexOf(scrambleType);
+    setScrambleType(SCRAMBLE_TYPES[(idx + 1) % SCRAMBLE_TYPES.length]);
   };
 
   return (
-    <button
-      type="button"
-      style={
-        {
-          // maxWidth: 220,
-          // fontSize: "1rem",
-          // borderRadius: "8px",
-          // padding: "0.75rem 1rem",
-          // whiteSpace: "nowrap",
-        }
-      }
-      onClick={handleClick}
-    >
-      {scrambleTypeLabels[scrambleType]}
+    <button type="button" onClick={handleClick}>
+      {SCRAMBLE_TYPE_LABELS[scrambleType]}
     </button>
   );
-}
+};
+
+export default ScrambleType;

@@ -1,6 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
+
+const SCRAMBLE_REGEX = /^[UDFBLR2' ]*$/;
+const TEXTAREA_STYLE: React.CSSProperties = {
+  overflow: "hidden",
+  resize: "none",
+  width: "100%",
+  padding: "12px",
+  fontSize: "1rem",
+  lineHeight: "1.5",
+};
 
 export default function ScrambleInputField({
   scramble,
@@ -10,24 +20,30 @@ export default function ScrambleInputField({
   setScramble: (scramble: string) => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const adjustHeight = () => {
+
+  const adjustHeight = useCallback(() => {
     const el = textareaRef.current;
     if (el) {
-      el.style.height = "auto"; // Reset height
-      el.style.height = `${el.scrollHeight}px`; // Set to content height
+      el.style.height = "auto";
+      el.style.height = `${el.scrollHeight}px`;
     }
-  };
+  }, []);
 
-  // Adjust height on initial render
   useEffect(() => {
     adjustHeight();
-  }, [scramble]);
+  }, [scramble, adjustHeight]);
 
-  // Adjust height on Screen Resize
   useEffect(() => {
     window.addEventListener("resize", adjustHeight);
     return () => window.removeEventListener("resize", adjustHeight);
-  }, []);
+  }, [adjustHeight]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value.toUpperCase();
+    if (SCRAMBLE_REGEX.test(value)) {
+      setScramble(value);
+    }
+  };
 
   return (
     <div>
@@ -38,23 +54,10 @@ export default function ScrambleInputField({
           ref={textareaRef}
           rows={1}
           placeholder="Enter scramble"
-          style={{
-            overflow: "hidden",
-            resize: "none",
-            width: "100%",
-            padding: "12px",
-            fontSize: "1rem",
-            lineHeight: "1.5",
-          }}
+          style={TEXTAREA_STYLE}
           value={scramble}
-          onChange={(e) => {
-            const value = e.target.value.toUpperCase();
-            const regex = /^[UDFBLR2' ]*$/;
-            if (regex.test(value)) {
-              setScramble(value);
-            }
-          }}
-        ></textarea>
+          onChange={handleChange}
+        />
       </div>
     </div>
   );
