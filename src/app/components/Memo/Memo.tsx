@@ -1,20 +1,20 @@
 import { useContext } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
-import makeCornerLetterPair from "../scripts/makeLetterPair/makeCornerLetterPair";
-import makeEdgeLetterPair from "../scripts/makeLetterPair/makeEdgeLetterPair";
-import { hasParity } from "../scripts/makeLetterPair/makeLetterpair";
-import makeCornerMemo from "../scripts/makeMemo/makeCornerMemo";
-import makeEdgeMemo from "../scripts/makeMemo/makeEdgeMemo";
-import { SettingsContext } from "./SettingsProvider";
+import makeCornerLetterPair from "../../scripts/makeLetterPair/makeCornerLetterPair";
+import makeEdgeLetterPair from "../../scripts/makeLetterPair/makeEdgeLetterPair";
+import { hasParity } from "../../scripts/makeLetterPair/makeLetterpair";
+import makeCornerMemo from "../../scripts/makeMemo/makeCornerMemo";
+import makeEdgeMemo from "../../scripts/makeMemo/makeEdgeMemo";
+import { SettingsContext } from "../SettingsProvider";
 
 export default function Memo({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error("SettingsPanel must be used within a SettingsProvider");
   }
-
   const { settings } = context;
-  const cube = applyScramble({ type: "3x3", scramble: scramble });
+
+  const cube = applyScramble({ type: "3x3", scramble });
   const edge = makeEdgeMemo(cube, settings.edgeBuffer, settings.edgePriority);
   const corner = makeCornerMemo(
     cube,
@@ -34,9 +34,9 @@ export default function Memo({ scramble }: { scramble: string }) {
     settings.showFlippedCorner
   );
 
-  // Check if the edge and corner have the same parity
   const hasEdgeParity = hasParity(edge);
   const hasCornerParity = hasParity(corner);
+
   if (hasCornerParity !== hasEdgeParity)
     throw new Error("Parity error: edges and corners have different parity");
 
@@ -53,21 +53,19 @@ export default function Memo({ scramble }: { scramble: string }) {
         marginRight: "auto",
       }}
     >
-      <div
-      // style={{ marginBottom: "1.5rem" }}
-      >
-        {edgeString ? (
+      <div>
+        {edgeString && (
           <div>
-            <h2> Edge</h2>
+            <h2>Edge</h2>
             <h3>{edgeString}</h3>
           </div>
-        ) : null}
-        {cornerString ? (
+        )}
+        {cornerString && (
           <div>
             <h2>Corner</h2>
             <h3>{cornerString}</h3>
           </div>
-        ) : null}
+        )}
       </div>
       <div>
         <h2
