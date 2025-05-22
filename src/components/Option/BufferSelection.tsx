@@ -1,4 +1,4 @@
-import { Speffz } from "../../scripts/types/Speffz";
+import { Speffz } from "../../utils/types/Speffz";
 import styles from "./Option.module.css";
 import { useContext } from "react";
 import { SettingsContext } from "../SettingsProvider";

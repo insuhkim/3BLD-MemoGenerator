@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Speffz } from "../../scripts/types/Speffz";
+import { Speffz } from "../../utils/types/Speffz";
 import { SettingsContext } from "../SettingsProvider";
 import styles from "./Option.module.css";
 

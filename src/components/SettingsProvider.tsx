@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-import { Settings } from "../scripts/types/Settings";
+import { Settings } from "../utils/types/Settings";
 
 // Define the shape of the context value
 type SettingsContextType = {

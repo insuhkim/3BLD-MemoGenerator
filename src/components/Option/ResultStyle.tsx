@@ -3,7 +3,7 @@ import {
   CycleNotationStyle,
   FlippedCornerStyle,
   FlippedEdgeStyle,
-} from "@/scripts/types/Settings";
+} from "@/utils/types/Settings";
 import { SettingsContext } from "../SettingsProvider";
 import styles from "./Option.module.css";
 
