@@ -1,7 +1,7 @@
 // Korean translation for Speffz notation (M2R2 method: U for edge, V for corner buffer)
 
-import { Speffz } from "./types/Speffz";
 import { flipSpeffzEdge } from "./makeMemo/makeEdgeMemo";
+import { Speffz } from "./types/Speffz";
 
 const koreanEdgeMap: Partial<Record<Speffz, string>> = {
   D: "가",
@@ -15,6 +15,7 @@ const koreanEdgeMap: Partial<Record<Speffz, string>> = {
   X: "자",
   W: "차",
   V: "카",
+  ////////
   U: "타",
 };
 
