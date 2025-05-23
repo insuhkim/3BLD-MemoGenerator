@@ -1,11 +1,11 @@
+import { SettingsContext } from "@/components/SettingsProvider";
+import makeCornerLetterPair from "@/utils/makeLetterPair/makeCornerLetterPair";
+import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
+import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
+import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
+import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { useContext } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
-import makeCornerLetterPair from "../../utils/makeLetterPair/makeCornerLetterPair";
-import makeEdgeLetterPair from "../../utils/makeLetterPair/makeEdgeLetterPair";
-import { hasParity } from "../../utils/makeLetterPair/makeLetterpair";
-import makeCornerMemo from "../../utils/makeMemo/makeCornerMemo";
-import makeEdgeMemo from "../../utils/makeMemo/makeEdgeMemo";
-import { SettingsContext } from "../SettingsProvider";
 
 export default function Memo({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);

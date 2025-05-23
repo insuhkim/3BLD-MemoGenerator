@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { SettingsContext } from "@/components/SettingsProvider";
 import {
   CycleNotationStyle,
   FlippedCornerStyle,
   FlippedEdgeStyle,
 } from "@/utils/types/Settings";
-import { SettingsContext } from "../SettingsProvider";
+import { useContext } from "react";
 import styles from "./Option.module.css";
 
 export default function ResultStyle() {

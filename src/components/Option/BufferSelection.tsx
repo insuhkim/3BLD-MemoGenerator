@@ -1,8 +1,8 @@
-import { Speffz } from "../../utils/types/Speffz";
-import styles from "./Option.module.css";
-import { useContext } from "react";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "@/components/SettingsProvider";
 import "@/styles/table.css";
+import { Speffz } from "@/utils/types/Speffz";
+import { useContext } from "react";
+import styles from "./Option.module.css";
 
 function BufferSelectionBox({
   buffer,

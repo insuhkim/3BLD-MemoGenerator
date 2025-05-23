@@ -1,6 +1,6 @@
+import { SettingsContext } from "@/components/SettingsProvider";
+import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-import { Speffz } from "../../utils/types/Speffz";
-import { SettingsContext } from "../SettingsProvider";
 import styles from "./Option.module.css";
 
 export default function CycleBreakPriority() {
