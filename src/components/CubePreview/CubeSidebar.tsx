@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import CubePreview from "./CubePreview";
+import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
 
 export default function CubeSidebar({ alg }: { alg: string }) {
@@ -40,7 +40,7 @@ export default function CubeSidebar({ alg }: { alg: string }) {
           </button>
         </div>
         <div className={styles.sidebarContent} ref={previewRef}>
-          <CubePreview alg={alg} />
+          <Cube3DPlayer alg={alg} />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 import { TwistyPlayer } from "cubing/twisty";
 import { useEffect, useRef } from "react";
 
-export default function CubePreview({ alg }: { alg: string }) {
+export default function Cube3DPlayer({ alg }: { alg: string }) {
   const twistyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
