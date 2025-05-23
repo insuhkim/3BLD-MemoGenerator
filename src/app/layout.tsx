@@ -1,7 +1,6 @@
+import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
-import Link from "next/link";
-import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Memo Generator",
@@ -23,7 +22,7 @@ export default function RootLayout({
           <span style={{ fontWeight: 700, fontSize: "2rem" }}>
             3x3 Memo Generator
           </span>
-          <Link
+          <a
             href="https://github.com/insuhkim/3BLD-MemoGenerator"
             target="_blank"
             rel="noopener noreferrer"
@@ -48,7 +47,7 @@ export default function RootLayout({
                 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
               />
             </svg>
-          </Link>
+          </a>
         </header>
         {children}
         <Analytics />
