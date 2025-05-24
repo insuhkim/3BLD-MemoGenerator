@@ -11,6 +11,7 @@ export default function makeLetterpair(
   separator: string = ", ",
   cycleStyle: CycleNotationStyle = "parenthesis"
 ): string {
+  if (memo.length === 0) return "";
   const cycleMemo: string[] = [];
   let count = 0;
   for (const cycle of memo) {
