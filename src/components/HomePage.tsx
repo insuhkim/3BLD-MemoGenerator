@@ -14,7 +14,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className={styles.homepageContainer}>
+    <div className={`${styles.rootVars} ${styles.homepageContainer}`}>
       <div className={styles.buttonRow}>
         <Option />
         <CubeSidebar alg={scramble} />

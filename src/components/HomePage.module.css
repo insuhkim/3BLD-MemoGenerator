@@ -1,6 +1,7 @@
 /* Homepage Styles */
 
-:root {
+/* Remove :local, just use a normal class selector for CSS Modules */
+.rootVars {
   --background-color: #181a20;
   --text-color: #e3e6ee;
   --divider-color: #3a3f4b;
