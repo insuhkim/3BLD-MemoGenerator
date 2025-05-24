@@ -11,19 +11,37 @@
 
 .generateButton {
   position: relative;
-  padding-right: 2.5rem;
+  padding-right: 0; /* Remove extra right padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chevronArea {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  height: 100%;
+  padding-left: 12px;
+  user-select: none;
+  /* Make sure it fills the height of the button */
+}
+
+.verticalBar {
+  width: 1px;
+  height: 33px; /* Increased height for a longer vertical bar */
+  background: #e3e6ee;
+  margin-right: 8px;
+  display: inline-block;
 }
 
 .chevron {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1rem;
-  user-select: none;
   display: flex;
   align-items: center;
+  font-size: 1rem;
+  user-select: none;
+  margin-right: 12px; /* Increased right margin */
 }
 
 .dropdown {

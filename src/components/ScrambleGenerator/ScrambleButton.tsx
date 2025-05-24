@@ -51,15 +51,19 @@ export default function ScrambleButton({
       <div className={styles.buttonWrapper}>
         <button onClick={handleGenerate} className={styles.generateButton}>
           Generate {SCRAMBLE_TYPE_LABELS[scrambleType]} Scramble
+          {/* Chevron and vertical bar wrapper */}
           <span
-            className={styles.chevron}
+            className={styles.chevronArea}
             onClick={(e) => {
               e.stopPropagation();
               setDropdownOpen((open) => !open);
             }}
             tabIndex={0}
           >
-            <ChevronSVG />
+            <span className={styles.verticalBar} />
+            <span className={styles.chevron}>
+              <ChevronSVG />
+            </span>
           </span>
         </button>
         {dropdownOpen && (
