@@ -29,8 +29,8 @@ function ChevronSVG() {
 
 const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
   "333": "Normal",
-  edges: "Edges",
-  corners: "Corners",
+  edges: "Edge",
+  corners: "Corner",
 };
 
 export default function ScrambleButton({
