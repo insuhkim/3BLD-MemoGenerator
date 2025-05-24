@@ -6,8 +6,29 @@ import styles from "./ScrambleButton.module.css";
 
 type ScrambleTypeOption = "333" | "edges" | "corners";
 
+function ChevronSVG() {
+  /* Slim downward chevron SVG */
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      style={{ display: "block" }}
+    >
+      <polyline
+        points="3,5 7,9 11,5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
-  "333": "3x3",
+  "333": "Normal",
   edges: "Edges",
   corners: "Corners",
 };
@@ -29,7 +50,7 @@ export default function ScrambleButton({
     <div className={styles.container}>
       <div className={styles.buttonWrapper}>
         <button onClick={handleGenerate} className={styles.generateButton}>
-          Generate Scramble
+          Generate {SCRAMBLE_TYPE_LABELS[scrambleType]} Scramble
           <span
             className={styles.chevron}
             onClick={(e) => {
@@ -38,22 +59,7 @@ export default function ScrambleButton({
             }}
             tabIndex={0}
           >
-            {/* Slim downward chevron SVG */}
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              style={{ display: "block" }}
-            >
-              <polyline
-                points="3,5 7,9 11,5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ChevronSVG />
           </span>
         </button>
         {dropdownOpen && (
