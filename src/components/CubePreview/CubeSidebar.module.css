@@ -4,9 +4,10 @@
 
 .sidebar {
   position: fixed;
-  top: 100px; /* move a bit further down to avoid overlap */
-  right: 24px; /* add some space from the right edge */
+  bottom: 24px; /* anchor to bottom */
+  right: 24px; /* anchor to right */
   left: auto;
+  top: auto; /* unset top */
   width: 350px;
   min-height: 400px; /* ensure background covers content */
   background: #222;
@@ -14,11 +15,11 @@
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   transition: transform 0.3s;
-  /* Fix: Hide sidebar completely when closed */
+  /* Slide out horizontally to the right */
   transform: translateX(calc(100% + 24px));
   display: flex;
   flex-direction: column;
-  margin-bottom: 24px;
+  margin-bottom: 0; /* remove extra margin */
   padding: 8px 0 8px 0; /* add vertical padding */
 }
 .sidebar.open {
@@ -81,7 +82,8 @@
     width: 100vw;
     right: 0;
     left: auto;
-    top: 0;
+    bottom: 0; /* anchor to bottom */
+    top: auto; /* unset top */
     border-radius: 0;
     margin-bottom: 0;
     padding: 32px 8px 20px 8px;
