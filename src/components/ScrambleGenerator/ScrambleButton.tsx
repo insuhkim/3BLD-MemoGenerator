@@ -2,6 +2,7 @@
 
 import cstimer from "cstimer_module";
 import { useCallback, useState, useRef } from "react";
+import styles from "./ScrambleButton.module.css";
 
 type ScrambleTypeOption = "333" | "edges" | "corners";
 
@@ -25,31 +26,12 @@ export default function ScrambleButton({
   }, [scrambleType, setScramble]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "1rem",
-      }}
-    >
-      <div style={{ position: "relative", display: "inline-block" }}>
-        <button
-          onClick={handleGenerate}
-          style={{ position: "relative", paddingRight: "2.5rem" }}
-        >
+    <div className={styles.container}>
+      <div className={styles.buttonWrapper}>
+        <button onClick={handleGenerate} className={styles.generateButton}>
           Generate Scramble
           <span
-            style={{
-              position: "absolute",
-              right: "0.5rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              fontSize: "1rem",
-              userSelect: "none",
-              display: "flex",
-              alignItems: "center",
-            }}
+            className={styles.chevron}
             onClick={(e) => {
               e.stopPropagation();
               setDropdownOpen((open) => !open);
@@ -75,29 +57,16 @@ export default function ScrambleButton({
           </span>
         </button>
         {dropdownOpen && (
-          <div
-            ref={dropdownRef}
-            style={{
-              position: "absolute",
-              right: 0,
-              top: "100%",
-              background: "white",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              zIndex: 10,
-              minWidth: "120px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          >
+          <div ref={dropdownRef} className={styles.dropdown}>
             {(["333", "edges", "corners"] as ScrambleTypeOption[]).map(
               (type) => (
                 <div
                   key={type}
-                  style={{
-                    padding: "0.5rem 1rem",
-                    cursor: "pointer",
-                    background: scrambleType === type ? "#f0f0f0" : "white",
-                  }}
+                  className={
+                    scrambleType === type
+                      ? `${styles.dropdownItem} ${styles.dropdownItemActive}`
+                      : styles.dropdownItem
+                  }
                   onClick={() => {
                     setScrambleType(type);
                     setDropdownOpen(false);
