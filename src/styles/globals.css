@@ -237,6 +237,36 @@ tr:last-child td {
   border-radius: 0 0 12px 12px;
 }
 
+.header-title {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  color: inherit;
+}
+
+.github-link svg {
+  height: 24px; /* Ensure a minimum size */
+  width: 24px;
+  transition: height 0.2s, width 0.2s;
+}
+
+@media (max-width: 600px) {
+  .top-bar {
+    padding: 0.5rem;
+  }
+  .header-title {
+    font-size: 1.5rem;
+  }
+  .github-link svg {
+    height: 20px; /* Slightly smaller for mobile */
+    width: 20px;
+  }
+}
+
 /* Utility Classes */
 .mt-2 {
   margin-top: 2rem;
