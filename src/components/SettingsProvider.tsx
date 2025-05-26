@@ -1,7 +1,7 @@
 "use client";
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 
-import { Settings } from "../utils/types/Settings";
+import { Settings } from "@/utils/types/Settings";
 
 // Define the shape of the context value
 type SettingsContextType = {
@@ -29,6 +29,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cycleStyle: "parenthesis",
     showFlippedEdge: "none",
     showFlippedCorner: "none",
+    preScramble: "",
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);

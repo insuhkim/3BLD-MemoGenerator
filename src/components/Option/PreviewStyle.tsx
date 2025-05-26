@@ -1,0 +1,57 @@
+import { useContext } from "react";
+import { SettingsContext } from "../SettingsProvider";
+import styles from "./Option.module.css";
+import { PreScramble } from "@/utils/types/Settings";
+
+export default function PreviewStyle() {
+  const context = useContext(SettingsContext);
+  if (!context)
+    throw new Error("SettingsPanel must be used within a SettingsProvider");
+
+  const { settings, setSettings } = context;
+
+  return (
+    <fieldset className={styles.section}>
+      <legend className={styles.sectionLegend}>Preview</legend>
+      <p className={styles.sectionDescription}>pre-scramble in preview</p>
+      <div className={styles.sectionFlex}>
+        <div>
+          <select
+            value={settings.preScramble}
+            onChange={(e) => {
+              setSettings({
+                ...settings,
+                preScramble: e.target.value as PreScramble,
+              });
+            }}
+          >
+            <option value="">(UF)</option>
+            <option value="y">(UR) y</option>
+            <option value="y2">(UB) y2</option>
+            <option value="y'">(UL) y'</option>
+            <option value="z2">(DF) z2</option>
+            <option value="z2 y">(DL) z2 y</option>
+            <option value="z2 y2">(DB) z2 y2</option>
+            <option value="z2 y'">(DR) z2 y'</option>
+            <option value="z'">(RF) z'</option>
+            <option value="z' y">(RD) z' y</option>
+            <option value="z' y2">(RB) z' y2</option>
+            <option value="z' y'">(RU) z' y'</option>
+            <option value="z">(LF) z</option>
+            <option value="z y">(LU) z y</option>
+            <option value="z y2">(LB) z y2</option>
+            <option value="z y'">(LD) z y'</option>
+            <option value="x'">(BU) x'</option>
+            <option value="x' y">(BR) x' y</option>
+            <option value="x' y2">(BD) x' y2</option>
+            <option value="x' y'">(BL) x' y'</option>
+            <option value="x">(FD) x</option>
+            <option value="x y">(FR) x y</option>
+            <option value="x y2">(FU) x y2</option>
+            <option value="x y'">(FL) x y'</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+  );
+}

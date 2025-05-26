@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
+import { useContext } from "react";
+import { SettingsContext } from "../SettingsProvider";
 
 export default function CubeSidebar({ alg }: { alg: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -8,6 +10,13 @@ export default function CubeSidebar({ alg }: { alg: string }) {
   const [sidebarHeight, setSidebarHeight] = useState<number | undefined>(
     undefined
   );
+
+  const context = useContext(SettingsContext);
+  if (!context)
+    throw new Error("SettingsPanel must be used within a SettingsProvider");
+  const { settings } = context;
+
+  alg = settings.preScramble ? `${settings.preScramble} ${alg}` : alg;
 
   useLayoutEffect(() => {
     if (sidebarOpen && previewRef.current) {
