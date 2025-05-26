@@ -1,0 +1,18 @@
+.bufferTable {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.bufferTh {
+  text-align: left;
+  padding: 0.25em 0.5em;
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.bufferTd {
+  padding: 0.25em 0.5em;
+  border-top: 1px solid #333;
+}

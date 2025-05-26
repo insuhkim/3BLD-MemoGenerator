@@ -1,7 +1,6 @@
-import Link from "next/link";
-import "./styles/globals.css";
-import { Metadata } from "next";
+import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Memo Generator",
@@ -13,24 +12,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>
-        <div className="top-bar">
-          <span style={{ fontWeight: "bold", fontSize: "2rem" }}>
+        <header className="top-bar">
+          <span style={{ fontWeight: 700, fontSize: "2rem" }}>
             3x3 Memo Generator
           </span>
-          <Link
+          <a
             href="https://github.com/insuhkim/3BLD-MemoGenerator"
             target="_blank"
             rel="noopener noreferrer"
             style={{ display: "flex", alignItems: "center", color: "inherit" }}
             aria-label="GitHub Repository"
           >
-            {/* github Icon */}
+            {/* GitHub Icon */}
             <svg
               height="24"
               width="24"
@@ -48,8 +47,8 @@ export default function RootLayout({
                 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
               />
             </svg>
-          </Link>
-        </div>
+          </a>
+        </header>
         {children}
         <Analytics />
       </body>

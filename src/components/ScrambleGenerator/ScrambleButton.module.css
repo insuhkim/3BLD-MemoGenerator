@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.buttonWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.generateButton {
+  position: relative;
+  padding-right: 0; /* Remove extra right padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chevronArea {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  height: 100%;
+  padding-left: 12px;
+  user-select: none;
+  /* Make sure it fills the height of the button */
+}
+
+.verticalBar {
+  width: 1px;
+  height: 33px; /* Increased height for a longer vertical bar */
+  background: #e3e6ee;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  user-select: none;
+  margin-right: 12px; /* Increased right margin */
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #23272f;
+  border: 1px solid #444a57;
+  border-radius: 4px;
+  z-index: 10;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dropdownItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background: transparent;
+  color: #e3e6ee;
+  transition: background 0.15s;
+}
+
+.dropdownItem:hover {
+  background: #2c313c;
+}
+
+.dropdownItemActive {
+  background: #2c313c;
+  color: #7bb6ff;
+}
