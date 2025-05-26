@@ -13,7 +13,11 @@ export default function PreviewStyle() {
   return (
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Preview</legend>
-      <p className={styles.sectionDescription}>pre-scramble in preview</p>
+      <p className={styles.sectionDescription}>
+        Pre moves before scramble. <br />
+        For example, if you use Blue top and Red front, you can select "(BR) x'
+        y" option
+      </p>
       <div className={styles.sectionFlex}>
         <div>
           <select
