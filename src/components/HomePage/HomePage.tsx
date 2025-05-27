@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import CubeSidebar from "./CubePreview/CubeSidebar";
+import CubeSidebar from "../CubePreview/CubeSidebar";
 import styles from "./HomePage.module.css";
-import Memo from "./Memo/Memo";
-import Option from "./Option/Option";
-import ScrambleInputField from "./ScrambleGenerator/ScrambleInputField";
-import ScrambleButton from "./ScrambleGenerator/ScrambleButton";
+import Memo from "../Memo/Memo";
+import Option from "../Option/Option";
+import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
+import ScrambleButton from "../ScrambleGenerator/ScrambleButton";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState(
