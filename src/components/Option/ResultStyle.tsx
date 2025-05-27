@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/context/SettingsContext";
 import {
   CycleNotationStyle,
   FlippedCornerStyle,

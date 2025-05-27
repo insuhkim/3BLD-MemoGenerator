@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "../../context/SettingsContext";
 import styles from "./Option.module.css";
 import { PreScramble } from "@/utils/types/Settings";
 

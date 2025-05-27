@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/context/SettingsContext";
 import makeCornerLetterPair from "@/utils/makeLetterPair/makeCornerLetterPair";
 import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
 import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";

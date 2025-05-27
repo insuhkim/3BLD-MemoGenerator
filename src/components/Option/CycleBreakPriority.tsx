@@ -1,4 +1,4 @@
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
 import styles from "./Option.module.css";

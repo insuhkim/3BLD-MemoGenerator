@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
 import { useContext } from "react";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "../../context/SettingsContext";
 
 export default function CubeSidebar({ alg }: { alg: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

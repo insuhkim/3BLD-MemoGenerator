@@ -1,5 +1,5 @@
 import HomePage from "@/components/HomePage";
-import { SettingsProvider } from "@/components/SettingsProvider";
+import { SettingsProvider } from "@/context/SettingsContext";
 
 export default function Root() {
   return (
