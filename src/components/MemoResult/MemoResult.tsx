@@ -7,7 +7,7 @@ import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { useContext } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
-export default function Memo({ scramble }: { scramble: string }) {
+export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error("SettingsPanel must be used within a SettingsProvider");

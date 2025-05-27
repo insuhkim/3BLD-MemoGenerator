@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CubeSidebar from "../CubePreview/CubeSidebar";
 import styles from "./HomePage.module.css";
-import Memo from "../Memo/Memo";
+import MemoResult from "../MemoResult/MemoResult";
 import Option from "../Option/Option";
 import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
 import ScrambleButton from "../ScrambleGenerator/ScrambleButton";
@@ -20,11 +20,9 @@ export default function HomePage() {
         <CubeSidebar alg={scramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />
-      {/* <div className={styles["button-row"]}> */}
       <ScrambleButton setScramble={setScramble} />
-      {/* </div> */}
       <hr className={styles.divider} />
-      <Memo scramble={scramble} />
+      <MemoResult scramble={scramble} />
     </div>
   );
 }
