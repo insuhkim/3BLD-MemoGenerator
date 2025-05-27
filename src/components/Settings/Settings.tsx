@@ -2,11 +2,11 @@
 import { useState } from "react";
 import BufferSelection from "./BufferSelection";
 import CycleBreakPriority from "./CycleBreakPriority";
-import styles from "./Option.module.css";
+import styles from "./Settings.module.css";
 import ResultStyle from "./ResultStyle";
 import PreviewStyle from "./PreviewStyle";
 
-export default function Option() {
+export default function Settings() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

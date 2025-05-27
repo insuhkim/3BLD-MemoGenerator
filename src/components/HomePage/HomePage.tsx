@@ -4,7 +4,7 @@ import { useState } from "react";
 import CubeSidebar from "../CubePreview/CubeSidebar";
 import styles from "./HomePage.module.css";
 import MemoResult from "../MemoResult/MemoResult";
-import Option from "../Option/Option";
+import Settings from "../Settings/Settings";
 import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
 import ScrambleButton from "../ScrambleGenerator/ScrambleButton";
 
@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className={`${styles.rootVars} ${styles.homepageContainer}`}>
       <div className={styles.buttonRow}>
-        <Option />
+        <Settings />
         <CubeSidebar alg={scramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />

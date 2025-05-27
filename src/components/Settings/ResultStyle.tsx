@@ -5,7 +5,7 @@ import {
   FlippedEdgeStyle,
 } from "@/utils/types/Settings";
 import { useContext } from "react";
-import styles from "./Option.module.css";
+import styles from "./Settings.module.css";
 
 export default function ResultStyle() {
   const context = useContext(SettingsContext);

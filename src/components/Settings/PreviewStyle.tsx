@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
-import styles from "./Option.module.css";
+import styles from "./Settings.module.css";
 import { PreScramble } from "@/utils/types/Settings";
 
 export default function PreviewStyle() {

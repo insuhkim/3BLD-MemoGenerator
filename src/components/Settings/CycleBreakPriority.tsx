@@ -1,7 +1,7 @@
 import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-import styles from "./Option.module.css";
+import styles from "./Settings.module.css";
 
 export default function CycleBreakPriority() {
   const context = useContext(SettingsContext);
