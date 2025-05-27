@@ -6,6 +6,7 @@ import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { useContext } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
+import styles from "./MemoResult.module.css"; // import the CSS module
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
@@ -41,18 +42,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     throw new Error("Parity error: edges and corners have different parity");
 
   return (
-    <div
-      style={{
-        marginTop: "2rem",
-        background: "#181a20",
-        borderRadius: "1rem",
-        padding: "2rem",
-        boxShadow: "0 2px 16px #0004",
-        maxWidth: 600,
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
+    <div className={styles.container}>
       <div>
         {edgeString && (
           <div>
@@ -68,15 +58,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
         )}
       </div>
       <div>
-        <h2
-          style={{
-            color: hasCornerParity ? "#ff4d4f" : "#888",
-            fontWeight: hasCornerParity ? 800 : 700,
-            fontSize: "2rem",
-            margin: 0,
-            letterSpacing: "0.05em",
-          }}
-        >
+        <h2 className={hasCornerParity ? styles.parity : styles.noParity}>
           {hasCornerParity ? "Parity" : "No Parity"}
         </h2>
       </div>

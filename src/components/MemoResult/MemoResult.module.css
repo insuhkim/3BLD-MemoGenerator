@@ -1,0 +1,26 @@
+.container {
+  margin-top: 2rem;
+  background: #181a20;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 16px #0004;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.parity {
+  color: #ff4d4f;
+  font-weight: 800;
+  font-size: 2rem;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.noParity {
+  color: #888;
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
