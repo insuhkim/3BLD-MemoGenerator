@@ -26,12 +26,14 @@ Heavily inspired by the [MemoGenerator for Blindsolving](https://play.google.com
 - [x] Show Flipped Edge/Corner Separately option
 - [x] Scramble only edges/corners
 - [x] ~~Presets (M2R2, OP, M2OP)~~ Buffer table for M2R2, OP, 3style
-- [ ] Select Top/Front Face colors in preview
+- [x] Select Top/Front Face colors in preview
 
 ### Improvements
 
 - [ ] Refactor and clean up codebase
 - [ ] Improve and polish the UI
+- [ ] Use clear words for descriptions
+- [ ] Fix mobile sidebar behavior
 - [ ] Add accessibility improvements (labels, keyboard navigation)
 - [ ] Add more documentation and usage examples
 
