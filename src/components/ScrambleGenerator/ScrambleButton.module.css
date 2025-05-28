@@ -1,9 +1,3 @@
-.container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .buttonWrapper {
   position: relative;
   display: inline-block;
@@ -11,7 +5,7 @@
 
 .generateButton {
   position: relative;
-  padding-right: 0; /* Remove extra right padding */
+  padding-right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,16 +17,17 @@
   align-items: center;
   cursor: pointer;
   height: 100%;
-  padding-left: 12px;
+  margin-left: 12px;
   user-select: none;
-  /* Make sure it fills the height of the button */
 }
 
 .verticalBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 32px;
   width: 1px;
-  height: 33px; /* Increased height for a longer vertical bar */
-  background: #e3e6ee;
-  margin-right: 8px;
+  background: #fff;
   display: inline-block;
 }
 
@@ -41,7 +36,7 @@
   align-items: center;
   font-size: 1rem;
   user-select: none;
-  margin-right: 12px; /* Increased right margin */
+  margin-right: 12px;
 }
 
 .dropdown {

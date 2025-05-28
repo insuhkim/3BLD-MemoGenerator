@@ -1,10 +1,17 @@
 "use client";
 
 import cstimer from "cstimer_module";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import styles from "./ScrambleButton.module.css";
 
 type ScrambleTypeOption = "333" | "edges" | "corners";
+
+const SCRAMBLE_TYPE_OPTIONS: ScrambleTypeOption[] = ["333", "edges", "corners"];
+const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
+  "333": "Normal",
+  edges: "Edge",
+  corners: "Corner",
+};
 
 function ChevronSVG() {
   /* Slim downward chevron SVG */
@@ -27,11 +34,50 @@ function ChevronSVG() {
   );
 }
 
-const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
-  "333": "Normal",
-  edges: "Edge",
-  corners: "Corner",
-};
+function ChevronArea({
+  onClick,
+}: {
+  onClick: React.MouseEventHandler<HTMLSpanElement>;
+}) {
+  return (
+    <span className={styles.chevronArea} onClick={onClick} tabIndex={0}>
+      <span className={styles.verticalBar} />
+      <span className={styles.chevron}>
+        <ChevronSVG />
+      </span>
+    </span>
+  );
+}
+
+function ScrambleDropdown({
+  options,
+  activeType,
+  onSelect,
+  dropdownRef,
+}: {
+  options: ScrambleTypeOption[];
+  activeType: ScrambleTypeOption;
+  onSelect: (type: ScrambleTypeOption) => void;
+  dropdownRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  return (
+    <div ref={dropdownRef} className={styles.dropdown}>
+      {options.map((type) => (
+        <div
+          key={type}
+          className={
+            activeType === type
+              ? `${styles.dropdownItem} ${styles.dropdownItemActive}`
+              : styles.dropdownItem
+          }
+          onClick={() => onSelect(type)}
+        >
+          {SCRAMBLE_TYPE_LABELS[type]}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function ScrambleButton({
   setScramble,
@@ -42,53 +88,54 @@ export default function ScrambleButton({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   const handleGenerate = useCallback(() => {
     setScramble(cstimer.getScramble(scrambleType));
   }, [scrambleType, setScramble]);
 
+  const handleChevronClick = useCallback(
+    (e: React.MouseEvent<HTMLSpanElement>) => {
+      e.stopPropagation();
+      setDropdownOpen((open) => !open);
+    },
+    []
+  );
+
+  const handleSelectType = useCallback((type: ScrambleTypeOption) => {
+    setScrambleType(type);
+    setDropdownOpen(false);
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.buttonWrapper}>
-        <button onClick={handleGenerate} className={styles.generateButton}>
-          Generate {SCRAMBLE_TYPE_LABELS[scrambleType]} Scramble
-          {/* Chevron and vertical bar wrapper */}
-          <span
-            className={styles.chevronArea}
-            onClick={(e) => {
-              e.stopPropagation();
-              setDropdownOpen((open) => !open);
-            }}
-            tabIndex={0}
-          >
-            <span className={styles.verticalBar} />
-            <span className={styles.chevron}>
-              <ChevronSVG />
-            </span>
-          </span>
-        </button>
-        {dropdownOpen && (
-          <div ref={dropdownRef} className={styles.dropdown}>
-            {(["333", "edges", "corners"] as ScrambleTypeOption[]).map(
-              (type) => (
-                <div
-                  key={type}
-                  className={
-                    scrambleType === type
-                      ? `${styles.dropdownItem} ${styles.dropdownItemActive}`
-                      : styles.dropdownItem
-                  }
-                  onClick={() => {
-                    setScrambleType(type);
-                    setDropdownOpen(false);
-                  }}
-                >
-                  {SCRAMBLE_TYPE_LABELS[type]}
-                </div>
-              )
-            )}
-          </div>
-        )}
-      </div>
+    <div className={styles.buttonWrapper}>
+      <button onClick={handleGenerate} className={styles.generateButton}>
+        Generate {SCRAMBLE_TYPE_LABELS[scrambleType]} Scramble
+        <ChevronArea onClick={handleChevronClick} />
+      </button>
+      {dropdownOpen && (
+        <ScrambleDropdown
+          options={SCRAMBLE_TYPE_OPTIONS}
+          activeType={scrambleType}
+          onSelect={handleSelectType}
+          dropdownRef={dropdownRef}
+        />
+      )}
     </div>
   );
 }
