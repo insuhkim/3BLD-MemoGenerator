@@ -1,73 +1,74 @@
-# 🧠 Blindfolded 3x3x3 Cube Memo Generator
+# Blindfolded 3x3x3 Cube Memo Generator
 
 A web tool for generating memo sequences to solve a 3x3 Rubik's Cube blindfolded.  
-Heavily inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/apps/details?id=de.jojo.memogenerator) Android app.
+Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/apps/details?id=de.jojo.memogenerator) Android app.
 
 ---
 
 ## ✨ Features
 
-- 🧩 Generate memo sequences for both edges and corners
-- 🔧 Custom buffer and cycle break priority options
-- 🖥️ Clean, user-friendly interface for blindfolded cubers
-- 🎛️ Scramble only edges or corners
-- 🧮 Interactive cube visualization with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
-- 📝 Show flipped edge/corner separately
+- Generate memo sequences for both edges and corners
+- Customizable buffer and cycle break priority
+- ️Clean, user-friendly interface for blindfolded cubers
+- ️Option to scramble only edges or corners
+- Interactive cube visualization with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
+- Separate display for flipped edges/corners
 
 ---
 
-## 🛠️ TODO
+## 🛠️ Roadmap
 
 ### Features
 
-- [x] Custom buffer option
+- [x] Custom buffer selection
 - [x] Custom cycle break priority
-- [x] Integrate [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/) for interactive cube visualization
-- [x] Show Flipped Edge/Corner Separately option
-- [x] Scramble only edges/corners
-- [x] ~~Presets (M2R2, OP, M2OP)~~ Buffer table for M2R2, OP, 3style
-- [x] Select Top/Front Face colors in preview
+- [x] Integration with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
+- [x] Option to show flipped edges/corners separately
+- [x] Scramble only edges or corners
+- [x] Buffer table for M2R2, OP, 3-style methods
+- [x] Select top/front face colors in preview
+- [ ] Support for wide moves and cube rotations
 
 ### Improvements
 
 - [ ] Refactor and clean up codebase
-- [ ] Improve and polish the UI
-- [ ] Use clear words for descriptions
+- [ ] UI improvements
+- [ ] Clearer descriptions and instructions
 - [ ] Fix mobile sidebar behavior
-- [ ] Add accessibility improvements (labels, keyboard navigation)
-- [ ] Add more documentation and usage examples
+- [ ] Accessibility enhancements (labels, keyboard navigation)
+- [ ] More documentation and usage examples
 
 ---
 
-## Usage
+## 🚀 Getting Started
 
-1. Open the application in your browser at `https://3bld-memo-generator.vercel.app/`.
-2. In Option, set your buffer and priority.
-3. Generate and review the memo sequence for solving the cube blindfolded.
+1. Open the app in your browser: [3bld-memo-generator.vercel.app](https://3bld-memo-generator.vercel.app/)
+2. Set your buffer and priority in the options panel.
+3. Generate and review the memo sequence for blindfolded solving.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! To contribute:
+Contributions are welcome! To get started:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix:
+1. **Fork** the repository.
+2. **Create a branch** for your feature or bug fix:
    ```bash
    git checkout -b feature-name
    ```
-3. Commit your changes:
+3. **Commit** your changes:
    ```bash
    git commit -m "Add feature-name"
    ```
-4. Push to your branch:
+4. **Push** to your branch:
    ```bash
    git push origin feature-name
    ```
-5. Open a pull request.
+5. **Open a pull request** describing your changes.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
