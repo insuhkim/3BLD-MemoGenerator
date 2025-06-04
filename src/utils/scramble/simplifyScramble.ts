@@ -1,13 +1,17 @@
 import { Alg } from "cubing/alg";
 import { cube3x3x3 } from "cubing/puzzles";
+import { isValidScramble } from "./isValidScramble";
 
 export default function simplifyScramble(scramble: string): string {
-  const TEST_ONE_MOVE = /^[RLUDFB]w?(\d+)?'?$/;
+  if (isValidScramble(scramble) === false) {
+    console.warn("Invalid scramble provided for simplification:", scramble);
+    return scramble; // Return the original scramble if it's invalid
+  }
 
   try {
     const alg = Alg.fromString(scramble).experimentalSimplify({
       puzzleLoader: cube3x3x3,
-      cancel: { puzzleSpecificModWrap: "canonical-positive" },
+      cancel: { puzzleSpecificModWrap: "canonical-centered" },
     });
     return alg.toString();
   } catch (error) {
