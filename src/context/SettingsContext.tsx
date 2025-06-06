@@ -30,6 +30,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     showFlippedEdge: "none",
     showFlippedCorner: "none",
     preScramble: "",
+    cubePreviewStyle: "3D",
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
