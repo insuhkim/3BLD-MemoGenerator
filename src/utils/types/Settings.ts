@@ -26,6 +26,7 @@ export type PreScramble =
   | "x y"
   | "x y2"
   | "x y'";
+export type CubePreviewStyle = "2D" | "3D";
 
 import { Speffz } from "./Speffz";
 
@@ -39,4 +40,5 @@ export type Settings = {
   showFlippedEdge: FlippedEdgeStyle;
   showFlippedCorner: FlippedCornerStyle;
   preScramble: PreScramble;
+  cubePreviewStyle: CubePreviewStyle;
 };
