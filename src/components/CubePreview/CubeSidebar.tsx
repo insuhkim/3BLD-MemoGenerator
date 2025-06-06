@@ -16,7 +16,10 @@ export default function CubeSidebar({ alg }: { alg: string }) {
     throw new Error("SettingsPanel must be used within a SettingsProvider");
   const { settings } = context;
 
-  alg = settings.preScramble ? `${settings.preScramble} ${alg}` : alg;
+  alg =
+    settings.preScramble && settings.cubePreviewStyle === "3D"
+      ? `${settings.preScramble} ${alg}`
+      : alg;
 
   useLayoutEffect(() => {
     if (sidebarOpen && previewRef.current) {

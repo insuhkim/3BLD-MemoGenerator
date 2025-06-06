@@ -16,8 +16,8 @@ export default function PreviewStyle() {
       <div>
         <label className={styles.label}>Pre moves before scramble</label>
         <p className={styles.sectionDescription}>
-          For example, if you use Blue top and Red front, you can select "(BR)
-          x' y" option
+          Only works with 3D preview. For example, if you use Blue top and Red
+          front, you can select "(BR) x' y" option
         </p>
         <div className={styles.sectionFlex}>
           <select
