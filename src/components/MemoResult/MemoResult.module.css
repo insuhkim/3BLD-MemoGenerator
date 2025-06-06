@@ -2,11 +2,12 @@
   margin-top: 2rem;
   background: #181a20;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 10px;
   box-shadow: 0 2px 16px #0004;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 .parity {
