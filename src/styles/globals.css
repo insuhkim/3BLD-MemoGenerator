@@ -1,25 +1,13 @@
 /* Color Variables */
 :root {
-  --background: #f8fafc;
-  --foreground: #171717;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --secondary: #f1f5f9;
-  --border: #e5e7eb;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #60a5fa;
+  --primary-hover: #3b82f6;
+  --secondary: #1e293b;
+  --border: #334155;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   --font-size: 18px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #60a5fa;
-    --primary-hover: #3b82f6;
-    --secondary: #1e293b;
-    --border: #334155;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-  }
 }
 
 @media (max-width: 600px) {
