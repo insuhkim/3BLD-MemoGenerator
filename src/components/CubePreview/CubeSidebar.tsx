@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { SettingsContext } from "../../context/SettingsContext";
+import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
-import { useContext } from "react";
-import { SettingsContext } from "../../context/SettingsContext";
 
 export default function CubeSidebar({ alg }: { alg: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,7 +49,11 @@ export default function CubeSidebar({ alg }: { alg: string }) {
           </button>
         </div>
         <div className={styles.sidebarContent} ref={previewRef}>
-          <Cube3DPlayer alg={alg} />
+          {settings.cubePreviewStyle === "2D" ? (
+            <Cube2DPlayer alg={alg} />
+          ) : (
+            <Cube3DPlayer alg={alg} />
+          )}
         </div>
       </div>
     </div>

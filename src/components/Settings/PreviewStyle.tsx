@@ -1,7 +1,7 @@
+import { PreScramble } from "@/utils/types/Settings";
 import { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import styles from "./Settings.module.css";
-import { PreScramble } from "@/utils/types/Settings";
 
 export default function PreviewStyle() {
   const context = useContext(SettingsContext);
@@ -12,14 +12,14 @@ export default function PreviewStyle() {
 
   return (
     <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Preview</legend>
-      <p className={styles.sectionDescription}>
-        Pre moves before scramble. <br />
-        For example, if you use Blue top and Red front, you can select "(BR) x'
-        y" option
-      </p>
-      <div className={styles.sectionFlex}>
-        <div>
+      <legend className={styles.sectionLegend}>Cube Preview</legend>
+      <div>
+        <label className={styles.label}>Pre moves before scramble</label>
+        <p className={styles.sectionDescription}>
+          For example, if you use Blue top and Red front, you can select "(BR)
+          x' y" option
+        </p>
+        <div className={styles.sectionFlex}>
           <select
             value={settings.preScramble}
             onChange={(e) => {
@@ -55,6 +55,22 @@ export default function PreviewStyle() {
             <option value="x y'">(FL) x y'</option>
           </select>
         </div>
+      </div>
+      <br />
+      <div>
+        <label className={styles.label}>Cube Preview Style</label>
+        <select
+          value={settings.cubePreviewStyle}
+          onChange={(e) => {
+            setSettings({
+              ...settings,
+              cubePreviewStyle: e.target.value as "2D" | "3D",
+            });
+          }}
+        >
+          <option value="2D">2D</option>
+          <option value="3D">3D</option>
+        </select>
       </div>
     </fieldset>
   );
