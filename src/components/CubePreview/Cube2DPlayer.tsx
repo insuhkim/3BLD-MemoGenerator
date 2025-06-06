@@ -1,4 +1,3 @@
-"use client";
 import { DisplayCube, applyScramble } from "react-rubiks-cube-utils";
 
 export default function Cube2DPlayer({ alg }: { alg: string }) {
