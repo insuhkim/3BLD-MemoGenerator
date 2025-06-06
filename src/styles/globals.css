@@ -26,6 +26,43 @@
   :root {
     --font-size: 14px;
   }
+
+  /* Decrease container padding and margin */
+  .container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 1.7rem;
+    margin-bottom: 0.7rem;
+  }
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+  }
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Paragraphs and lists */
+  p,
+  ul,
+  ol {
+    margin-bottom: 0.7rem;
+  }
+
+  /* Utility classes */
+  .mt-2 {
+    margin-top: 1rem;
+  }
+  .mb-2 {
+    margin-bottom: 1rem;
+  }
+
+  /* Top bar already adjusted above, but you can tweak further if needed */
 }
 
 /* Base Styles */
