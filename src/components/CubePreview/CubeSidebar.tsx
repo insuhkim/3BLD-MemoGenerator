@@ -34,7 +34,7 @@ export default function CubeSidebar({ alg }: { alg: string }) {
         className={styles.sidebarOpen}
         onClick={() => setSidebarOpen((prev) => !prev)}
       >
-        Cube Preview
+        Preview
       </button>
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}

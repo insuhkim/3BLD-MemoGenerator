@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import CubeSidebar from "../CubePreview/CubeSidebar";
-import styles from "./HomePage.module.css";
 import MemoResult from "../MemoResult/MemoResult";
-import Settings from "../Settings/Settings";
-import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
 import ScrambleButton from "../ScrambleGenerator/ScrambleButton";
+import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
+import Settings from "../Settings/Settings";
+import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState(
@@ -18,9 +18,9 @@ export default function HomePage() {
       <div className={styles.buttonRow}>
         <Settings />
         <CubeSidebar alg={scramble} />
+        <ScrambleButton setScramble={setScramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />
-      <ScrambleButton setScramble={setScramble} />
       <hr className={styles.divider} />
       <MemoResult scramble={scramble} />
     </div>
