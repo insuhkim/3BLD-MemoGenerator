@@ -28,7 +28,7 @@
 }
 
 .memo {
-  font-size: clamp(1.4rem, 6vw, 2rem);
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
   word-break: break-word;
   white-space: normal;
   display: block;
@@ -39,4 +39,13 @@
 .memo h3 {
   font-size: inherit;
   word-break: inherit;
+}
+
+.memoDivider {
+  height: 1px;
+  background: #333;
+  margin: 8px auto;
+  width: 60%;
+  border-radius: 2px;
+  opacity: 0.7;
 }
