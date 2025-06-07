@@ -1,7 +1,7 @@
 "use client";
 
 import cstimer from "cstimer_module";
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ScrambleButton.module.css";
 
 type ScrambleTypeOption = "333" | "edges" | "corners";
@@ -125,7 +125,7 @@ export default function ScrambleButton({
   return (
     <div className={styles.buttonWrapper}>
       <button onClick={handleGenerate} className={styles.generateButton}>
-        Generate {SCRAMBLE_TYPE_LABELS[scrambleType]} Scramble
+        Scramble ({SCRAMBLE_TYPE_LABELS[scrambleType]})
         <ChevronArea onClick={handleChevronClick} />
       </button>
       {dropdownOpen && (
