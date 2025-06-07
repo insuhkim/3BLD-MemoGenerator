@@ -8,6 +8,7 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  word-break: break-word; /* Add this for all text in container */
 }
 
 .parity {
@@ -24,4 +25,18 @@
   font-size: 2rem;
   margin: 0;
   letter-spacing: 0.05em;
+}
+
+.memo {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  word-break: break-word;
+  white-space: normal;
+  display: block;
+  max-width: 100%;
+}
+
+.memo h2,
+.memo h3 {
+  font-size: inherit;
+  word-break: inherit;
 }

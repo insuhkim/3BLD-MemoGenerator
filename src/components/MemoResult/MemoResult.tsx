@@ -43,7 +43,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.memo}>
         {edgeString && (
           <div>
             <h2>Edge</h2>
