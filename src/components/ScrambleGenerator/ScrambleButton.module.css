@@ -25,6 +25,12 @@
   user-select: none;
 }
 
+@media (max-width: 600px) {
+  .chevronArea {
+    min-height: 32px;
+  }
+}
+
 .verticalBar {
   position: absolute;
   top: 0;
