@@ -2,11 +2,13 @@
   margin-top: 2rem;
   background: #181a20;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 10px;
   box-shadow: 0 2px 16px #0004;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
+  word-break: break-word; /* Add this for all text in container */
 }
 
 .parity {
@@ -23,4 +25,27 @@
   font-size: 2rem;
   margin: 0;
   letter-spacing: 0.05em;
+}
+
+.memo {
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
+  word-break: break-word;
+  white-space: normal;
+  display: block;
+  max-width: 100%;
+}
+
+.memo h2,
+.memo h3 {
+  font-size: inherit;
+  word-break: inherit;
+}
+
+.memoDivider {
+  height: 1px;
+  background: #333;
+  margin: 8px auto;
+  width: 60%;
+  border-radius: 2px;
+  opacity: 0.7;
 }

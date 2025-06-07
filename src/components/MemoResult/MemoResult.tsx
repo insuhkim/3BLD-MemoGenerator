@@ -43,12 +43,15 @@ export default function MemoResult({ scramble }: { scramble: string }) {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.memo}>
         {edgeString && (
           <div>
             <h2>Edge</h2>
             <h3>{edgeString}</h3>
           </div>
+        )}
+        {edgeString && cornerString && (
+          <div className={styles.memoDivider}></div>
         )}
         {cornerString && (
           <div>
@@ -56,8 +59,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
             <h3>{cornerString}</h3>
           </div>
         )}
-      </div>
-      <div>
+        <div className={styles.memoDivider}></div>
         <h2 className={hasCornerParity ? styles.parity : styles.noParity}>
           {hasCornerParity ? "Parity" : "No Parity"}
         </h2>
