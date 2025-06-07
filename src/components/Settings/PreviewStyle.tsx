@@ -1,4 +1,4 @@
-import { PreScramble } from "@/utils/types/Settings";
+import { Rotation } from "@/utils/types/Settings";
 import { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import styles from "./Settings.module.css";
@@ -14,18 +14,19 @@ export default function PreviewStyle() {
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Cube Preview</legend>
       <div>
-        <label className={styles.label}>Pre moves before scramble</label>
+        <label className={styles.label}>Post rotations after scramble</label>
         <p className={styles.sectionDescription}>
-          Only works with 3D preview. For example, if you use Blue top and Red
-          front, you can select "(BR) x' y" option
+          Apply rotations after applying the scramble in white top and green
+          front. Only works with 3D preview. <br /> For example, if you use Blue
+          top and Red front, you can select "(BR) x' y" option
         </p>
         <div className={styles.sectionFlex}>
           <select
-            value={settings.preScramble}
+            value={settings.postRotation}
             onChange={(e) => {
               setSettings({
                 ...settings,
-                preScramble: e.target.value as PreScramble,
+                postRotation: e.target.value as Rotation,
               });
             }}
           >

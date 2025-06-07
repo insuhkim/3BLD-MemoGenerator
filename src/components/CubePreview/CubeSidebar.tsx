@@ -17,9 +17,10 @@ export default function CubeSidebar({ alg }: { alg: string }) {
   const { settings } = context;
 
   alg =
-    settings.preScramble && settings.cubePreviewStyle === "3D"
-      ? `${settings.preScramble} ${alg}`
-      : alg;
+    settings.postRotation && settings.cubePreviewStyle === "3D"
+      ? `${alg} ${settings.postRotation}`
+      : // ? `${settings.preScramble} ${alg}`
+        alg;
 
   useLayoutEffect(() => {
     if (sidebarOpen && previewRef.current) {

@@ -1,7 +1,7 @@
 export type CycleNotationStyle = "parenthesis" | "vertical" | "none";
 export type FlippedEdgeStyle = "none" | "oriented" | "unoriented";
 export type FlippedCornerStyle = "none" | "top/bottom" | "W/Y";
-export type PreScramble =
+export type Rotation =
   | ""
   | "y"
   | "y2"
@@ -39,6 +39,6 @@ export type Settings = {
   cycleStyle: CycleNotationStyle;
   showFlippedEdge: FlippedEdgeStyle;
   showFlippedCorner: FlippedCornerStyle;
-  preScramble: PreScramble;
+  postRotation: Rotation;
   cubePreviewStyle: CubePreviewStyle;
 };

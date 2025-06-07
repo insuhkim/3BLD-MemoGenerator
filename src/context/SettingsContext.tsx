@@ -29,7 +29,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cycleStyle: "parenthesis",
     showFlippedEdge: "none",
     showFlippedCorner: "none",
-    preScramble: "",
+    postRotation: "",
     cubePreviewStyle: "3D",
   };
 
