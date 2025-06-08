@@ -1,7 +1,7 @@
+import { Rotation } from "@/utils/types/Settings";
 import { useContext } from "react";
-import { SettingsContext } from "../SettingsProvider";
-import styles from "./Option.module.css";
-import { PreScramble } from "@/utils/types/Settings";
+import { SettingsContext } from "../../context/SettingsContext";
+import styles from "./Settings.module.css";
 
 export default function PreviewStyle() {
   const context = useContext(SettingsContext);
@@ -12,20 +12,21 @@ export default function PreviewStyle() {
 
   return (
     <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Preview</legend>
-      <p className={styles.sectionDescription}>
-        Pre moves before scramble. <br />
-        For example, if you use Blue top and Red front, you can select "(BR) x'
-        y" option
-      </p>
-      <div className={styles.sectionFlex}>
-        <div>
+      <legend className={styles.sectionLegend}>Cube Preview</legend>
+      <div>
+        <label className={styles.label}>Post rotations after scramble</label>
+        <p className={styles.sectionDescription}>
+          Apply rotations after applying the scramble in white top and green
+          front. Only works with 3D preview. <br /> For example, if you use Blue
+          top and Red front, you can select "(BR) x' y" option
+        </p>
+        <div className={styles.sectionFlex}>
           <select
-            value={settings.preScramble}
+            value={settings.postRotation}
             onChange={(e) => {
               setSettings({
                 ...settings,
-                preScramble: e.target.value as PreScramble,
+                postRotation: e.target.value as Rotation,
               });
             }}
           >
@@ -55,6 +56,22 @@ export default function PreviewStyle() {
             <option value="x y'">(FL) x y'</option>
           </select>
         </div>
+      </div>
+      <br />
+      <div>
+        <label className={styles.label}>Cube Preview Style</label>
+        <select
+          value={settings.cubePreviewStyle}
+          onChange={(e) => {
+            setSettings({
+              ...settings,
+              cubePreviewStyle: e.target.value as "2D" | "3D",
+            });
+          }}
+        >
+          <option value="2D">2D</option>
+          <option value="3D">3D</option>
+        </select>
       </div>
     </fieldset>
   );

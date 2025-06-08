@@ -1,9 +1,3 @@
-.container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .buttonWrapper {
   position: relative;
   display: inline-block;
@@ -11,7 +5,8 @@
 
 .generateButton {
   position: relative;
-  padding-right: 0; /* Remove extra right padding */
+  padding: 0 12px;
+  padding-right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,18 +16,28 @@
 .chevronArea {
   display: flex;
   align-items: center;
+  padding-top: 4px;
+  min-height: 41px;
+  padding-bottom: 4px;
   cursor: pointer;
   height: 100%;
-  padding-left: 12px;
+  margin-left: 22px;
   user-select: none;
-  /* Make sure it fills the height of the button */
+}
+
+@media (max-width: 600px) {
+  .chevronArea {
+    min-height: 32px;
+  }
 }
 
 .verticalBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 35px;
   width: 1px;
-  height: 33px; /* Increased height for a longer vertical bar */
-  background: #e3e6ee;
-  margin-right: 8px;
+  background: #fff;
   display: inline-block;
 }
 
@@ -41,7 +46,7 @@
   align-items: center;
   font-size: 1rem;
   user-select: none;
-  margin-right: 12px; /* Increased right margin */
+  margin-right: 12px;
 }
 
 .dropdown {

@@ -1,13 +1,12 @@
 /* Homepage Styles */
 
-/* Remove :local, just use a normal class selector for CSS Modules */
 .rootVars {
   --background-color: #181a20;
   --text-color: #e3e6ee;
   --divider-color: #3a3f4b;
   --max-width: 800px;
-  --margin: 40px auto;
-  --padding: 32px;
+  --margin: 0px auto;
+  --padding: 20px;
   --border-radius: 18px;
   --box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
   --font-family: "Segoe UI", "Roboto", Arial, sans-serif;

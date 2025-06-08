@@ -1,7 +1,7 @@
 export type CycleNotationStyle = "parenthesis" | "vertical" | "none";
 export type FlippedEdgeStyle = "none" | "oriented" | "unoriented";
 export type FlippedCornerStyle = "none" | "top/bottom" | "W/Y";
-export type PreScramble =
+export type Rotation =
   | ""
   | "y"
   | "y2"
@@ -26,6 +26,7 @@ export type PreScramble =
   | "x y"
   | "x y2"
   | "x y'";
+export type CubePreviewStyle = "2D" | "3D";
 
 import { Speffz } from "./Speffz";
 
@@ -38,5 +39,7 @@ export type Settings = {
   cycleStyle: CycleNotationStyle;
   showFlippedEdge: FlippedEdgeStyle;
   showFlippedCorner: FlippedCornerStyle;
-  preScramble: PreScramble;
+  postRotation: Rotation;
+  cubePreviewStyle: CubePreviewStyle;
+  memoSwap: "none" | Speffz;
 };

@@ -19,14 +19,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header className="top-bar">
-          <span style={{ fontWeight: 700, fontSize: "2rem" }}>
-            3x3 Memo Generator
-          </span>
+          <span className="header-title">3x3 Memo Generator</span>
           <a
             href="https://github.com/insuhkim/3BLD-MemoGenerator"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: "flex", alignItems: "center", color: "inherit" }}
+            className="github-link"
             aria-label="GitHub Repository"
           >
             {/* GitHub Icon */}

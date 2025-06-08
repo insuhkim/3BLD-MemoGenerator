@@ -25,11 +25,13 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cornerPriority: [],
     edgeBuffer: "C",
     cornerBuffer: "C",
-    resultSeparator: " ",
-    cycleStyle: "parenthesis",
+    resultSeparator: ", ",
+    cycleStyle: "vertical",
     showFlippedEdge: "none",
     showFlippedCorner: "none",
-    preScramble: "",
+    postRotation: "",
+    cubePreviewStyle: "3D",
+    memoSwap: "none",
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);

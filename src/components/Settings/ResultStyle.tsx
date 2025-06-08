@@ -1,11 +1,11 @@
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/context/SettingsContext";
 import {
   CycleNotationStyle,
   FlippedCornerStyle,
   FlippedEdgeStyle,
 } from "@/utils/types/Settings";
 import { useContext } from "react";
-import styles from "./Option.module.css";
+import styles from "./Settings.module.css";
 
 export default function ResultStyle() {
   const context = useContext(SettingsContext);
@@ -18,7 +18,7 @@ export default function ResultStyle() {
       <legend className={styles.sectionLegend}>Result Style</legend>
       <div>
         <label htmlFor="cycleStyle" className={styles.label}>
-          Cycle Break Style:
+          Cycle Break Style
         </label>
         <select
           id="cycleStyle"
@@ -39,7 +39,7 @@ export default function ResultStyle() {
       </div>
       <div>
         <label htmlFor="resultSeparator" className={styles.label}>
-          Separator:
+          Separator
         </label>
         <select
           id="resultSeparator"
@@ -59,6 +59,7 @@ export default function ResultStyle() {
           <option value="">None</option>
         </select>
       </div>
+      <br />
       <div>
         <label className={styles.label}>
           Show Flipped Edge/Corners Separately

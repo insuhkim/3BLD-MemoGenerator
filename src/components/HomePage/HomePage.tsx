@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import CubeSidebar from "./CubePreview/CubeSidebar";
+import CubeSidebar from "../CubePreview/CubeSidebar";
+import MemoResult from "../MemoResult/MemoResult";
+import ScrambleButton from "../ScrambleGenerator/ScrambleButton";
+import ScrambleInputField from "../ScrambleGenerator/ScrambleInputField";
+import Settings from "../Settings/Settings";
 import styles from "./HomePage.module.css";
-import Memo from "./Memo/Memo";
-import Option from "./Option/Option";
-import ScrambleInputField from "./ScrambleGenerator/ScrambleInputField";
-import ScrambleButton from "./ScrambleGenerator/ScrambleButton";
 
 export default function HomePage() {
   const [scramble, setScramble] = useState(
@@ -16,15 +16,13 @@ export default function HomePage() {
   return (
     <div className={`${styles.rootVars} ${styles.homepageContainer}`}>
       <div className={styles.buttonRow}>
-        <Option />
+        <Settings />
         <CubeSidebar alg={scramble} />
+        <ScrambleButton setScramble={setScramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />
-      {/* <div className={styles["button-row"]}> */}
-      <ScrambleButton setScramble={setScramble} />
-      {/* </div> */}
       <hr className={styles.divider} />
-      <Memo scramble={scramble} />
+      <MemoResult scramble={scramble} />
     </div>
   );
 }
