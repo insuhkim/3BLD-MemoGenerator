@@ -16,15 +16,12 @@ export default function MemoSwap() {
     <fieldset className={styles.section}>
       <legend className={styles.sectionLegend}>Memo Swapping</legend>
       <p className={styles.sectionDescription}>
-        Choose Memo Swapping for edge when parity occurs.
-        <br /> For example, if parity occurs, “solve” them into the wrong
-        positions. Most of people use "B" for memoSwapping
+        Choose Memo Swapping for edge when parity occurs. For example, if parity
+        occurs and "B" is chosen, swap those two edges(buffer and "B") and
+        “solve” them into the wrong positions.
       </p>
       <div>
         <div>
-          <label htmlFor="memoSwapping" className={styles.label}>
-            Memo Swapping
-          </label>
           <select
             value={settings.memoSwap}
             onChange={(e) =>
