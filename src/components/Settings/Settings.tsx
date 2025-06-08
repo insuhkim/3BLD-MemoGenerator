@@ -2,6 +2,7 @@
 import { useState } from "react";
 import BufferSelection from "./BufferSelection";
 import CycleBreakPriority from "./CycleBreakPriority";
+import MemoSwap from "./MemoSwap";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
 import styles from "./Settings.module.css";
@@ -32,6 +33,7 @@ export default function Settings() {
           <BufferSelection />
           <CycleBreakPriority />
           <ResultStyle />
+          <MemoSwap />
           <PreviewStyle />
         </div>
       </div>

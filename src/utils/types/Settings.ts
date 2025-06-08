@@ -41,4 +41,5 @@ export type Settings = {
   showFlippedCorner: FlippedCornerStyle;
   postRotation: Rotation;
   cubePreviewStyle: CubePreviewStyle;
+  memoSwap: "none" | Speffz;
 };

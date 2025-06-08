@@ -31,6 +31,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     showFlippedCorner: "none",
     postRotation: "",
     cubePreviewStyle: "3D",
+    memoSwap: "none",
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
