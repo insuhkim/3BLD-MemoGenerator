@@ -16,11 +16,22 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   const { settings } = context;
 
   const cube = applyScramble({ type: "3x3", scramble });
-  const edge = makeEdgeMemo(cube, settings.edgeBuffer, settings.edgePriority);
   const corner = makeCornerMemo(
     cube,
     settings.cornerBuffer,
     settings.cornerPriority
+  );
+  const hasCornerParity = hasParity(corner);
+  const memoSwap =
+    hasCornerParity && settings.memoSwap !== "none"
+      ? settings.memoSwap
+      : settings.edgeBuffer;
+
+  const edge = makeEdgeMemo(
+    cube,
+    settings.edgeBuffer,
+    settings.edgePriority,
+    memoSwap
   );
   const edgeString = makeEdgeLetterPair(
     edge,
@@ -34,12 +45,6 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     settings.cycleStyle,
     settings.showFlippedCorner
   );
-
-  const hasEdgeParity = hasParity(edge);
-  const hasCornerParity = hasParity(corner);
-
-  if (hasCornerParity !== hasEdgeParity)
-    throw new Error("Parity error: edges and corners have different parity");
 
   return (
     <div className={styles.container}>
