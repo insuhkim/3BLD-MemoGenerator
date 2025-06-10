@@ -4,7 +4,7 @@ import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
 
-export default function CubeSidebar({ alg }: { alg: string }) {
+export default function CubeSidebar({ scramble }: { scramble: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -13,11 +13,10 @@ export default function CubeSidebar({ alg }: { alg: string }) {
     throw new Error("SettingsPanel must be used within a SettingsProvider");
   const { settings } = context;
 
-  alg =
+  scramble =
     settings.postRotation && settings.cubePreviewStyle === "3D"
-      ? `${alg} ${settings.postRotation}`
-      : // ? `${settings.preScramble} ${alg}`
-        alg;
+      ? `${scramble} ${settings.postRotation}`
+      : scramble;
 
   return (
     <div className={styles.sidebarWrapper}>
@@ -42,9 +41,9 @@ export default function CubeSidebar({ alg }: { alg: string }) {
         </div>
         <div className={styles.sidebarContent} ref={previewRef}>
           {settings.cubePreviewStyle === "2D" ? (
-            <Cube2DPlayer alg={alg} />
+            <Cube2DPlayer scramble={scramble} />
           ) : (
-            <Cube3DPlayer alg={alg} />
+            <Cube3DPlayer scramble={scramble} />
           )}
         </div>
       </div>

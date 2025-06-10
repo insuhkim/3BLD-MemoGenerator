@@ -2,7 +2,7 @@
 import { TwistyPlayer } from "cubing/twisty";
 import { useEffect, useRef } from "react";
 
-export default function Cube3DPlayer({ alg }: { alg: string }) {
+export default function Cube3DPlayer({ scramble }: { scramble: string }) {
   const twistyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function Cube3DPlayer({ alg }: { alg: string }) {
     twistyRef.current.innerHTML = "";
 
     const twisty = new TwistyPlayer({
-      alg,
+      alg: scramble,
       background: "none",
       controlPanel: "none",
     });
@@ -24,7 +24,7 @@ export default function Cube3DPlayer({ alg }: { alg: string }) {
         twistyRef.current.removeChild(twisty);
       }
     };
-  }, [alg]);
+  }, [scramble]);
 
   return <div ref={twistyRef} />;
 }

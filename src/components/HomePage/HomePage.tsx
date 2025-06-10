@@ -17,7 +17,7 @@ export default function HomePage() {
     <div className={`${styles.rootVars} ${styles.homepageContainer}`}>
       <div className={styles.buttonRow}>
         <Settings />
-        <CubeSidebar alg={scramble} />
+        <CubeSidebar scramble={scramble} />
         <ScrambleButton setScramble={setScramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />
