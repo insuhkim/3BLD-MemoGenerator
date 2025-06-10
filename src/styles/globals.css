@@ -35,13 +35,6 @@
     margin-bottom: 0.5rem;
   }
 
-  /* Paragraphs and lists */
-  p,
-  ul,
-  ol {
-    margin-bottom: 0.7rem;
-  }
-
   /* Utility classes */
   .mt-2 {
     margin-top: 1rem;
@@ -148,8 +141,7 @@ button {
   margin: 0.5rem 0;
   outline: none;
 }
-button:hover,
-button:focus {
+button:hover {
   background-color: var(--primary-hover);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
 }
