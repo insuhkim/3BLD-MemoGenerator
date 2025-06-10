@@ -57,7 +57,6 @@
 html,
 body {
   max-width: 100vw;
-  /* overflow-x: hidden; */
   overflow: hidden;
   background: var(--background);
   color: var(--foreground);
@@ -134,13 +133,6 @@ a:focus {
   text-decoration: underline wavy;
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 /* Buttons */
 button {
   background-color: var(--primary);
@@ -177,7 +169,7 @@ select {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 1rem;
-  background: #fff;
+  background: #18181b;
   color: var(--foreground);
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
@@ -187,14 +179,6 @@ textarea:focus,
 select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary-hover);
-}
-@media (prefers-color-scheme: dark) {
-  input,
-  textarea,
-  select {
-    background: #18181b;
-    color: var(--foreground);
-  }
 }
 
 /* Labels */
@@ -216,11 +200,11 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1.5rem;
-  background: #fff;
+  background: #23262e;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow);
-  color: var(--foreground);
+  color: #e6e6e6;
 }
 th,
 td {
@@ -232,26 +216,11 @@ td {
 }
 th {
   background: var(--secondary);
-  color: var(--primary);
+  color: #60a5fa;
   font-weight: 600;
 }
 tr:last-child td {
   border-bottom: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  table {
-    background: #23262e;
-    color: #e6e6e6;
-  }
-  th,
-  td {
-    background: inherit;
-    color: inherit;
-  }
-  th {
-    color: #60a5fa;
-  }
 }
 
 /* Top Bar */
