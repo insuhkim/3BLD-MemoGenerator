@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
@@ -7,9 +7,6 @@ import styles from "./CubeSidebar.module.css";
 export default function CubeSidebar({ alg }: { alg: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
-  const [sidebarHeight, setSidebarHeight] = useState<number | undefined>(
-    undefined
-  );
 
   const context = useContext(SettingsContext);
   if (!context)
@@ -22,12 +19,6 @@ export default function CubeSidebar({ alg }: { alg: string }) {
       : // ? `${settings.preScramble} ${alg}`
         alg;
 
-  useLayoutEffect(() => {
-    if (sidebarOpen && previewRef.current) {
-      setSidebarHeight(previewRef.current.offsetHeight);
-    }
-  }, [sidebarOpen, alg]);
-
   return (
     <div className={styles.sidebarWrapper}>
       <button
@@ -39,9 +30,6 @@ export default function CubeSidebar({ alg }: { alg: string }) {
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
         tabIndex={-1}
-        style={{
-          height: sidebarOpen && sidebarHeight ? sidebarHeight + 48 : undefined, // 48px for header
-        }}
       >
         <div className={styles.sidebarHeader}>
           <h2>Cube Preview</h2>

@@ -220,7 +220,6 @@ export default function makeEdgeMemo(
         cycle.every((c1) => !isSameEdgeSpeffz(c, c1)) &&
         !isSameEdgeSpeffz(c, memoSwap)
     );
-    console.log(remaining, cycle);
     return [[start, ...cycle], ...solveAll(remaining)];
   }
 

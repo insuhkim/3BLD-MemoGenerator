@@ -24,7 +24,7 @@
 }
 
 .divider {
-  margin: 24px 0;
+  margin: 5px 0;
   border: none;
   border-top: 2px solid var(--divider-color);
 }

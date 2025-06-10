@@ -29,7 +29,7 @@
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.7rem;
+  font-size: 2rem;
   cursor: pointer;
   padding: 2px 8px;
   border-radius: 4px;
@@ -47,8 +47,8 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  background: transparent; /* or #222 for solid header */
-  padding: 16px 20px 0 20px;
+  background: transparent;
+  padding: 10px 20px 0 20px;
 }
 
 .sidebarContent {
@@ -64,7 +64,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow-y: visible; /* allow content to expand */
 }
 
 .overlay {
@@ -93,5 +92,10 @@
   }
   .sidebar.open {
     transform: translateX(0);
+  }
+  .sidebarHeader {
+    padding-top: calc(
+      env(safe-area-inset-top, 0px) + 32px
+    ); /* add safe area and extra space */
   }
 }
