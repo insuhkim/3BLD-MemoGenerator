@@ -125,7 +125,11 @@ export default function ScrambleButton({
 
   return (
     <div className={styles.buttonWrapper}>
-      <Button onClick={handleGenerate} className={styles.generateButton}>
+      <Button
+        variant={"ghost"}
+        onClick={handleGenerate}
+        className={styles.generateButton}
+      >
         Scramble ({SCRAMBLE_TYPE_LABELS[scrambleType]})
         <ChevronArea onClick={handleChevronClick} />
       </Button>

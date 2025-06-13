@@ -1,5 +1,11 @@
 "use client";
-import { useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
 import CycleBreakPriority from "./CycleBreakPriority";
@@ -9,26 +15,15 @@ import ResultStyle from "./ResultStyle";
 import styles from "./Settings.module.css";
 
 export default function Settings() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <div>
-      <Button onClick={() => setSidebarOpen(true)}>☰</Button>
-      <div
-        className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
-        tabIndex={-1}
-      >
-        {/* HEADER */}
-        <div className={styles["sidebar-header"]}>
-          <h2>Settings</h2>
-          <button
-            className={styles["sidebar-close"]}
-            onClick={() => setSidebarOpen(false)}
-          >
-            ×
-          </button>
-        </div>
-
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant={"ghost"}>☰</Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+        <SheetHeader>
+          <SheetTitle>Settings</SheetTitle>
+        </SheetHeader>
         {/* CONTENTS */}
         <div className={styles["sidebar-content"]}>
           <BufferSelection />
@@ -37,10 +32,7 @@ export default function Settings() {
           <MemoSwap />
           <PreviewStyle />
         </div>
-      </div>
-      {sidebarOpen && (
-        <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
-      )}
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
