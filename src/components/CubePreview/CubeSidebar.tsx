@@ -1,11 +1,18 @@
-import { useContext, useRef, useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useContext, useRef } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
+import { Button } from "../ui/button";
 import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
 import styles from "./CubeSidebar.module.css";
 
 export default function CubeSidebar({ scramble }: { scramble: string }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const context = useContext(SettingsContext);
@@ -19,26 +26,14 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
       : scramble;
 
   return (
-    <div className={styles.sidebarWrapper}>
-      <button
-        className={styles.sidebarOpen}
-        onClick={() => setSidebarOpen((prev) => !prev)}
-      >
-        Preview
-      </button>
-      <div
-        className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
-        tabIndex={-1}
-      >
-        <div className={styles.sidebarHeader}>
-          <h2>Cube Preview</h2>
-          <button
-            className={styles.sidebarClose}
-            onClick={() => setSidebarOpen(false)}
-          >
-            ×
-          </button>
-        </div>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost">Preview</Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+        <SheetHeader>
+          <SheetTitle>Cube Preview</SheetTitle>
+        </SheetHeader>
         <div className={styles.sidebarContent} ref={previewRef}>
           {settings.cubePreviewStyle === "2D" ? (
             <Cube2DPlayer scramble={scramble} />
@@ -46,7 +41,7 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
             <Cube3DPlayer scramble={scramble} />
           )}
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }

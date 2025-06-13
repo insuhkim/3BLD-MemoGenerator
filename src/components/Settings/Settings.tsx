@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
 import CycleBreakPriority from "./CycleBreakPriority";
 import MemoSwap from "./MemoSwap";
@@ -12,7 +13,7 @@ export default function Settings() {
 
   return (
     <div>
-      <button onClick={() => setSidebarOpen(true)}>☰</button>
+      <Button onClick={() => setSidebarOpen(true)}>☰</Button>
       <div
         className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}
         tabIndex={-1}
