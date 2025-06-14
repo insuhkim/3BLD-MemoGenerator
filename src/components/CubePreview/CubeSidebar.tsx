@@ -10,7 +10,6 @@ import { SettingsContext } from "../../context/SettingsContext";
 import { Button } from "../ui/button";
 import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
-import styles from "./CubeSidebar.module.css";
 
 export default function CubeSidebar({ scramble }: { scramble: string }) {
   const previewRef = useRef<HTMLDivElement>(null);
@@ -30,11 +29,14 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
       <SheetTrigger asChild>
         <Button variant="ghost">Preview</Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-        <SheetHeader>
+      <SheetContent side="right" className="w-[400px] sm:w-[540px] p-0">
+        <SheetHeader className="p-6 pb-4">
           <SheetTitle>Cube Preview</SheetTitle>
         </SheetHeader>
-        <div className={styles.sidebarContent} ref={previewRef}>
+        <div
+          className="p-6 h-full flex flex-col justify-center items-center"
+          ref={previewRef}
+        >
           {settings.cubePreviewStyle === "2D" ? (
             <Cube2DPlayer scramble={scramble} />
           ) : (
