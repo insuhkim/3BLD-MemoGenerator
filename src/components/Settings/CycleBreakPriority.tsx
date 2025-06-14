@@ -1,7 +1,8 @@
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-import styles from "./Settings.module.css";
 
 export default function CycleBreakPriority() {
   const context = useContext(SettingsContext);
@@ -11,60 +12,61 @@ export default function CycleBreakPriority() {
 
   const { settings, setSettings } = context;
   return (
-    <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Cycle Break Priority</legend>
-      <p className={styles.sectionDescription}>
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
         Choose which cycle to break first after buffer is blocked.
         <br />
         After visiting all provided locations, the rest will be visited in
         oriented, alphabetical Speffz order.
       </p>
-      <div>
-        <div>
-          <label htmlFor="edgePriority" className={styles.label}>
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+        <div className="flex-1 space-y-1">
+          <Label htmlFor="edgePriority" className="text-sm font-medium">
             Edge Priority
-          </label>
-          <input
+          </Label>
+          <Input
             id="edgePriority"
             type="text"
             placeholder="e.g. ABC"
-            value={settings.edgePriority}
-            className={styles.input}
+            value={settings.edgePriority.join("")} // Join array for display
             onChange={(e) => {
               const value = e.target.value;
               const arr = [...value.toUpperCase()].filter(
                 (v) => "A" <= v && v <= "X"
               );
+              // Ensure unique characters
+              const uniqueArr = Array.from(new Set(arr));
               setSettings((prev) => ({
                 ...prev,
-                edgePriority: arr as Speffz[],
+                edgePriority: uniqueArr as Speffz[],
               }));
             }}
           />
         </div>
-        <div>
-          <label htmlFor="cornerPriority" className={styles.label}>
+        <div className="flex-1 space-y-1">
+          <Label htmlFor="cornerPriority" className="text-sm font-medium">
             Corner Priority
-          </label>
-          <input
+          </Label>
+          <Input
             id="cornerPriority"
             type="text"
             placeholder="e.g. ABC"
-            value={settings.cornerPriority}
-            className={styles.input}
+            value={settings.cornerPriority.join("")} // Join array for display
             onChange={(e) => {
               const value = e.target.value;
               const arr = [...value.toUpperCase()].filter(
                 (v) => "A" <= v && v <= "X"
               );
+              // Ensure unique characters
+              const uniqueArr = Array.from(new Set(arr));
               setSettings((prev) => ({
                 ...prev,
-                cornerPriority: arr as Speffz[],
+                cornerPriority: uniqueArr as Speffz[],
               }));
             }}
           />
         </div>
       </div>
-    </fieldset>
+    </div>
   );
 }

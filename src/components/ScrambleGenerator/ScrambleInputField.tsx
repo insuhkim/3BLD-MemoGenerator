@@ -1,16 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { Textarea } from "../ui/textarea";
 
 const SCRAMBLE_REGEX = /^[UDFBLR2' ]*$/;
-const TEXTAREA_STYLE: React.CSSProperties = {
-  overflow: "hidden",
-  resize: "none",
-  width: "100%",
-  padding: "12px",
-  fontSize: "1rem",
-  lineHeight: "1.5",
-};
 
 export default function ScrambleInputField({
   scramble,
@@ -24,7 +17,7 @@ export default function ScrambleInputField({
   const adjustHeight = useCallback(() => {
     const el = textareaRef.current;
     if (el) {
-      el.style.height = "auto";
+      el.style.height = "auto"; // Reset height to correctly calculate scrollHeight
       el.style.height = `${el.scrollHeight}px`;
     }
   }, []);
@@ -34,6 +27,9 @@ export default function ScrambleInputField({
   }, [scramble, adjustHeight]);
 
   useEffect(() => {
+    // Initial adjustment after mount, in case scramble is pre-filled
+    adjustHeight();
+
     window.addEventListener("resize", adjustHeight);
     return () => window.removeEventListener("resize", adjustHeight);
   }, [adjustHeight]);
@@ -45,20 +41,20 @@ export default function ScrambleInputField({
     }
   };
 
+  const handleInput = () => {
+    adjustHeight(); // Adjust height on every input
+  };
+
   return (
-    <div>
-      <div>
-        {/* <label htmlFor="scramble">Enter scramble or Generate Scramble</label> */}
-        <textarea
-          id="scramble"
-          ref={textareaRef}
-          rows={1}
-          placeholder="Enter scramble"
-          style={TEXTAREA_STYLE}
-          value={scramble}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
+    <Textarea
+      id="scramble"
+      ref={textareaRef}
+      rows={1} // Start with one row, will expand
+      placeholder="Enter scramble"
+      value={scramble}
+      onChange={handleChange}
+      onInput={handleInput}
+      className="w-full p-3 text-lg md:text-lg font-mono leading-normal resize-none overflow-hidden min-h-[40px]" // Added font-mono and tracking-wide
+    />
   );
 }

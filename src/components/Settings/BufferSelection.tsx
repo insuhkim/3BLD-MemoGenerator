@@ -1,8 +1,22 @@
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { SettingsContext } from "@/context/SettingsContext";
-import "@/styles/table.css";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-import styles from "./Settings.module.css";
 
 function BufferSelectionBox({
   buffer,
@@ -14,18 +28,21 @@ function BufferSelectionBox({
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
   return (
-    <div>
-      <select
-        value={buffer}
-        onChange={(e) => setBuffer(e.target.value as Speffz)}
-      >
+    <Select
+      value={buffer}
+      onValueChange={(value) => setBuffer(value as Speffz)}
+    >
+      <SelectTrigger className="w-full mt-1 sm:w-[120px]">
+        <SelectValue placeholder="Select buffer" />
+      </SelectTrigger>
+      <SelectContent>
         {AtoX.split("").map((letter) => (
-          <option key={letter} value={letter}>
+          <SelectItem key={letter} value={letter}>
             {letter}
-          </option>
+          </SelectItem>
         ))}
-      </select>
-    </div>
+      </SelectContent>
+    </Select>
   );
 }
 
@@ -37,37 +54,38 @@ export default function BufferSelection() {
 
   const { settings, setSettings } = context;
   return (
-    <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Buffer Selection</legend>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Method</th>
-            <th>Edge Buffer</th>
-            <th>Corner Buffer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>M2R2</td>
-            <td>U</td>
-            <td>V</td>
-          </tr>
-          <tr>
-            <td>Old Pochmann</td>
-            <td>B</td>
-            <td>A</td>
-          </tr>
-          <tr>
-            <td>3Style</td>
-            <td>C</td>
-            <td>C</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className={styles.sectionFlex}>
-        <div>
-          <label className={styles.label}>Edge Buffer</label>
+    <div className="space-y-6">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[150px]">Method</TableHead>
+            <TableHead className="text-center">Edge</TableHead>
+            <TableHead className="text-center">Corner</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>M2R2</TableCell>
+            <TableCell className="text-center">U</TableCell>
+            <TableCell className="text-center">V</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Old Pochmann</TableCell>
+            <TableCell className="text-center">B</TableCell>
+            <TableCell className="text-center">A</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>3Style</TableCell>
+            <TableCell className="text-center">C</TableCell>
+            <TableCell className="text-center">C</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+        <div className="flex-1">
+          <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
+            Edge Buffer
+          </Label>
           <BufferSelectionBox
             buffer={settings.edgeBuffer}
             setBuffer={(buffer) =>
@@ -78,8 +96,10 @@ export default function BufferSelection() {
             }
           />
         </div>
-        <div>
-          <label className={styles.label}>Corner Buffer</label>
+        <div className="flex-1">
+          <Label htmlFor="cornerBufferSelect" className="text-sm font-medium">
+            Corner Buffer
+          </Label>
           <BufferSelectionBox
             buffer={settings.cornerBuffer}
             setBuffer={(buffer) =>
@@ -91,6 +111,6 @@ export default function BufferSelection() {
           />
         </div>
       </div>
-    </fieldset>
+    </div>
   );
 }
