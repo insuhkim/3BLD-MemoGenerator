@@ -1,3 +1,4 @@
+import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
 import makeCornerLetterPair from "@/utils/makeLetterPair/makeCornerLetterPair";
 import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
@@ -6,7 +7,6 @@ import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { useContext } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
-import styles from "./MemoResult.module.css"; // import the CSS module
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
@@ -47,25 +47,35 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.memo}>
+    <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center break-words">
+      <div className="text-xl md:text-2xl break-words">
         {edgeString && (
-          <div>
-            <h2>Edge</h2>
-            <h3>{edgeString}</h3>
+          <div className="mb-2">
+            <h2 className="text-lg font-semibold text-muted-foreground">
+              Edge
+            </h2>
+            <h3 className="font-mono">{edgeString}</h3>
           </div>
         )}
         {edgeString && cornerString && (
-          <div className={styles.memoDivider}></div>
+          <Separator className="my-3 w-3/5 mx-auto" />
         )}
         {cornerString && (
-          <div>
-            <h2>Corner</h2>
-            <h3>{cornerString}</h3>
+          <div className="mt-2">
+            <h2 className="text-lg font-semibold text-muted-foreground">
+              Corner
+            </h2>
+            <h3 className="font-mono">{cornerString}</h3>
           </div>
         )}
-        <div className={styles.memoDivider}></div>
-        <h2 className={hasCornerParity ? styles.parity : styles.noParity}>
+        <Separator className="my-3 w-3/5 mx-auto" />
+        <h2
+          className={`text-3xl tracking-wide ${
+            hasCornerParity
+              ? "font-extrabold text-destructive"
+              : "font-bold text-muted-foreground"
+          }`}
+        >
           {hasCornerParity ? "Parity" : "No Parity"}
         </h2>
       </div>
