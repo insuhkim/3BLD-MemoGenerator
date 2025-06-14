@@ -1,6 +1,6 @@
 # Blindfolded 3x3x3 Cube Memo Generator
 
-A web tool for generating memo sequences to solve a 3x3 Rubik's Cube blindfolded.  
+A web tool for generating memo sequences to solve a 3x3 Rubik's Cube blindfolded.
 Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/apps/details?id=de.jojo.memogenerator) Android app.
 
 ---
@@ -9,8 +9,8 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 
 - Generate memo sequences for both edges and corners
 - Customizable buffer and cycle break priority
-- ️Clean, user-friendly interface for blindfolded cubers
-- ️Option to scramble only edges or corners
+- Clean, user-friendly interface for blindfolded cubers
+- Option to scramble only edges or corners
 - Interactive cube visualization with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
 - Separate display for flipped edges/corners
 
@@ -27,16 +27,14 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Scramble only edges or corners
 - [x] Buffer table for M2R2, OP, 3-style methods
 - [x] Select top/front face colors in preview
-- [ ] Support for wide moves and cube rotations
 - [x] Support for Memo Swapping
+- [ ] Support for wide moves and cube rotations
 
 ### Improvements
 
+- [x] UI improvements
 - [ ] Refactor and clean up codebase
-- [ ] UI improvements
 - [ ] Clearer descriptions and instructions
-- [ ] Fix mobile sidebar behavior
-- [ ] Accessibility enhancements (labels, keyboard navigation)
 - [ ] More documentation and usage examples
 
 ---
