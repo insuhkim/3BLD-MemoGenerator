@@ -54,7 +54,7 @@ export default function ScrambleInputField({
       value={scramble}
       onChange={handleChange}
       onInput={handleInput}
-      className="w-full p-3 text-lg md:text-lg leading-normal resize-none overflow-hidden min-h-[40px]" // Added md:text-lg
+      className="w-full p-3 text-lg md:text-lg font-mono leading-normal resize-none overflow-hidden min-h-[40px]" // Added font-mono and tracking-wide
     />
   );
 }
