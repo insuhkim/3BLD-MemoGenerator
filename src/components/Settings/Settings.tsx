@@ -1,5 +1,11 @@
 "use client";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -12,7 +18,6 @@ import CycleBreakPriority from "./CycleBreakPriority";
 import MemoSwap from "./MemoSwap";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
-import styles from "./Settings.module.css";
 
 export default function Settings() {
   return (
@@ -20,17 +25,59 @@ export default function Settings() {
       <SheetTrigger asChild>
         <Button variant={"ghost"}>☰</Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+      <SheetContent
+        side="left"
+        className="w-[300px] sm:w-[400px] overflow-y-auto"
+      >
         <SheetHeader>
           <SheetTitle>Settings</SheetTitle>
         </SheetHeader>
         {/* CONTENTS */}
-        <div className={styles["sidebar-content"]}>
-          <BufferSelection />
-          <CycleBreakPriority />
-          <ResultStyle />
-          <MemoSwap />
-          <PreviewStyle />
+        <div>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <span className="flex-grow text-center">Buffer Selection</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <BufferSelection />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>
+                <span className="flex-grow text-center">
+                  Cycle Break Priority
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <CycleBreakPriority />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>
+                <span className="flex-grow text-center">Result Style</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <ResultStyle />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger>
+                <span className="flex-grow text-center">Memo Swap</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <MemoSwap />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-5">
+              <AccordionTrigger>
+                <span className="flex-grow text-center">Preview Style</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4">
+                <PreviewStyle />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </SheetContent>
     </Sheet>

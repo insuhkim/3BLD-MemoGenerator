@@ -1,7 +1,13 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-import styles from "./Settings.module.css";
 
 export default function MemoSwap() {
   const context = useContext(SettingsContext);
@@ -12,34 +18,35 @@ export default function MemoSwap() {
 
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
+  const handleValueChange = (value: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      memoSwap: value as Speffz | "none",
+    }));
+  };
+
   return (
-    <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Memo Swapping</legend>
-      <p className={styles.sectionDescription}>
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
         Choose Memo Swapping for edge when parity occurs. For example, if parity
-        occurs and "B" is chosen, swap those two edges(buffer and "B") and
+        occurs and "B" is chosen, swap those two edges (buffer and "B") and
         “solve” them into the wrong positions.
       </p>
-      <div>
-        <div>
-          <select
-            value={settings.memoSwap}
-            onChange={(e) =>
-              setSettings({
-                ...settings,
-                memoSwap: e.target.value as Speffz,
-              })
-            }
-          >
-            <option value="none">None</option>
+      <div className="space-y-1">
+        <Select value={settings.memoSwap} onValueChange={handleValueChange}>
+          <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Select memo swap target" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">None</SelectItem>
             {AtoX.split("").map((letter) => (
-              <option key={letter} value={letter}>
+              <SelectItem key={letter} value={letter}>
                 {letter}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-        </div>
+          </SelectContent>
+        </Select>
       </div>
-    </fieldset>
+    </div>
   );
 }
