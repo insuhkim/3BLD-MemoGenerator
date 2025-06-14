@@ -19,6 +19,34 @@ import MemoSwap from "./MemoSwap";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
 
+const settingsSections = [
+  {
+    value: "item-1",
+    title: "Buffer Selection",
+    Component: BufferSelection,
+  },
+  {
+    value: "item-2",
+    title: "Cycle Break Priority",
+    Component: CycleBreakPriority,
+  },
+  {
+    value: "item-3",
+    title: "Result Style",
+    Component: ResultStyle,
+  },
+  {
+    value: "item-4",
+    title: "Memo Swap",
+    Component: MemoSwap,
+  },
+  {
+    value: "item-5",
+    title: "Preview Style",
+    Component: PreviewStyle,
+  },
+];
+
 export default function Settings() {
   return (
     <Sheet>
@@ -34,48 +62,16 @@ export default function Settings() {
         {/* CONTENTS */}
         <div>
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <span className="flex-grow text-center">Buffer Selection</span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <BufferSelection />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>
-                <span className="flex-grow text-center">
-                  Cycle Break Priority
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <CycleBreakPriority />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>
-                <span className="flex-grow text-center">Result Style</span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <ResultStyle />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger>
-                <span className="flex-grow text-center">Memo Swap</span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <MemoSwap />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <AccordionTrigger>
-                <span className="flex-grow text-center">Preview Style</span>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <PreviewStyle />
-              </AccordionContent>
-            </AccordionItem>
+            {settingsSections.map(({ value, title, Component }) => (
+              <AccordionItem value={value} key={value}>
+                <AccordionTrigger>
+                  <span className="flex-grow text-center">{title}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-4">
+                  <Component />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
       </SheetContent>
