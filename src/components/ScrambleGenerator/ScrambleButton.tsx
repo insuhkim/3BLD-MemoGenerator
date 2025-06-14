@@ -36,11 +36,11 @@ export default function ScrambleButton({
   }, []);
 
   return (
-    <div className="inline-flex items-center rounded-md border border-input bg-transparent shadow-sm">
+    <div className="inline-flex items-center rounded-md border border-input bg-background shadow-sm">
       <Button
         variant={"ghost"}
         onClick={handleGenerate}
-        className="px-3 py-2 text-sm rounded-r-none hover:bg-accent hover:text-accent-foreground"
+        className="px-3 py-2 text-sm rounded-r-none hover:bg-accent hover:text-accent-foreground bg-background shadow-xs dark:bg-input/30 dark:border-input dark:hover:bg-input/50"
       >
         Scramble ({SCRAMBLE_TYPE_LABELS[scrambleType]})
       </Button>
@@ -50,13 +50,16 @@ export default function ScrambleButton({
           <Button
             variant={"ghost"}
             size="sm"
-            className="px-2 rounded-l-none hover:bg-accent hover:text-accent-foreground"
+            className="px-3 py-2 rounded-l-none hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50"
           >
             <ChevronDown className="h-4 w-4" />
             <span className="sr-only">Select scramble type</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="mt-1">
+        <DropdownMenuContent
+          align="end"
+          className="mt-1 bg-background border-border"
+        >
           {SCRAMBLE_TYPE_OPTIONS.map((type) => (
             <DropdownMenuItem key={type} onClick={() => handleSelectType(type)}>
               {SCRAMBLE_TYPE_LABELS[type]}

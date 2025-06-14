@@ -23,12 +23,11 @@ export default function Settings() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant={"ghost"}>☰</Button>
+        <Button variant={"outline"} size={"icon"}>
+          ☰
+        </Button>
       </SheetTrigger>
-      <SheetContent
-        side="left"
-        className="w-[300px] sm:w-[400px] overflow-y-auto"
-      >
+      <SheetContent side="left" className="w-full sm:w-[400px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Settings</SheetTitle>
         </SheetHeader>
