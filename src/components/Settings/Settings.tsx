@@ -55,19 +55,26 @@ export default function Settings() {
           ☰
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-full sm:w-[400px] overflow-y-auto">
-        <SheetHeader>
+      <SheetContent
+        side="left"
+        className="w-full sm:w-[400px] flex flex-col p-0" // Removed default padding
+      >
+        <SheetHeader className="px-6 pt-6 pb-4 border-b">
+          {" "}
+          {/* Added padding and border */}
           <SheetTitle>Settings</SheetTitle>
         </SheetHeader>
-        {/* CONTENTS */}
-        <div>
+        {/* This div handles scrolling for the accordion content */}
+        <div className="flex-1 overflow-y-auto">
           <Accordion type="single" collapsible className="w-full">
             {settingsSections.map(({ value, title, Component }) => (
               <AccordionItem value={value} key={value}>
-                <AccordionTrigger>
+                <AccordionTrigger className="px-6 hover:no-underline">
+                  {/* Added px-6 for horizontal alignment & common hover style */}
                   <span className="flex-grow text-center">{title}</span>
                 </AccordionTrigger>
-                <AccordionContent className="px-4">
+                <AccordionContent className="px-6 pb-4 pt-2">
+                  {/* Added px-6 for alignment, and vertical padding */}
                   <Component />
                 </AccordionContent>
               </AccordionItem>
