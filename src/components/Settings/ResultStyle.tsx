@@ -1,3 +1,11 @@
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SettingsContext } from "@/context/SettingsContext";
 import {
   CycleNotationStyle,
@@ -5,7 +13,39 @@ import {
   FlippedEdgeStyle,
 } from "@/utils/types/Settings";
 import { useContext } from "react";
-import styles from "./Settings.module.css";
+
+const NO_SEPARATOR_UI_VALUE = "__NO_SEPARATOR__"; // Unique key for UI representation of empty string separator
+
+const CYCLE_STYLE_OPTIONS: { value: CycleNotationStyle; label: string }[] = [
+  { value: "parenthesis", label: "Parenthesis" },
+  { value: "vertical", label: "Vertical" },
+  { value: "none", label: "None" },
+];
+
+const SEPARATOR_OPTIONS: { value: string; label: string }[] = [
+  { value: ",", label: "Comma" },
+  { value: ", ", label: "Comma + Space" },
+  { value: " ", label: "Space" },
+  { value: NO_SEPARATOR_UI_VALUE, label: "None" },
+];
+
+const FLIPPED_EDGE_OPTIONS: { value: FlippedEdgeStyle; label: string }[] = [
+  { value: "none", label: "None" },
+  { value: "unoriented", label: "Unoriented Edge (e.g. (VO) to [V])" },
+  { value: "oriented", label: "Oriented Edge (e.g. (VO) to [O])" },
+];
+
+const FLIPPED_CORNER_OPTIONS: {
+  value: FlippedCornerStyle;
+  label: string;
+}[] = [
+  { value: "none", label: "None" },
+  {
+    value: "top/bottom",
+    label: "Where the top/bottom face belongs to (e.g. (XH) to [H])",
+  },
+  { value: "W/Y", label: "Where the W/Y face is (e.g. (XH) to [S])" },
+];
 
 export default function ResultStyle() {
   const context = useContext(SettingsContext);
@@ -14,101 +54,137 @@ export default function ResultStyle() {
   const { settings, setSettings } = context;
 
   return (
-    <fieldset className={styles.section}>
-      <legend className={styles.sectionLegend}>Result Style</legend>
-      <div>
-        <label htmlFor="cycleStyle" className={styles.label}>
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="cycleStyleSelect" className="text-sm font-medium">
           Cycle Break Style
-        </label>
-        <select
-          id="cycleStyle"
-          className={styles.select}
-          onChange={(e) => {
-            const value = e.target.value;
+        </Label>
+        <Select
+          value={settings.cycleStyle}
+          onValueChange={(value) => {
             setSettings((prev) => ({
               ...prev,
               cycleStyle: value as CycleNotationStyle,
             }));
           }}
-          value={settings.cycleStyle}
         >
-          <option value="parenthesis">Parenthesis</option>
-          <option value="vertical">Vertical</option>
-          <option value="none">None</option>
-        </select>
+          <SelectTrigger id="cycleStyleSelect" className="w-full sm:w-[200px]">
+            <SelectValue placeholder="Select cycle style" />
+          </SelectTrigger>
+          <SelectContent>
+            {CYCLE_STYLE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-      <div>
-        <label htmlFor="resultSeparator" className={styles.label}>
+
+      <div className="space-y-2">
+        <Label htmlFor="resultSeparatorSelect" className="text-sm font-medium">
           Separator
-        </label>
-        <select
-          id="resultSeparator"
-          className={styles.select}
-          onChange={(e) => {
-            const value = e.target.value;
+        </Label>
+        <Select
+          value={
+            settings.resultSeparator === ""
+              ? NO_SEPARATOR_UI_VALUE
+              : settings.resultSeparator
+          }
+          onValueChange={(selectedValue) => {
+            const actualValue =
+              selectedValue === NO_SEPARATOR_UI_VALUE ? "" : selectedValue;
             setSettings((prev) => ({
               ...prev,
-              resultSeparator: value,
+              resultSeparator: actualValue,
             }));
           }}
-          value={settings.resultSeparator}
         >
-          <option value=",">Comma</option>
-          <option value=", ">Comma + Space</option>
-          <option value=" ">Space</option>
-          <option value="">None</option>
-        </select>
+          <SelectTrigger
+            id="resultSeparatorSelect"
+            className="w-full sm:w-[200px]"
+          >
+            <SelectValue placeholder="Select separator" />
+          </SelectTrigger>
+          <SelectContent>
+            {SEPARATOR_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-      <br />
-      <div>
-        <label className={styles.label}>
+
+      <div className="space-y-3">
+        <Label className="text-sm font-medium">
           Show Flipped Edge/Corners Separately
-        </label>
-        <div className={styles.flippedSection}>
-          <div>
-            <span>Edges: </span>
-            <select
-              className={styles.select}
-              onChange={(e) => {
-                const value = e.target.value;
+        </Label>
+        <div className="space-y-4 pl-2">
+          <div className="space-y-1">
+            <Label
+              htmlFor="flippedEdgeSelect"
+              className="text-xs text-muted-foreground"
+            >
+              Edges:
+            </Label>
+            <Select
+              value={settings.showFlippedEdge}
+              onValueChange={(value) => {
                 setSettings((prev) => ({
                   ...prev,
                   showFlippedEdge: value as FlippedEdgeStyle,
                 }));
               }}
-              value={settings.showFlippedEdge}
             >
-              <option value="none">None</option>
-              <option value="unoriented">
-                Unoriented Edge (e.g. (VO) to [V])
-              </option>
-              <option value="oriented">Oriented Edge (e.g. (VO) to [O])</option>
-            </select>
+              <SelectTrigger
+                id="flippedEdgeSelect"
+                className="w-full sm:w-[320px]"
+              >
+                <SelectValue placeholder="Select flipped edge style" />
+              </SelectTrigger>
+              <SelectContent>
+                {FLIPPED_EDGE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <span>Corners: </span>
-            <select
-              className={styles.select}
-              onChange={(e) => {
-                const value = e.target.value;
+          <div className="space-y-1">
+            <Label
+              htmlFor="flippedCornerSelect"
+              className="text-xs text-muted-foreground"
+            >
+              Corners:
+            </Label>
+            <Select
+              value={settings.showFlippedCorner}
+              onValueChange={(value) => {
                 setSettings((prev) => ({
                   ...prev,
                   showFlippedCorner: value as FlippedCornerStyle,
                 }));
               }}
-              value={settings.showFlippedCorner}
             >
-              <option value="none">None</option>
-              <option value="top/bottom">
-                Where the top/bottom face belongs to (e.g. (XH) to [H])
-              </option>
-              <option value="W/Y">
-                Where the W/Y face is (e.g. (XH) to [S])
-              </option>
-            </select>
+              <SelectTrigger
+                id="flippedCornerSelect"
+                className="w-full sm:w-[320px]"
+              >
+                <SelectValue placeholder="Select flipped corner style" />
+              </SelectTrigger>
+              <SelectContent>
+                {FLIPPED_CORNER_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
-    </fieldset>
+    </div>
   );
 }
