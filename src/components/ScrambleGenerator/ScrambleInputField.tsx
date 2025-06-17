@@ -1,9 +1,8 @@
 "use client";
 
+import { isValidScramble } from "@/utils/scramble/isValidScramble";
 import { useCallback, useEffect, useRef } from "react";
 import { Textarea } from "../ui/textarea";
-
-const SCRAMBLE_REGEX = /^[UDFBLR2' ]*$/;
 
 export default function ScrambleInputField({
   scramble,
@@ -35,8 +34,8 @@ export default function ScrambleInputField({
   }, [adjustHeight]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value.toUpperCase();
-    if (SCRAMBLE_REGEX.test(value)) {
+    const value = e.target.value;
+    if (isValidScramble(value)) {
       setScramble(value);
     }
   };

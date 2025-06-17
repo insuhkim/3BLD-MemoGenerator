@@ -42,7 +42,7 @@ const FLIPPED_CORNER_OPTIONS: {
   { value: "none", label: "None" },
   {
     value: "top/bottom",
-    label: "Where the top/bottom face belongs to (e.g. (XH) to [H])",
+    label: "Where the non W/Y face is(e.g. (XH) to [H])",
   },
   { value: "W/Y", label: "Where the W/Y face is (e.g. (XH) to [S])" },
 ];
