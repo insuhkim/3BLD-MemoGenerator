@@ -40,13 +40,16 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
     : "bg-neutral-800";
 
   return (
-    <Sheet>
+    <Sheet modal={false}>
       <SheetTrigger asChild>
         <Button variant="outline">Preview</Button>
       </SheetTrigger>
       <SheetContent
         side="right"
-        className={`w-full sm:w-[540px] p-0 ${sheetContentBackground}`}
+        className="w-full sm:w-[540px] p-0"
+        onInteractOutside={(event) => {
+          event.preventDefault();
+        }}
       >
         <SheetHeader className="p-6 pb-4">
           <SheetTitle>Cube Preview</SheetTitle>
