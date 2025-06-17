@@ -28,7 +28,7 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Buffer table for M2R2, OP, 3-style methods
 - [x] Select top/front face colors in preview
 - [x] Support for Memo Swapping
-- [ ] Support for wide moves and cube rotations
+- [x] Support for wide moves and cube rotations
 
 ### Improvements
 
