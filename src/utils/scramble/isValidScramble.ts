@@ -1,7 +1,7 @@
 import { Alg } from "cubing/alg";
 
 export function isValidScramble(scramble: string): boolean {
-  const TEST_ONE_MOVE = /^([RLUDFB]w?|[MES])(\d+)?'?$/;
+  const TEST_ONE_MOVE = /^([RLUDFB]w?|[MESxyz])(\d+)?'?$/;
   try {
     const alg = Alg.fromString(scramble).experimentalSimplify();
     for (const node of alg.childAlgNodes()) {
