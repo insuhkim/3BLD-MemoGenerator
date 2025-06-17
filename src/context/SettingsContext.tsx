@@ -32,6 +32,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     postRotation: "",
     cubePreviewStyle: "3D",
     memoSwap: "none",
+    applyScrambleRotationToPreview: false,
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
