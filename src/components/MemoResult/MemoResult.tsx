@@ -11,8 +11,6 @@ import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
 import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
 import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
-import simplifyScramble from "@/utils/scramble/simplifyScramble";
-import { convertMoves } from "@/utils/scramble/translateRotation";
 import { ChevronsUpDown } from "lucide-react";
 import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
@@ -24,13 +22,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
 
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
-  scramble = simplifyScramble(scramble);
 
-  const [m, r] = convertMoves(scramble.split(" "));
-  scramble = m;
-
-  console.log("Converted Moves:", m);
-  console.log("Rotations:", r);
   const cube = applyScramble({ type: "3x3", scramble });
   if (!cube) {
     return (
