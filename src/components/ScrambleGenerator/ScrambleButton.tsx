@@ -11,11 +11,17 @@ import { ChevronDown } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Button } from "../ui/button";
 
-type ScrambleTypeOption = "333" | "edges" | "corners";
+type ScrambleTypeOption = "333" | "edges" | "corners" | "333ni";
 
-const SCRAMBLE_TYPE_OPTIONS: ScrambleTypeOption[] = ["333", "edges", "corners"];
+const SCRAMBLE_TYPE_OPTIONS: ScrambleTypeOption[] = [
+  "333",
+  "333ni",
+  "edges",
+  "corners",
+];
 const SCRAMBLE_TYPE_LABELS: Record<ScrambleTypeOption, string> = {
   "333": "Normal",
+  "333ni": "Blindfolded",
   edges: "Edge",
   corners: "Corner",
 };

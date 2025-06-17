@@ -1,3 +1,4 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -82,7 +83,7 @@ export default function PreviewStyle() {
         >
           <SelectTrigger
             id="postRotationSelect"
-            className="w-full sm:w-[280px]"
+            className="w-full sm:w-[180px]"
           >
             <SelectValue placeholder="Select post rotation" />
           </SelectTrigger>
@@ -94,6 +95,31 @@ export default function PreviewStyle() {
             ))}
           </SelectContent>
         </Select>
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="applyScrambleRotationToPreviewCheckbox"
+            checked={settings.applyScrambleRotationToPreview}
+            onCheckedChange={(checked) => {
+              setSettings((prev) => ({
+                ...prev,
+                applyScrambleRotationToPreview: !!checked, // Ensure boolean value
+              }));
+            }}
+          />
+          <Label
+            htmlFor="applyScrambleRotationToPreviewCheckbox"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Apply scramble rotations to preview
+          </Label>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          If enabled, the preview will rotate according to the scramble
+          rotations. For example, if the scramble is "Fw", the preview will also
+          rotate with "z" move.
+        </p>
       </div>
 
       <div className="space-y-2">

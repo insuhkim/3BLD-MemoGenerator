@@ -2,7 +2,13 @@
 import { TwistyPlayer } from "cubing/twisty";
 import { useEffect, useRef } from "react";
 
-export default function Cube3DPlayer({ scramble }: { scramble: string }) {
+export default function Cube3DPlayer({
+  scramble,
+  background,
+}: {
+  scramble: string;
+  background?: "none" | "auto";
+}) {
   const twistyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,7 +19,7 @@ export default function Cube3DPlayer({ scramble }: { scramble: string }) {
 
     const twisty = new TwistyPlayer({
       alg: scramble,
-      background: "none",
+      background,
       controlPanel: "none",
     });
 

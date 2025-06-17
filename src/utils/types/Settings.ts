@@ -42,4 +42,5 @@ export type Settings = {
   postRotation: Rotation;
   cubePreviewStyle: CubePreviewStyle;
   memoSwap: "none" | Speffz;
+  applyScrambleRotationToPreview: boolean;
 };
