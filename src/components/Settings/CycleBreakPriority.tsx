@@ -28,7 +28,7 @@ export default function CycleBreakPriority() {
             id="edgePriority"
             type="text"
             placeholder="e.g. ABC"
-            value={settings.edgePriority.join("")} // Join array for display
+            value={settings.edgePriority.join(" ")} // Join array for display
             onChange={(e) => {
               const value = e.target.value;
               const arr = [...value.toUpperCase()].filter(
@@ -51,7 +51,7 @@ export default function CycleBreakPriority() {
             id="cornerPriority"
             type="text"
             placeholder="e.g. ABC"
-            value={settings.cornerPriority.join("")} // Join array for display
+            value={settings.cornerPriority.join(" ")} // Join array for display
             onChange={(e) => {
               const value = e.target.value;
               const arr = [...value.toUpperCase()].filter(
