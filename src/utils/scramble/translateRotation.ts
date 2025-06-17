@@ -17,7 +17,7 @@ function shift(
 // Translate [move] after applying [rotation].
 // For example, x' U is equivalent to B,
 // so translateRotation(["x", true], "U") returns "B".
-function translateRotation(rotation: simpleRotation, move: move): move {
+function applyRotationToMove(rotation: simpleRotation, move: move): move {
   const inverse = rotation[1];
   let arr: baseMove[] = [];
   switch (rotation[0]) {
@@ -44,7 +44,7 @@ type wideMove = "Uw" | "Dw" | "Lw" | "Rw" | "Fw" | "Bw";
 // Rw = L x, Lw = R x' (This was original, Lw U -> R B + x')
 // To match Lw U -> R F + x, Lw must be R x.
 // So, Lw: [["R", false], ["x", false]]
-function convertWideMove(move: wideMove): [move, simpleRotation] {
+function decomposeWideMove(move: wideMove): [move, simpleRotation] {
   switch (move) {
     case "Uw": // D, y
       return [
@@ -85,7 +85,7 @@ type sliceMove = "M" | "E" | "S";
 // M = R L' x'
 // E = U D' y'
 // S = B F' z
-function convertSliceMove(move: sliceMove): [move[], simpleRotation] {
+function decomposeSliceMove(move: sliceMove): [move[], simpleRotation] {
   switch (move) {
     case "M": // R L' x'
       return [
@@ -114,7 +114,7 @@ function convertSliceMove(move: sliceMove): [move[], simpleRotation] {
   }
 }
 
-function convertMove(moveStr: string): [move[], simpleRotation[]] {
+function parseMoveString(moveStr: string): [move[], simpleRotation[]] {
   if (!moveStr) {
     return [[], []];
   } // Handle empty move string
@@ -146,17 +146,19 @@ function convertMove(moveStr: string): [move[], simpleRotation[]] {
   if (["x", "y", "z"].includes(basePart)) {
     // Pure rotation (x, y, z)
     componentMoves = []; // No physical moves
-    associatedRotations = [[basePart as baseRotation, isInverseFromPrime]];
+    associatedRotations = [[basePart as baseRotation, false]];
   } else if (["M", "E", "S"].includes(basePart)) {
     // Slice move
-    const [sliceBaseMoves, sliceRotation] = convertSliceMove(
+    const [sliceBaseMoves, sliceRotation] = decomposeSliceMove(
       basePart as sliceMove
     );
     componentMoves = sliceBaseMoves;
     associatedRotations = [sliceRotation];
   } else if (basePart.endsWith("w")) {
     // Wide move
-    const [wideBaseMove, wideRotation] = convertWideMove(basePart as wideMove);
+    const [wideBaseMove, wideRotation] = decomposeWideMove(
+      basePart as wideMove
+    );
     componentMoves = [wideBaseMove];
     associatedRotations = [wideRotation];
   } else if (["U", "D", "L", "R", "F", "B"].includes(basePart)) {
@@ -208,9 +210,9 @@ export function convertMoves(moves: string[]): [string, string] {
   const allRotations: simpleRotation[] = [];
 
   for (const move of moves) {
-    const [unitMoves, rotations] = convertMove(move);
+    const [unitMoves, rotations] = parseMoveString(move);
     const translatedMoves = unitMoves.map((m) => {
-      for (const r of allRotations) m = translateRotation(r, m);
+      for (const r of allRotations) m = applyRotationToMove(r, m);
       return m;
     });
     allMoves.push(...translatedMoves);
