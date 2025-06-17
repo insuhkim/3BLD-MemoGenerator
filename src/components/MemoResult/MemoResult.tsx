@@ -11,19 +11,39 @@ import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
 import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
 import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
+import simplifyScramble from "@/utils/scramble/simplifyScramble";
+import { convertMoves } from "@/utils/scramble/translateRotation";
 import { ChevronsUpDown } from "lucide-react";
 import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
-  }
+
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
+  scramble = simplifyScramble(scramble);
 
+  const [m, r] = convertMoves(scramble.split(" "));
+  scramble = m;
+
+  console.log("Converted Moves:", m);
+  console.log("Rotations:", r);
   const cube = applyScramble({ type: "3x3", scramble });
+  if (!cube) {
+    return (
+      <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center">
+        <h2 className="text-xl font-semibold text-muted-foreground">
+          Invalid Scramble {scramble}
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Please enter a valid scramble in standard notation.
+        </p>
+      </div>
+    );
+  }
   const corner = makeCornerMemo(
     cube,
     settings.cornerBuffer,
