@@ -5,6 +5,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { convertMoves } from "@/utils/scramble/translateRotation";
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import { Button } from "../ui/button";
@@ -28,11 +29,15 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
+  const [converted, rotation] = convertMoves(scramble.split(" "));
 
-  scramble =
-    settings.postRotation && settings.cubePreviewStyle === "3D"
-      ? `${scramble} ${settings.postRotation}`
-      : scramble;
+  scramble = converted;
+  if (settings.cubePreviewStyle === "3D") {
+    if (settings.applyScrambleRotationToPreview)
+      scramble = `${scramble} ${rotation}`;
+    if (settings.postRotation)
+      scramble = `${scramble} ${settings.postRotation}`;
+  }
 
   const cube3DBackground = isLightMode ? "auto" : "none";
   const sheetContentBackground = isLightMode
