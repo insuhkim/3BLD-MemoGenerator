@@ -4,11 +4,34 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
 
+const siteUrl = "https://3bld-memo-generator.vercel.app";
+
 export const metadata: Metadata = {
   title: "Memo Generator",
   description: "Memo Generator for 3x3 blindfolded",
   icons: {
     icon: "/icons/eyemask.png",
+  },
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Memo Generator",
+    description: "Memo Generator for 3x3 blindfolded",
+    url: siteUrl,
+    siteName: "Memo Generator",
+    images: [
+      {
+        url: "/icons/eyemask.png", // Recommended: create a specific Open Graph image (e.g., 1200x630px) and use its path here.
+        alt: "Memo Generator Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Memo Generator",
+    description: "Memo Generator for 3x3 blindfolded",
+    images: [`${siteUrl}/icons/eyemask.png`], // Recommended: use a specific Twitter card image.
   },
 };
 
