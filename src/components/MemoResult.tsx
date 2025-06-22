@@ -15,6 +15,8 @@ import { ChevronsUpDown } from "lucide-react";
 import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
+import { convertMoves } from "@/utils/scramble/translateRotation";
+
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
   if (!context)
@@ -23,7 +25,8 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
 
-  const cube = applyScramble({ type: "3x3", scramble });
+  const [simpleMoves, rotations] = convertMoves(scramble.split(" "));
+  const cube = applyScramble({ type: "3x3", scramble: simpleMoves });
   if (!cube) {
     return (
       <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center">
