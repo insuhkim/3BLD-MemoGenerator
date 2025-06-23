@@ -25,10 +25,12 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Integration with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
 - [x] Option to show flipped edges/corners separately
 - [x] Scramble only edges or corners
-- [x] Buffer table for M2R2, OP, 3-style methods
 - [x] Select top/front face colors in preview
 - [x] Support for Memo Swapping
 - [x] Support for wide moves and cube rotations
+- [ ] Hyperlink letterpair to [BLDDB](https://blddb.net/)
+- [ ] Customizable Letter Scheme
+- [ ] Customizable Letter Pair
 
 ### Improvements
 
