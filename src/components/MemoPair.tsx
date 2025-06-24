@@ -1,12 +1,13 @@
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import CornerToURL from "@/utils/BLDDB/CornerToURL";
 import Edge2URL from "@/utils/BLDDB/EdgeToURL";
 import { Speffz } from "@/utils/types/Speffz";
-import { Link } from "lucide-react";
+import { Link, Pencil } from "lucide-react";
 
 interface MemoPairProps {
   pieceType: "edge" | "corner";
@@ -31,25 +32,39 @@ export default function MemoPair({
       ? Edge2URL(buffer, target1, target2)
       : CornerToURL(buffer, target1, target2);
 
+  const handleModify = () => {
+    // TODO: Implement modification logic here
+    console.log("Modify pair:", target1, target2);
+  };
+
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
           {target1}
           {target2}
         </span>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-2">
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-sm font-sans"
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem asChild>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Link className="h-4 w-4" />
+            <span>Search on BLDDB</span>
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleModify}
+          className="flex items-center gap-2 cursor-pointer"
         >
-          <Link className="h-4 w-4" />
-          Search on BLDDB
-        </a>
-      </PopoverContent>
-    </Popover>
+          <Pencil className="h-4 w-4" />
+          <span>Modify Letter Pair</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
