@@ -1,5 +1,5 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
