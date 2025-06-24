@@ -15,7 +15,7 @@ import {
 import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
 import CycleBreakPriority from "./CycleBreakPriority";
-import MemoSwap from "./MemoSwap";
+import MemoSwap from "./MemoSwapParity";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
 
@@ -37,7 +37,7 @@ const settingsSections = [
   },
   {
     value: "item-4",
-    title: "Memo Swap",
+    title: "Memo Swap Parity",
     Component: MemoSwap,
   },
   {
