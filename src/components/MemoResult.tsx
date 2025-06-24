@@ -6,8 +6,6 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
-import makeCornerLetterPair from "@/utils/makeLetterPair/makeCornerLetterPair";
-import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
 import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
 import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
@@ -15,7 +13,9 @@ import { ChevronsUpDown } from "lucide-react";
 import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
+import MemoPair from "@/components/MemoPair";
 import { convertMoves } from "@/utils/scramble/translateRotation";
+import { Speffz } from "@/utils/types/Speffz";
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
@@ -56,18 +56,37 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     settings.edgePriority,
     memoSwap
   );
-  const edgeString = makeEdgeLetterPair(
-    edge,
-    settings.resultSeparator,
-    settings.cycleStyle,
-    settings.showFlippedEdge
-  );
-  const cornerString = makeCornerLetterPair(
-    corner,
-    settings.resultSeparator,
-    settings.cycleStyle,
-    settings.showFlippedCorner
-  );
+
+  const renderPairs = (
+    pieceType: "edge" | "corner",
+    memo: Speffz[][],
+    buffer: Speffz
+  ) => {
+    const pairs: Speffz[][] = [];
+    memo.forEach((cycle) => {
+      for (let i = 0; i < cycle.length; i += 2) {
+        if (i + 1 < cycle.length) {
+          pairs.push([cycle[i], cycle[i + 1]]);
+        } else {
+          pairs.push([cycle[i]]);
+        }
+      }
+    });
+
+    return (
+      <div className="flex flex-wrap gap-x-1 justify-center font-mono text-xl md:text-2xl">
+        {pairs.map((pair, index) => (
+          <MemoPair
+            key={index}
+            pieceType={pieceType}
+            buffer={buffer}
+            target1={pair[0]}
+            target2={pair[1]}
+          />
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center break-words">
@@ -88,24 +107,24 @@ export default function MemoResult({ scramble }: { scramble: string }) {
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="text-xl md:text-2xl break-words pt-2">
-            {edgeString && (
+          <div className="break-words pt-2">
+            {edge.length > 0 && (
               <div className="mb-2">
                 <h2 className="text-lg font-semibold text-muted-foreground">
                   Edge
                 </h2>
-                <h3 className="font-mono">{edgeString}</h3>
+                {renderPairs("edge", edge, settings.edgeBuffer)}
               </div>
             )}
-            {edgeString && cornerString && (
+            {edge.length > 0 && corner.length > 0 && (
               <Separator className="my-3 w-3/5 mx-auto" />
             )}
-            {cornerString && (
+            {corner.length > 0 && (
               <div className="mt-2">
                 <h2 className="text-lg font-semibold text-muted-foreground">
                   Corner
                 </h2>
-                <h3 className="font-mono">{cornerString}</h3>
+                {renderPairs("corner", corner, settings.cornerBuffer)}
               </div>
             )}
             <Separator className="my-3 w-3/5 mx-auto" />
