@@ -17,7 +17,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { JSX, useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
-import MemoPair from "@/components/MemoPair";
+import MemoPair from "@/components/MemoResult/MemoPair";
 import { convertMoves } from "@/utils/scramble/translateRotation";
 import { Speffz } from "@/utils/types/Speffz";
 
