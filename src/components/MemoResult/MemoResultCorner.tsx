@@ -79,7 +79,11 @@ export default function MemoResultCorner({
         : ""
       : "";
     const prefix = cycleBreakStart && cycleStyle === "parenthesis" ? "(" : "";
-    const suffix = cycleBreakEnd && cycleStyle === "parenthesis" ? ")" : "";
+    const suffix =
+      ((cycleBreakMiddle && i + 2 > allTargets.length) || cycleBreakEnd) &&
+      cycleStyle === "parenthesis"
+        ? ")"
+        : "";
 
     if (cycleBreakStart && cycleStyle === "vertical" && i > 0) {
       components.push(

@@ -36,7 +36,11 @@ export default function MemoPair({
 }: MemoPairProps) {
   // For odd-length cycles, the last target is not paired.
   if (!target2) {
-    return <span className="p-1 rounded-md">{target1}</span>;
+    return (
+      <span className="p-1 rounded-md">
+        {entireString || prefix + target1Character + suffix}
+      </span>
+    );
   }
 
   const url =
