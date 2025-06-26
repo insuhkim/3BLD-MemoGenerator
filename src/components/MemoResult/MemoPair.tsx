@@ -14,7 +14,9 @@ interface MemoPairProps {
   buffer: Speffz;
   target1: Speffz;
   target2?: Speffz;
-  middleCharacter?: string;
+  prefix?: string;
+  infix?: string;
+  suffix?: string;
   target1Character?: string;
   target2Character?: string;
   entireString?: string;
@@ -25,7 +27,9 @@ export default function MemoPair({
   buffer,
   target1,
   target2,
-  middleCharacter = "",
+  prefix = "",
+  suffix = "",
+  infix = "",
   target1Character = target1,
   target2Character = target2,
   entireString,
@@ -50,7 +54,7 @@ export default function MemoPair({
       <DropdownMenuTrigger asChild>
         <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
           {entireString ||
-            target1Character + middleCharacter + target2Character}
+            prefix + target1Character + infix + target2Character + suffix}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
