@@ -4,16 +4,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import CornerToURL from "@/utils/BLDDB/CornerToURL";
-import Edge2URL from "@/utils/BLDDB/EdgeToURL";
 import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
 
 interface MemoPairProps {
-  pieceType: "edge" | "corner";
   buffer: Speffz;
   target1: Speffz;
   target2?: Speffz;
+  url?: string;
   prefix?: string;
   infix?: string;
   suffix?: string;
@@ -23,10 +21,10 @@ interface MemoPairProps {
 }
 
 export default function MemoPair({
-  pieceType,
   buffer,
   target1,
   target2,
+  url,
   prefix = "",
   suffix = "",
   infix = "",
@@ -42,11 +40,6 @@ export default function MemoPair({
       </span>
     );
   }
-
-  const url =
-    pieceType === "edge"
-      ? Edge2URL(buffer, target1, target2)
-      : CornerToURL(buffer, target1, target2);
 
   const handleModify = () => {
     // TODO: Implement modification logic here

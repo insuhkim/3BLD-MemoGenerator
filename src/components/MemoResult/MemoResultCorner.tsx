@@ -1,3 +1,4 @@
+import CornerToURL from "@/utils/BLDDB/CornerToURL";
 import {
   cornerToSpeffz,
   isSameCornerSpeffz,
@@ -93,10 +94,14 @@ export default function MemoResultCorner({
       );
     }
 
+    const url = allTargets[i + 1]
+      ? CornerToURL(buffer, allTargets[i], allTargets[i + 1])
+      : undefined;
+
     components.push(
       <MemoPair
         key={`pair-corner-${i}`}
-        pieceType="corner"
+        url={url}
         buffer={buffer}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}

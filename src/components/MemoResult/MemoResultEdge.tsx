@@ -1,3 +1,4 @@
+import Edge2URL from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
   isSameEdgeSpeffz,
@@ -85,11 +86,14 @@ export default function MemoResultEdge({
         </span>
       );
     }
+    const url = allTargets[i + 1]
+      ? Edge2URL(buffer, allTargets[i], allTargets[i + 1])
+      : undefined;
 
     components.push(
       <MemoPair
         key={`pair-corner-${i}`}
-        pieceType="edge"
+        url={url}
         buffer={buffer}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
