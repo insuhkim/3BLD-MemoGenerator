@@ -83,7 +83,7 @@ export default function MemoResultCorner({
 
     if (cycleBreakStart && cycleStyle === "vertical" && i > 0) {
       components.push(
-        <span key={`cycle-break-start-${i}`} className="p-0">
+        <span key={`cycle-break-start-${i}`} className="p-0.5">
           |
         </span>
       );
@@ -121,11 +121,7 @@ export default function MemoResultCorner({
   }
   return (
     <div className="flex flex-wrap gap-x-1 justify-center font-mono text-xl md:text-2xl">
-      {components.map((component, index) => (
-        <span key={index} className="p-0.5">
-          {component}
-        </span>
-      ))}
+      {components}
     </div>
   );
 }

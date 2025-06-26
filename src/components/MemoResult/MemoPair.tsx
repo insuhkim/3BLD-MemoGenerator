@@ -36,7 +36,7 @@ export default function MemoPair({
 }: MemoPairProps) {
   // For odd-length cycles, the last target is not paired.
   if (!target2) {
-    return <span className="p-0">{target1}</span>;
+    return <span className="p-1 rounded-md">{target1}</span>;
   }
 
   const url =
@@ -52,7 +52,7 @@ export default function MemoPair({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <span className="cursor-pointer p-0.5 rounded-md hover:bg-accent">
+        <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
           {entireString ||
             prefix + target1Character + infix + target2Character + suffix}
         </span>
