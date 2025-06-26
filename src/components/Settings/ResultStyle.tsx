@@ -14,19 +14,10 @@ import {
 } from "@/utils/types/Settings";
 import { useContext } from "react";
 
-const NO_SEPARATOR_UI_VALUE = "__NO_SEPARATOR__"; // Unique key for UI representation of empty string separator
-
 const CYCLE_STYLE_OPTIONS: { value: CycleNotationStyle; label: string }[] = [
   { value: "parenthesis", label: "Parenthesis" },
   { value: "vertical", label: "Vertical" },
   { value: "none", label: "None" },
-];
-
-const SEPARATOR_OPTIONS: { value: string; label: string }[] = [
-  { value: ",", label: "Comma" },
-  { value: ", ", label: "Comma + Space" },
-  { value: " ", label: "Space" },
-  { value: NO_SEPARATOR_UI_VALUE, label: "None" },
 ];
 
 const FLIPPED_EDGE_OPTIONS: { value: FlippedEdgeStyle; label: string }[] = [
@@ -73,41 +64,6 @@ export default function ResultStyle() {
           </SelectTrigger>
           <SelectContent>
             {CYCLE_STYLE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="resultSeparatorSelect" className="text-sm font-medium">
-          Separator
-        </Label>
-        <Select
-          value={
-            settings.resultSeparator === ""
-              ? NO_SEPARATOR_UI_VALUE
-              : settings.resultSeparator
-          }
-          onValueChange={(selectedValue) => {
-            const actualValue =
-              selectedValue === NO_SEPARATOR_UI_VALUE ? "" : selectedValue;
-            setSettings((prev) => ({
-              ...prev,
-              resultSeparator: actualValue,
-            }));
-          }}
-        >
-          <SelectTrigger
-            id="resultSeparatorSelect"
-            className="w-full sm:w-[200px]"
-          >
-            <SelectValue placeholder="Select separator" />
-          </SelectTrigger>
-          <SelectContent>
-            {SEPARATOR_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>

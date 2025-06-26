@@ -25,7 +25,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cornerPriority: [],
     edgeBuffer: "C",
     cornerBuffer: "C",
-    resultSeparator: ", ",
     cycleStyle: "vertical",
     showFlippedEdge: "none",
     showFlippedCorner: "none",

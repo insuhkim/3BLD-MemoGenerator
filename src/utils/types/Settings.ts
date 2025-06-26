@@ -35,7 +35,6 @@ export type Settings = {
   cornerPriority: Speffz[];
   edgeBuffer: Speffz;
   cornerBuffer: Speffz;
-  resultSeparator: string;
   cycleStyle: CycleNotationStyle;
   showFlippedEdge: FlippedEdgeStyle;
   showFlippedCorner: FlippedCornerStyle;
