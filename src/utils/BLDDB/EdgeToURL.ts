@@ -17,7 +17,7 @@ export function EdgeFlipURL(position1: Speffz, position2: Speffz): string {
   )}-${SpeffzEdgeToOrientedPosition(position2)}&mode=flip`;
 }
 
-export function Edge2URL(
+export function EdgeToURL(
   buffer: Speffz,
   position1: Speffz,
   position2: Speffz

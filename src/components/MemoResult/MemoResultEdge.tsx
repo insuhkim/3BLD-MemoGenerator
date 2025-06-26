@@ -1,4 +1,4 @@
-import { Edge2URL } from "@/utils/BLDDB/EdgeToURL";
+import { EdgeToURL } from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
   isSameEdgeSpeffz,
@@ -87,7 +87,7 @@ export default function MemoResultEdge({
       );
     }
     const url = allTargets[i + 1]
-      ? Edge2URL(buffer, allTargets[i], allTargets[i + 1])
+      ? EdgeToURL(buffer, allTargets[i], allTargets[i + 1])
       : undefined;
 
     components.push(
