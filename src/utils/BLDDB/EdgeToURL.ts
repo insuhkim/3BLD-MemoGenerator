@@ -14,7 +14,7 @@ export function SpeffzEdgeToOrientedPosition(edge: Speffz): string {
 export function EdgeFlipURL(position1: Speffz, position2: Speffz): string {
   return `https://v2.blddb.net/flips?position=${SpeffzEdgeToOrientedPosition(
     position1
-  )}-${SpeffzEdgeToOrientedPosition(position2)}&mode=flip`;
+  )}-${SpeffzEdgeToOrientedPosition(position2)}&mode=manmade`;
 }
 
 export function EdgeToURL(
