@@ -1,4 +1,4 @@
-import { EdgeToURL } from "@/utils/BLDDB/EdgeToURL";
+import { EdgeFlipURL, EdgeToURL } from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
   isSameEdgeSpeffz,
@@ -111,12 +111,13 @@ export default function MemoResultEdge({
         showFlippedEdge
       );
       components.push(
-        <span
-          key={`flipped-edge-${index}`}
-          className="p-1 text-muted-foreground"
-        >
-          {representation}
-        </span>
+        <MemoPair
+          key={`flipped-${index}`}
+          url={EdgeFlipURL(buffer, cycle[0])}
+          target1={cycle[0]}
+          target2={cycle[1]}
+          entireString={representation}
+        />
       );
     });
   }
