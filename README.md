@@ -28,7 +28,7 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Select top/front face colors in preview
 - [x] Support for Memo Swapping
 - [x] Support for wide moves and cube rotations
-- [ ] Hyperlink letterpair to [BLDDB](https://blddb.net/)
+- [x] Hyperlink letterpair to [BLDDB](https://blddb.net/)
 - [ ] Customizable Letter Scheme
 - [ ] Customizable Letter Pair
 
