@@ -1,4 +1,4 @@
-import { CornerToURL } from "@/utils/BLDDB/CornerToURL";
+import { CornerToURL, CornerTwistURL } from "@/utils/BLDDB/CornerToURL";
 import { ParityURL } from "@/utils/BLDDB/ParityURL";
 import {
   cornerToSpeffz,
@@ -10,27 +10,6 @@ import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
 import { JSX } from "react";
 import MemoPair from "./MemoPair";
-
-function getFlippedCornerStringRepresentation(
-  cycle: Speffz[],
-  flippedCornerStyle: FlippedCornerStyle
-): string {
-  const cornerFrom = speffzToCorner(cycle[0]);
-  const cornerTo = speffzToCorner(cycle[1]);
-
-  const isClockwiseTwist = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;
-
-  let stickerOrientationToShow: 1 | 2;
-  if (flippedCornerStyle === "W/Y") {
-    stickerOrientationToShow = isClockwiseTwist ? 1 : 2;
-  } else {
-    // flippedCornerStyle === "top/bottom"
-    stickerOrientationToShow = isClockwiseTwist ? 2 : 1;
-  }
-
-  const showingCorner: Corner = [cornerFrom[0], stickerOrientationToShow];
-  return ` [${cornerToSpeffz(showingCorner)}]`;
-}
 
 export default function MemoResultCorner({
   memo,
@@ -121,17 +100,28 @@ export default function MemoResultCorner({
 
   if (showFlippedCorner !== "none") {
     flippedCycles.forEach((cycle, index) => {
-      const representation = getFlippedCornerStringRepresentation(
-        cycle,
-        showFlippedCorner
-      );
+      const cornerFrom = speffzToCorner(cycle[0]);
+      const cornerTo = speffzToCorner(cycle[1]);
+
+      const isCW = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;
+      let stickerOrientationToShow: 1 | 2;
+      if (showFlippedCorner === "W/Y") {
+        stickerOrientationToShow = isCW ? 1 : 2;
+      } else {
+        // flippedCornerStyle === "top/bottom"
+        stickerOrientationToShow = isCW ? 2 : 1;
+      }
+
+      const showingCorner: Corner = [cornerFrom[0], stickerOrientationToShow];
+      const representation = ` [${cornerToSpeffz(showingCorner)}]`;
       components.push(
-        <span
-          key={`flipped-corner-${index}`}
-          className="p-1 text-muted-foreground"
-        >
-          {representation}
-        </span>
+        <MemoPair
+          key={`flipped-${index}`}
+          url={CornerTwistURL(buffer, !isCW, cycle[0], isCW)}
+          target1={cycle[0]}
+          target2={cycle[1]}
+          entireString={representation}
+        />
       );
     });
   }
