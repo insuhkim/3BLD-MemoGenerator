@@ -8,7 +8,7 @@ import { CycleNotationStyle, FlippedEdgeStyle } from "../types/Settings";
 import { Speffz } from "../types/Speffz";
 import makeLetterpair from "./makeLetterpair";
 
-function getFlippedEdgeStringRepresentation(
+export function getFlippedEdgeStringRepresentation(
   cycle: Speffz[],
   flippedEdgeStyle: FlippedEdgeStyle
 ): string {

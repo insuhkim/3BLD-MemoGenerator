@@ -6,11 +6,15 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
+import { getFlippedCornerStringRepresentation } from "@/utils/makeLetterPair/makeCornerLetterPair";
+import { getFlippedEdgeStringRepresentation } from "@/utils/makeLetterPair/makeEdgeLetterPair";
 import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
-import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
-import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
+import makeCornerMemo, {
+  isSameCornerSpeffz,
+} from "@/utils/makeMemo/makeCornerMemo";
+import makeEdgeMemo, { isSameEdgeSpeffz } from "@/utils/makeMemo/makeEdgeMemo";
 import { ChevronsUpDown } from "lucide-react";
-import { useContext, useState } from "react";
+import { JSX, useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
 import MemoPair from "@/components/MemoPair";
@@ -62,28 +66,99 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     memo: Speffz[][],
     buffer: Speffz
   ) => {
-    const pairs: Speffz[][] = [];
-    memo.forEach((cycle) => {
-      for (let i = 0; i < cycle.length; i += 2) {
-        if (i + 1 < cycle.length) {
-          pairs.push([cycle[i], cycle[i + 1]]);
-        } else {
-          pairs.push([cycle[i]]);
-        }
+    const { showFlippedEdge, showFlippedCorner } = settings;
+    const components: JSX.Element[] = [];
+
+    if (pieceType === "edge") {
+      const isFlipped = (cycle: Speffz[]) =>
+        cycle.length === 2 && isSameEdgeSpeffz(cycle[0], cycle[1]);
+
+      const flippedCycles = memo.filter(isFlipped);
+      const nonFlippedCycles = memo.filter((cycle) => !isFlipped(cycle));
+
+      let allTargets = nonFlippedCycles.flat();
+
+      // If not showing flipped separately, treat them as normal pairs
+      if (showFlippedEdge === "none") {
+        allTargets = allTargets.concat(flippedCycles.flat());
       }
-    });
+
+      for (let i = 0; i < allTargets.length; i += 2) {
+        components.push(
+          <MemoPair
+            key={`pair-edge-${i}`}
+            pieceType="edge"
+            buffer={buffer}
+            target1={allTargets[i]}
+            target2={allTargets[i + 1]}
+          />
+        );
+      }
+
+      // Render flipped pieces separately if required
+      if (showFlippedEdge !== "none") {
+        flippedCycles.forEach((cycle, index) => {
+          const representation = getFlippedEdgeStringRepresentation(
+            cycle,
+            showFlippedEdge
+          );
+          components.push(
+            <span
+              key={`flipped-edge-${index}`}
+              className="p-1 text-muted-foreground"
+            >
+              {representation}
+            </span>
+          );
+        });
+      }
+    } else {
+      // pieceType === "corner"
+      const isFlipped = (cycle: Speffz[]) =>
+        cycle.length === 2 && isSameCornerSpeffz(cycle[0], cycle[1]);
+
+      const flippedCycles = memo.filter(isFlipped);
+      const nonFlippedCycles = memo.filter((cycle) => !isFlipped(cycle));
+
+      let allTargets = nonFlippedCycles.flat();
+
+      if (showFlippedCorner === "none") {
+        allTargets = allTargets.concat(flippedCycles.flat());
+      }
+
+      for (let i = 0; i < allTargets.length; i += 2) {
+        components.push(
+          <MemoPair
+            key={`pair-corner-${i}`}
+            pieceType="corner"
+            buffer={buffer}
+            target1={allTargets[i]}
+            target2={allTargets[i + 1]}
+          />
+        );
+      }
+
+      if (showFlippedCorner !== "none") {
+        flippedCycles.forEach((cycle, index) => {
+          const representation = getFlippedCornerStringRepresentation(
+            cycle,
+            showFlippedCorner
+          );
+          components.push(
+            <span
+              key={`flipped-corner-${index}`}
+              className="p-1 text-muted-foreground"
+            >
+              {representation}
+            </span>
+          );
+        });
+      }
+    }
 
     return (
       <div className="flex flex-wrap gap-x-1 justify-center font-mono text-xl md:text-2xl">
-        {pairs.map((pair, index) => (
-          <MemoPair
-            key={index}
-            pieceType={pieceType}
-            buffer={buffer}
-            target1={pair[0]}
-            target2={pair[1]}
-          />
-        ))}
+        {components}
       </div>
     );
   };

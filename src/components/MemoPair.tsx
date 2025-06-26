@@ -14,6 +14,10 @@ interface MemoPairProps {
   buffer: Speffz;
   target1: Speffz;
   target2?: Speffz;
+  middleCharacter?: string;
+  target1Character?: string;
+  target2Character?: string;
+  entireString?: string;
 }
 
 export default function MemoPair({
@@ -21,6 +25,10 @@ export default function MemoPair({
   buffer,
   target1,
   target2,
+  middleCharacter = "",
+  target1Character = target1,
+  target2Character = target2,
+  entireString,
 }: MemoPairProps) {
   // For odd-length cycles, the last target is not paired.
   if (!target2) {
@@ -41,8 +49,8 @@ export default function MemoPair({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
-          {target1}
-          {target2}
+          {entireString ||
+            target1Character + middleCharacter + target2Character}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

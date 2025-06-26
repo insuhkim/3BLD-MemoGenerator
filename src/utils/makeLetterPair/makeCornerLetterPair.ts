@@ -8,7 +8,7 @@ import { CycleNotationStyle, FlippedCornerStyle } from "../types/Settings";
 import { Speffz } from "../types/Speffz";
 import makeLetterpair from "./makeLetterpair";
 
-function getFlippedCornerStringRepresentation(
+export function getFlippedCornerStringRepresentation(
   cycle: Speffz[],
   flippedCornerStyle: FlippedCornerStyle
 ): string {
