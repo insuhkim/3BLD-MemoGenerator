@@ -1,41 +1,97 @@
-import { getFlippedEdgeStringRepresentation } from "@/utils/makeLetterPair/makeEdgeLetterPair";
-import { isSameEdgeSpeffz } from "@/utils/makeMemo/makeEdgeMemo";
-import { FlippedEdgeStyle } from "@/utils/types/Settings";
+import {
+  edgeToSpeffz,
+  isSameEdgeSpeffz,
+  speffzToEdge,
+} from "@/utils/makeMemo/makeEdgeMemo";
+import { Edge } from "@/utils/types/Edge";
+import { CycleNotationStyle, FlippedEdgeStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
 import { JSX } from "react";
 import MemoPair from "./MemoPair";
+
+function getFlippedEdgeStringRepresentation(
+  cycle: Speffz[],
+  flippedEdgeStyle: FlippedEdgeStyle
+): string {
+  const edgePiece = speffzToEdge(cycle[0])[0]; // Get the piece identifier, e.g., "UF"
+
+  const orientationValueForShowingEdge: boolean =
+    flippedEdgeStyle === "unoriented";
+
+  const showingEdge: Edge = [edgePiece, orientationValueForShowingEdge];
+  return ` [${edgeToSpeffz(showingEdge)}]`;
+}
 
 export default function MemoResultEdge({
   memo,
   showFlippedEdge,
   buffer,
+  cycleStyle,
 }: {
   memo: Speffz[][];
   showFlippedEdge: FlippedEdgeStyle;
   buffer: Speffz;
+  cycleStyle: CycleNotationStyle;
 }) {
+  if (memo.length === 0) {
+    return null;
+  }
   const components: JSX.Element[] = [];
+
   const isFlipped = (cycle: Speffz[]) =>
     cycle.length === 2 && isSameEdgeSpeffz(cycle[0], cycle[1]);
 
   const flippedCycles = memo.filter(isFlipped);
   const nonFlippedCycles = memo.filter((cycle) => !isFlipped(cycle));
 
-  let allTargets = nonFlippedCycles.flat();
+  const allTargets =
+    showFlippedEdge === "none" ? memo.flat() : nonFlippedCycles.flat();
 
-  // If not showing flipped separately, treat them as normal pairs
-  if (showFlippedEdge === "none") {
-    allTargets = allTargets.concat(flippedCycles.flat());
-  }
+  const cycleBreakIndices = (
+    showFlippedEdge === "none" ? memo : nonFlippedCycles
+  ).reduce(
+    (acc, cycle) => {
+      if (cycle.length === 0) return acc;
+      const lastIndex = acc.length > 0 ? acc[acc.length - 1] : -1;
+      acc.push(lastIndex + cycle.length);
+      return acc;
+    },
+    [-1]
+  );
 
   for (let i = 0; i < allTargets.length; i += 2) {
+    const cycleBreakMiddle = cycleBreakIndices.includes(i);
+    const cycleBreakEnd = cycleBreakIndices.includes(i + 1);
+    const cycleBreakStart = cycleBreakIndices.includes(i - 1);
+
+    const infix = cycleBreakMiddle
+      ? cycleStyle === "parenthesis"
+        ? ")("
+        : cycleStyle === "vertical"
+        ? "|"
+        : ""
+      : "";
+    const prefix = cycleBreakStart && cycleStyle === "parenthesis" ? "(" : "";
+    const suffix = cycleBreakEnd && cycleStyle === "parenthesis" ? ")" : "";
+
+    if (cycleBreakStart && cycleStyle === "vertical" && i > 0) {
+      components.push(
+        <span key={`cycle-break-start-${i}`} className="p-0">
+          |
+        </span>
+      );
+    }
+
     components.push(
       <MemoPair
-        key={`pair-edge-${i}`}
+        key={`pair-corner-${i}`}
         pieceType="edge"
         buffer={buffer}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
+        infix={infix}
+        prefix={prefix}
+        suffix={suffix}
       />
     );
   }
