@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
-import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
 import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { ChevronsUpDown } from "lucide-react";
@@ -44,6 +43,8 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     settings.cornerBuffer,
     settings.cornerPriority
   );
+  const hasParity = (memo: string[][]) =>
+    memo.reduce((sum, cycle) => sum + cycle.length, 0) % 2 === 1;
   const hasCornerParity = hasParity(corner);
   const memoSwap =
     hasCornerParity && settings.memoSwap !== "none"
@@ -87,6 +88,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   memo={edge}
                   showFlippedEdge={settings.showFlippedEdge}
                   buffer={settings.edgeBuffer}
+                  cycleStyle={settings.cycleStyle}
                 />
               </div>
             )}
@@ -94,7 +96,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
               <Separator className="my-3 w-3/5 mx-auto" />
             )}
             {corner.length > 0 && (
-              <div className="mt-2">
+              <div className="mb-2">
                 <h2 className="text-lg font-semibold text-muted-foreground">
                   Corner
                 </h2>
@@ -102,6 +104,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   memo={corner}
                   showFlippedCorner={settings.showFlippedCorner}
                   buffer={settings.cornerBuffer}
+                  cycleStyle={settings.cycleStyle}
                 />
               </div>
             )}
