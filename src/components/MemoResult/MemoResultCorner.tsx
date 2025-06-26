@@ -1,4 +1,5 @@
 import { CornerToURL } from "@/utils/BLDDB/CornerToURL";
+import { ParityURL } from "@/utils/BLDDB/ParityURL";
 import {
   cornerToSpeffz,
   isSameCornerSpeffz,
@@ -33,14 +34,18 @@ function getFlippedCornerStringRepresentation(
 
 export default function MemoResultCorner({
   memo,
-  showFlippedCorner,
   buffer,
+  showFlippedCorner,
   cycleStyle,
+  memoSwap,
+  edgeBuffer,
 }: {
   memo: Speffz[][];
   showFlippedCorner: FlippedCornerStyle;
   buffer: Speffz;
   cycleStyle: CycleNotationStyle;
+  edgeBuffer: Speffz;
+  memoSwap?: Speffz;
 }) {
   if (memo.length === 0) return null;
 
@@ -94,15 +99,17 @@ export default function MemoResultCorner({
       );
     }
 
-    const url = allTargets[i + 1]
+    const isLastParity = !!allTargets[i + 1];
+    const url = isLastParity
       ? CornerToURL(buffer, allTargets[i], allTargets[i + 1])
+      : memoSwap
+      ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
       : undefined;
 
     components.push(
       <MemoPair
         key={`pair-corner-${i}`}
         url={url}
-        buffer={buffer}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
         infix={infix}

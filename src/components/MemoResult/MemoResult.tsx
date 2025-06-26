@@ -105,6 +105,8 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   showFlippedCorner={settings.showFlippedCorner}
                   buffer={settings.cornerBuffer}
                   cycleStyle={settings.cycleStyle}
+                  edgeBuffer={settings.edgeBuffer}
+                  memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
                 />
               </div>
             )}

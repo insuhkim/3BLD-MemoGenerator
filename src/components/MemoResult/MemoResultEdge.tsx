@@ -94,7 +94,6 @@ export default function MemoResultEdge({
       <MemoPair
         key={`pair-corner-${i}`}
         url={url}
-        buffer={buffer}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
         infix={infix}

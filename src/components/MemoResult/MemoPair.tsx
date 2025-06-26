@@ -8,7 +8,6 @@ import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
 
 interface MemoPairProps {
-  buffer: Speffz;
   target1: Speffz;
   target2?: Speffz;
   url?: string;
@@ -21,7 +20,6 @@ interface MemoPairProps {
 }
 
 export default function MemoPair({
-  buffer,
   target1,
   target2,
   url,
@@ -32,15 +30,6 @@ export default function MemoPair({
   target2Character = target2,
   entireString,
 }: MemoPairProps) {
-  // For odd-length cycles, the last target is not paired.
-  if (!target2) {
-    return (
-      <span className="p-1 rounded-md">
-        {entireString || prefix + target1Character + suffix}
-      </span>
-    );
-  }
-
   const handleModify = () => {
     // TODO: Implement modification logic here
     console.log("Modify pair:", target1, target2);
@@ -51,7 +40,11 @@ export default function MemoPair({
       <DropdownMenuTrigger asChild>
         <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
           {entireString ||
-            prefix + target1Character + infix + target2Character + suffix}
+            prefix +
+              target1Character +
+              (target2 ? infix : "") +
+              (target2Character ?? "") +
+              suffix}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
