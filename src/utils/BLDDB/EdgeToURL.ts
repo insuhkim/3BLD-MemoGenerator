@@ -6,7 +6,7 @@ function SpeffzEdgeToPosition(edge: Speffz): string {
   return isFlipped ? orientedEdge.split("").reverse().join("") : orientedEdge;
 }
 
-export default function Edge2URL(
+export function Edge2URL(
   buffer: Speffz,
   position1: Speffz,
   position2: Speffz

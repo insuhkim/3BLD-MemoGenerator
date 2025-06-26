@@ -1,4 +1,4 @@
-import Edge2URL from "@/utils/BLDDB/EdgeToURL";
+import { Edge2URL } from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
   isSameEdgeSpeffz,

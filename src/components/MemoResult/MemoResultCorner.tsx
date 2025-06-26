@@ -1,4 +1,4 @@
-import CornerToURL from "@/utils/BLDDB/CornerToURL";
+import { CornerToURL } from "@/utils/BLDDB/CornerToURL";
 import {
   cornerToSpeffz,
   isSameCornerSpeffz,

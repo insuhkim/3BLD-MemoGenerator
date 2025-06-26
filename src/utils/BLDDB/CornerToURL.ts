@@ -1,7 +1,7 @@
 import { speffzToCorner } from "../makeMemo/makeCornerMemo";
 import { Speffz } from "../types/Speffz";
 
-function SpeffzCornerToPosition(corner: Speffz): string {
+export function SpeffzCornerToPosition(corner: Speffz): string {
   const [orientedCorner, rotation] = speffzToCorner(corner);
   const face = orientedCorner[rotation];
   const face1 = orientedCorner[(rotation + 1) % 3];
@@ -23,7 +23,7 @@ function SpeffzCornerToPosition(corner: Speffz): string {
   );
 }
 
-export default function CornerToURL(
+export function CornerToURL(
   buffer: Speffz,
   position1: Speffz,
   position2: Speffz
