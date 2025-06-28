@@ -32,6 +32,8 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cubePreviewStyle: "3D",
     memoSwap: "none",
     applyScrambleRotationToPreview: false,
+    orientation: "wg",
+    letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);

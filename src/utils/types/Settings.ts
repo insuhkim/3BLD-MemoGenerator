@@ -1,6 +1,14 @@
 export type CycleNotationStyle = "parenthesis" | "vertical" | "none";
 export type FlippedEdgeStyle = "none" | "oriented" | "unoriented";
 export type FlippedCornerStyle = "none" | "top/bottom" | "W/Y";
+// prettier-ignore
+export type Orientation = 
+    "wg"| "wr"| "wb"| "wo"|
+    "yg"| "yr"| "yb"| "yo"|
+    "ob"| "ow"| "oy"| "og"|
+    "rb"| "rw"| "ry"| "rg"|
+    "go"| "gy"| "gw"| "gr"|
+    "bo"| "by"| "bw"| "br"
 export type Rotation =
   | ""
   | "y"
@@ -42,4 +50,6 @@ export type Settings = {
   cubePreviewStyle: CubePreviewStyle;
   memoSwap: "none" | Speffz;
   applyScrambleRotationToPreview: boolean;
+  orientation: Orientation;
+  letteringScheme: string;
 };
