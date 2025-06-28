@@ -1,0 +1,60 @@
+.face-u {
+  grid-row: 1;
+  grid-column: 2;
+  border-right: 2px solid black;
+}
+
+.face-l {
+  grid-row: 2;
+  grid-column: 1;
+  border-bottom: 2px solid black;
+}
+
+.face-f {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.face-r {
+  grid-row: 2;
+  grid-column: 3;
+  border-bottom: 2px solid black;
+}
+
+.face-b {
+  grid-row: 2;
+  grid-column: 4;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.face-d {
+  grid-row: 3;
+  grid-column: 2;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.white {
+  background-color: white;
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: #33cc33;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.blue {
+  background-color: #0070c0;
+}
+
+.yellow {
+  background-color: yellow;
+}
