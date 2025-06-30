@@ -76,7 +76,7 @@ export default function LetterScheme() {
     setSelectedOrientationIndex(selectedIndex);
     setSettings((prev) => ({
       ...prev,
-      orientations: orientations[selectedIndex],
+      orientation: orientations[selectedIndex] as typeof prev.orientation,
     }));
   };
 
