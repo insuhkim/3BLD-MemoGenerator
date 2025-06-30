@@ -28,7 +28,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cycleStyle: "vertical",
     showFlippedEdge: "none",
     showFlippedCorner: "none",
-    postRotation: "",
     cubePreviewStyle: "3D",
     memoSwap: "none",
     applyScrambleRotationToPreview: false,
