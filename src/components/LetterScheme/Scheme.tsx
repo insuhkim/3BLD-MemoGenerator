@@ -88,7 +88,7 @@ export default function LetterScheme() {
         setCellWidth(
           Math.min(
             Math.trunc(elementRef.current.offsetWidth / cubeSize / 4),
-            50
+            60
           )
         );
     };
@@ -123,106 +123,98 @@ export default function LetterScheme() {
   };
 
   return (
-    <div className="w-full px-4">
-      <h2 className="mb-8 text-center text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-        Custom Letter Scheme
-      </h2>
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 lg:w-1/3">
-          <div className="mb-6">
-            <label className="mb-2 block font-bold text-black dark:text-white">
-              Preset
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {Object.entries(letteringSchemes).map(([scheme, value]) => (
-                <Button
-                  variant={"outline"}
-                  key={scheme}
-                  onClick={() => {
-                    setInputValues(value);
-                    setSettings((prev) => ({
-                      ...prev,
-                      letteringScheme: value,
-                    }));
-                  }}
-                >
-                  {scheme}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <label className="mb-2 block font-bold text-black dark:text-white">
-              Orientation
-            </label>
-            <select
-              className="w-full rounded-md border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-base text-black focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
-              onChange={(e) => handleOrientationChange(Number(e.target.value))}
-              value={selectedOrientationIndex}
-            >
-              {orientations.map((orientation, index) => (
-                <option key={index} value={index}>
-                  {orientation}
-                </option>
-              ))}
-            </select>
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 lg:w-auto lg:flex-none">
+        <div className="mb-6">
+          <label className="mb-2 block font-bold text-black dark:text-white">
+            Preset
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(letteringSchemes).map(([scheme, value]) => (
+              <Button
+                variant={"outline"}
+                key={scheme}
+                onClick={() => {
+                  setInputValues(value);
+                  setSettings((prev) => ({
+                    ...prev,
+                    letteringScheme: value,
+                  }));
+                }}
+              >
+                {scheme}
+              </Button>
+            ))}
           </div>
         </div>
+        <div>
+          <label className="mb-2 block font-bold text-black dark:text-white">
+            Orientation
+          </label>
+          <select
+            className="w-full rounded-md border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-base text-black focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+            onChange={(e) => handleOrientationChange(Number(e.target.value))}
+            value={selectedOrientationIndex}
+          >
+            {orientations.map((orientation, index) => (
+              <option key={index} value={index}>
+                {orientation}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-        <div
-          ref={elementRef}
-          className="flex flex-1 items-center justify-center"
-        >
-          {cellWidth !== 0 && (
-            <div
-              className="relative grid grid-cols-4 grid-rows-3"
-              style={{
-                height: `${3.2 * cubeSize * cellWidth}px`,
-                width: `${4.3 * cubeSize * cellWidth}px`,
-              }}
-            >
-              {faces.map((face, faceIndex) => (
-                <div
-                  className={`${face} absolute grid`}
-                  style={{
-                    gridTemplateRows: `repeat(${cubeSize}, ${cellWidth}px)`,
-                    gridTemplateColumns: `repeat(${cubeSize}, ${cellWidth}px)`,
-                  }}
-                  key={faceIndex}
-                >
-                  {Array.from({ length: faceSize }).map((_, cellIndex) =>
-                    cellIndex === (faceSize - 1) / 2 ? (
-                      <div
-                        className="border-l-2 border-t-2 border-black/80"
-                        key={faceIndex * faceSize + cellIndex}
-                      ></div>
-                    ) : (
-                      <input
-                        key={faceIndex * faceSize + cellIndex}
-                        type="text"
-                        className={
-                          "relative h-full w-full rounded-none border-l-2  border-t-2 border-black bg-transparent p-0 text-center uppercase leading-normal text-black outline-none hover:cursor-pointer hover:bg-black/40"
-                        }
-                        style={{ fontSize: `${0.75 * cellWidth}px` }}
-                        onFocus={(e) => e.target.select()}
-                        maxLength={1}
-                        value={(
-                          inputValues[faceIndex * faceSize + cellIndex] ?? ""
-                        ).trim()}
-                        onChange={(e) =>
-                          handleChange(
-                            faceIndex * faceSize + cellIndex,
-                            e.target.value ?? ""
-                          )
-                        }
-                      />
-                    )
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      <div ref={elementRef} className="flex flex-1 items-center justify-center">
+        {cellWidth !== 0 && (
+          <div
+            className="relative grid grid-cols-4 grid-rows-3"
+            style={{
+              height: `${3.2 * cubeSize * cellWidth}px`,
+              width: `${4.3 * cubeSize * cellWidth}px`,
+            }}
+          >
+            {faces.map((face, faceIndex) => (
+              <div
+                className={`${face} absolute grid`}
+                style={{
+                  gridTemplateRows: `repeat(${cubeSize}, ${cellWidth}px)`,
+                  gridTemplateColumns: `repeat(${cubeSize}, ${cellWidth}px)`,
+                }}
+                key={faceIndex}
+              >
+                {Array.from({ length: faceSize }).map((_, cellIndex) =>
+                  cellIndex === (faceSize - 1) / 2 ? (
+                    <div
+                      className="border-l-2 border-t-2 border-black/80"
+                      key={faceIndex * faceSize + cellIndex}
+                    ></div>
+                  ) : (
+                    <input
+                      key={faceIndex * faceSize + cellIndex}
+                      type="text"
+                      className={
+                        "relative h-full w-full rounded-none border-l-2  border-t-2 border-black bg-transparent p-0 text-center uppercase leading-normal text-black outline-none hover:cursor-pointer hover:bg-black/40"
+                      }
+                      style={{ fontSize: `${0.75 * cellWidth}px` }}
+                      onFocus={(e) => e.target.select()}
+                      maxLength={1}
+                      value={(
+                        inputValues[faceIndex * faceSize + cellIndex] ?? ""
+                      ).trim()}
+                      onChange={(e) =>
+                        handleChange(
+                          faceIndex * faceSize + cellIndex,
+                          e.target.value ?? ""
+                        )
+                      }
+                    />
+                  )
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
