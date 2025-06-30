@@ -89,6 +89,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   showFlippedEdge={settings.showFlippedEdge}
                   buffer={settings.edgeBuffer}
                   cycleStyle={settings.cycleStyle}
+                  scheme={settings.letteringScheme}
                 />
               </div>
             )}
@@ -107,6 +108,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   cycleStyle={settings.cycleStyle}
                   edgeBuffer={settings.edgeBuffer}
                   memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
+                  scheme={settings.letteringScheme}
                 />
               </div>
             )}
