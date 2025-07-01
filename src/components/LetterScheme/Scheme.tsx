@@ -74,13 +74,27 @@ export default function LetterScheme() {
     );
     setFaces(newFaces);
     setSelectedOrientationIndex(selectedIndex);
-    setSettings((prev) => ({
-      ...prev,
-      orientation: orientations[selectedIndex] as typeof prev.orientation,
-    }));
   };
 
   const [inputValues, setInputValues] = useState("");
+
+  const handleSave = () => {
+    setSettings((prev) => ({
+      ...prev,
+      letteringScheme: inputValues,
+      orientation: orientations[
+        selectedOrientationIndex
+      ] as typeof prev.orientation,
+    }));
+  };
+
+  const handleCancel = () => {
+    setInputValues(settings.letteringScheme);
+    const index = orientations.indexOf(settings.orientation);
+    if (index !== -1) {
+      handleOrientationChange(index);
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,7 +133,6 @@ export default function LetterScheme() {
       (value[0]?.toUpperCase() ?? " ") +
       inputValues.substring(index + 1);
     setInputValues(updatedValues);
-    setSettings((prev) => ({ ...prev, letteringScheme: updatedValues }));
   };
 
   return (
@@ -136,10 +149,6 @@ export default function LetterScheme() {
                 key={scheme}
                 onClick={() => {
                   setInputValues(value);
-                  setSettings((prev) => ({
-                    ...prev,
-                    letteringScheme: value,
-                  }));
                 }}
               >
                 {scheme}
@@ -162,6 +171,12 @@ export default function LetterScheme() {
               </option>
             ))}
           </select>
+        </div>
+        <div className="mt-6 flex justify-end gap-2">
+          <Button variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
 
