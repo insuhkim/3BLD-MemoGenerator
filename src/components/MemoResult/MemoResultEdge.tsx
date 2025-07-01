@@ -4,6 +4,7 @@ import {
   isSameEdgeSpeffz,
   speffzToEdge,
 } from "@/utils/makeMemo/makeEdgeMemo";
+import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Edge } from "@/utils/types/Edge";
 import { CycleNotationStyle, FlippedEdgeStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
@@ -28,11 +29,13 @@ export default function MemoResultEdge({
   showFlippedEdge,
   buffer,
   cycleStyle,
+  scheme,
 }: {
   memo: Speffz[][];
   showFlippedEdge: FlippedEdgeStyle;
   buffer: Speffz;
   cycleStyle: CycleNotationStyle;
+  scheme: string;
 }) {
   if (memo.length === 0) {
     return null;
@@ -96,6 +99,8 @@ export default function MemoResultEdge({
         url={url}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
+        target1Character={speffzToLocation(scheme, allTargets[i], "edge")}
+        target2Character={speffzToLocation(scheme, allTargets[i + 1], "edge")}
         infix={infix}
         prefix={prefix}
         suffix={suffix}
@@ -116,6 +121,8 @@ export default function MemoResultEdge({
           url={EdgeFlipURL(buffer, cycle[0])}
           target1={cycle[0]}
           target2={cycle[1]}
+          target1Character={speffzToLocation(scheme, cycle[0], "edge")}
+          target2Character={speffzToLocation(scheme, cycle[1], "edge")}
           entireString={representation}
         />
       );

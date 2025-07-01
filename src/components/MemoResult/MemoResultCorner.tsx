@@ -5,6 +5,7 @@ import {
   isSameCornerSpeffz,
   speffzToCorner,
 } from "@/utils/makeMemo/makeCornerMemo";
+import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Corner } from "@/utils/types/Corner";
 import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
@@ -18,12 +19,14 @@ export default function MemoResultCorner({
   cycleStyle,
   memoSwap,
   edgeBuffer,
+  scheme,
 }: {
   memo: Speffz[][];
   showFlippedCorner: FlippedCornerStyle;
   buffer: Speffz;
   cycleStyle: CycleNotationStyle;
   edgeBuffer: Speffz;
+  scheme: string;
   memoSwap?: Speffz;
 }) {
   if (memo.length === 0) return null;
@@ -91,6 +94,8 @@ export default function MemoResultCorner({
         url={url}
         target1={allTargets[i]}
         target2={allTargets[i + 1]}
+        target1Character={speffzToLocation(scheme, allTargets[i], "corner")}
+        target2Character={speffzToLocation(scheme, allTargets[i + 1], "corner")}
         infix={infix}
         prefix={prefix}
         suffix={suffix}
@@ -120,6 +125,8 @@ export default function MemoResultCorner({
           url={CornerTwistURL(buffer, !isCW, cycle[0], isCW)}
           target1={cycle[0]}
           target2={cycle[1]}
+          target1Character={speffzToLocation(scheme, cycle[0], "corner")}
+          target2Character={speffzToLocation(scheme, cycle[1], "corner")}
           entireString={representation}
         />
       );

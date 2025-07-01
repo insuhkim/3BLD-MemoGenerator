@@ -14,12 +14,18 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
+import CustomLetterScheme from "./CustomLetterScheme";
 import CycleBreakPriority from "./CycleBreakPriority";
 import MemoSwap from "./MemoSwapParity";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
 
 const settingsSections = [
+  {
+    value: "item-0",
+    title: "Custom Letter Scheme",
+    Component: CustomLetterScheme,
+  },
   {
     value: "item-1",
     title: "Buffer Selection",
