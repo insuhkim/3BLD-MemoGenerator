@@ -29,7 +29,7 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Support for Memo Swapping
 - [x] Support for wide moves and cube rotations
 - [x] Hyperlink letterpair to [BLDDB](https://blddb.net/)
-- [ ] Customizable Letter Scheme
+- [x] Customizable Letter Scheme
 - [ ] Customizable Letter Pair
 
 ### Improvements
