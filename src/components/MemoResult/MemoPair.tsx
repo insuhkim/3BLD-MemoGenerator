@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
-import { useContext, useState } from "react";
+import { KeyboardEvent, useContext, useState } from "react";
 
 interface MemoPairProps {
   target1: Speffz;
@@ -66,6 +66,12 @@ export default function MemoPair({
     setIsModifyOpen(false);
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSave();
+    }
+  };
+
   return (
     <Dialog open={isModifyOpen} onOpenChange={setIsModifyOpen}>
       <DropdownMenu>
@@ -108,6 +114,7 @@ export default function MemoPair({
         <Input
           value={modifiedMemo}
           onChange={(e) => setModifiedMemo(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Enter custom memo"
         />
         <DialogFooter>
