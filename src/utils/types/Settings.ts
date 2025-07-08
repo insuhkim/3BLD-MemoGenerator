@@ -26,4 +26,5 @@ export type Settings = {
   applyScrambleRotationToPreview: boolean;
   orientation: Orientation;
   letteringScheme: string;
+  letterPairs: { [key: string]: string };
 };
