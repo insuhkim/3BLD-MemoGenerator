@@ -4,8 +4,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
+import { useContext } from "react";
 
 interface MemoPairProps {
   target1: Speffz;
@@ -30,16 +32,28 @@ export default function MemoPair({
   target2Character = target2,
   entireString,
 }: MemoPairProps) {
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("MemoPair must be used within a SettingsProvider");
+  }
+  const {
+    settings: { letterPairs },
+  } = context;
+
   const handleModify = () => {
     // TODO: Implement modification logic here
     console.log("Modify pair:", target1, target2);
   };
 
+  const pairString = target2 ? `${target1}${target2}` : target1;
+  const customMemo = letterPairs[pairString.toUpperCase()];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
-          {entireString ||
+          {customMemo ??
+            entireString ??
             prefix +
               target1Character +
               (target2 ? infix : "") +
