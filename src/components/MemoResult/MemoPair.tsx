@@ -1,13 +1,23 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 interface MemoPairProps {
   target1: Speffz;
@@ -38,49 +48,75 @@ export default function MemoPair({
   }
   const {
     settings: { letterPairs },
+    addLetterPair,
   } = context;
 
-  const handleModify = () => {
-    // TODO: Implement modification logic here
-    console.log("Modify pair:", target1, target2);
-  };
-
+  const [isModifyOpen, setIsModifyOpen] = useState(false);
   const pairString = target2 ? `${target1}${target2}` : target1;
   const customMemo = letterPairs[pairString.toUpperCase()];
+  const [modifiedMemo, setModifiedMemo] = useState(customMemo || "");
+
+  const handleModify = () => {
+    setModifiedMemo(customMemo || "");
+    setIsModifyOpen(true);
+  };
+
+  const handleSave = () => {
+    addLetterPair(pairString, modifiedMemo);
+    setIsModifyOpen(false);
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
-          {customMemo ??
-            entireString ??
-            prefix +
-              target1Character +
-              (target2 ? infix : "") +
-              (target2Character ?? "") +
-              suffix}
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem asChild>
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
+    <Dialog open={isModifyOpen} onOpenChange={setIsModifyOpen}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
+            {customMemo ??
+              entireString ??
+              prefix +
+                target1Character +
+                (target2 ? infix : "") +
+                (target2Character ?? "") +
+                suffix}
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem asChild>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Link className="h-4 w-4" />
+              <span>Search on BLDDB</span>
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleModify}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <Link className="h-4 w-4" />
-            <span>Search on BLDDB</span>
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={handleModify}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <Pencil className="h-4 w-4" />
-          <span>Modify Letter Pair</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <Pencil className="h-4 w-4" />
+            <span>Modify Letter Pair</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Modify Memo for {pairString.toUpperCase()}</DialogTitle>
+        </DialogHeader>
+        <Input
+          value={modifiedMemo}
+          onChange={(e) => setModifiedMemo(e.target.value)}
+          placeholder="Enter custom memo"
+        />
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
