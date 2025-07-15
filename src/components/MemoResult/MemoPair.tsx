@@ -47,7 +47,7 @@ export default function MemoPair({
     throw new Error("MemoPair must be used within a SettingsProvider");
   }
   const {
-    settings: { letterPairs },
+    settings: { letterPairs, useCustomLetterPairs },
     addLetterPair,
   } = context;
 
@@ -77,13 +77,14 @@ export default function MemoPair({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
-            {customMemo ??
-              entireString ??
-              prefix +
-                target1Character +
-                (target2 ? infix : "") +
-                (target2Character ?? "") +
-                suffix}
+            {useCustomLetterPairs && customMemo
+              ? customMemo
+              : entireString ??
+                prefix +
+                  target1Character +
+                  (target2 ? infix : "") +
+                  (target2Character ?? "") +
+                  suffix}
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

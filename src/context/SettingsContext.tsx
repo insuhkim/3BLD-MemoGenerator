@@ -36,6 +36,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     orientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
+    useCustomLetterPairs: true,
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
