@@ -32,6 +32,15 @@ export default function LetterPair() {
       setMemo("");
     }
   };
+
+  const handleDelete = () => {
+    if (pair) {
+      deleteLetterPair(pair);
+      setPair("");
+      setMemo("");
+    }
+  };
+
   const handleToggle = (checked: boolean) => {
     setSettings((prev) => ({
       ...prev,
@@ -87,6 +96,13 @@ export default function LetterPair() {
                   onChange={(e) => setMemo(e.target.value)}
                 />
                 <Button onClick={handleAdd}>Add/Update</Button>
+                <Button
+                  onClick={handleDelete}
+                  variant="destructive"
+                  disabled={!pair}
+                >
+                  Delete
+                </Button>
               </div>
 
               <div className="overflow-x-auto">
