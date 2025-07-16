@@ -39,7 +39,7 @@ export default function LetterPair() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <div className="flex items-center justify-between rounded-lg border p-4">
         <Label htmlFor="use-custom-pairs" className="flex flex-col space-y-1">
           <span>Use Custom Letter Pairs</span>
@@ -53,7 +53,7 @@ export default function LetterPair() {
           onCheckedChange={handleToggle}
         />
       </div>
-      <Card>
+      <Card className={!settings.useCustomLetterPairs ? "hidden" : ""}>
         <CardHeader>
           <CardTitle>Custom Letter Pairs</CardTitle>
           <CardDescription>

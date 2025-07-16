@@ -81,7 +81,7 @@ export default function Settings() {
                   {/* Added px-6 for horizontal alignment & common hover style */}
                   <span className="flex-grow text-center">{title}</span>
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4 pt-2">
+                <AccordionContent className="px-6 pb-6 pt-2">
                   {/* Added px-6 for alignment, and vertical padding */}
                   <Component />
                 </AccordionContent>

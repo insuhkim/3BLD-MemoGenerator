@@ -13,23 +13,29 @@ import LetterScheme from "../LetterScheme/Scheme";
 
 export default function CustomLetterScheme() {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit Letter Scheme</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[725px]">
-        <div>
-          <DialogHeader>
-            <DialogTitle>Custom Letter Scheme</DialogTitle>
-            <DialogDescription>
-              Set your custom letter scheme for corners and edges.
-            </DialogDescription>
-          </DialogHeader>
-        </div>
-        <div className="p-6 pt-0">
-          <LetterScheme />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
+        Define your personal letter scheme for each sticker on the cube. This
+        scheme is used to generate the memo.
+      </p>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">Edit Letter Scheme</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[725px]">
+          <div>
+            <DialogHeader>
+              <DialogTitle>Custom Letter Scheme</DialogTitle>
+              <DialogDescription>
+                Set your custom letter scheme for corners and edges.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="p-6 pt-0">
+            <LetterScheme />
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

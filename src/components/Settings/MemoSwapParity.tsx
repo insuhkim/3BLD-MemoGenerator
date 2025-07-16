@@ -1,3 +1,4 @@
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -27,26 +28,28 @@ export default function MemoSwap() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        Choose Memo Swapping for edge when parity occurs. For example, if parity
-        occurs and "B" is chosen, swap those two edges (buffer and "B") and
-        “solve” them into the wrong positions.
-      </p>
-      <div className="space-y-1">
-        <Select value={settings.memoSwap} onValueChange={handleValueChange}>
-          <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Select memo swap target" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="none">None</SelectItem>
-            {AtoX.split("").map((letter) => (
-              <SelectItem key={letter} value={letter}>
-                {letter}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="space-y-2">
+        <Label htmlFor="memoSwapSelect" className="text-sm font-medium">
+          Memo Swap for Parity
+        </Label>
+        <p className="text-sm text-muted-foreground">
+          Choose a target to swap with your buffer piece when parity occurs.
+          This solves the parity of edge permutation.
+        </p>
       </div>
+      <Select value={settings.memoSwap} onValueChange={handleValueChange}>
+        <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Select memo swap target" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="none">None</SelectItem>
+          {AtoX.split("").map((letter) => (
+            <SelectItem key={letter} value={letter}>
+              {letter}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
