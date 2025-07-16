@@ -88,7 +88,7 @@ export default function MemoPair({
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled={!url}>
             <a
               href={url}
               target="_blank"
