@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { SettingsContext } from "@/context/SettingsContext";
-import { Trash2 } from "lucide-react";
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
 
 export default function LetterPair() {
   const context = useContext(SettingsContext);
@@ -38,6 +39,11 @@ export default function LetterPair() {
     }));
   };
 
+  const handleCellClick = (p: string) => {
+    setPair(p);
+    setMemo(settings.letterPairs[p] || "");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-lg border p-4">
@@ -58,22 +64,22 @@ export default function LetterPair() {
           <DialogTrigger asChild>
             <Button variant="outline">Manage Custom Letter Pairs</Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-4xl">
             <DialogHeader>
               <DialogTitle>Custom Letter Pairs</DialogTitle>
               <DialogDescription>
                 Create, modify, or delete your custom letter pairs. These will
-                override the default memos.
+                override the default memos. Click a cell to edit.
               </DialogDescription>
             </DialogHeader>
-            <div className="py-4">
-              <div className="flex gap-2 mb-4">
+            <div className="py-4 space-y-4">
+              <div className="flex gap-2">
                 <Input
                   placeholder="Pair (e.g., AP)"
                   value={pair}
                   onChange={(e) => setPair(e.target.value.toUpperCase())}
                   maxLength={2}
-                  className="uppercase"
+                  className="uppercase w-24"
                 />
                 <Input
                   placeholder="Memo (e.g., Apple)"
@@ -82,25 +88,46 @@ export default function LetterPair() {
                 />
                 <Button onClick={handleAdd}>Add/Update</Button>
               </div>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {Object.entries(settings.letterPairs).map(([p, m]) => (
-                  <div
-                    key={p}
-                    className="flex items-center justify-between p-2 border rounded-md"
-                  >
-                    <div>
-                      <span className="font-mono font-bold">{p}</span>:{" "}
-                      <span>{m}</span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => deleteLetterPair(p)}
+
+              <div className="overflow-x-auto">
+                <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
+                  <div className="p-1 bg-muted"></div>
+                  {alphabet.map((letter) => (
+                    <div
+                      key={letter}
+                      className="p-1 font-bold text-center bg-muted"
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
+                      {letter}
+                    </div>
+                  ))}
+                  {alphabet.map((rowLetter) => (
+                    <Fragment key={rowLetter}>
+                      <div
+                        key={rowLetter}
+                        className="p-1 font-bold text-center bg-muted"
+                      >
+                        {rowLetter}
+                      </div>
+                      {alphabet.map((colLetter) => {
+                        const currentPair = rowLetter + colLetter;
+                        const currentMemo = settings.letterPairs[currentPair];
+                        return (
+                          <div
+                            key={currentPair}
+                            onClick={() => handleCellClick(currentPair)}
+                            className={`p-1 truncate cursor-pointer text-center ${
+                              currentMemo
+                                ? "bg-primary/20 hover:bg-primary/30"
+                                : "bg-background hover:bg-muted"
+                            }`}
+                          >
+                            {currentMemo || "-"}
+                          </div>
+                        );
+                      })}
+                    </Fragment>
+                  ))}
+                </div>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
