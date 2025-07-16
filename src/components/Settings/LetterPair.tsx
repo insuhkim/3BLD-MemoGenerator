@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SettingsContext } from "@/context/SettingsContext";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, KeyboardEvent, useContext, useState } from "react";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
 
@@ -59,6 +59,12 @@ export default function LetterPair() {
     setMemo(settings.letterPairs[p] || "");
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleAdd();
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-lg border p-4">
@@ -95,13 +101,15 @@ export default function LetterPair() {
                   onChange={(e) => setPair(e.target.value.toUpperCase())}
                   maxLength={2}
                   className="uppercase w-24"
+                  onKeyDown={handleKeyDown}
                 />
                 <Input
                   placeholder="Memo (e.g., Apple)"
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
-                <Button onClick={handleAdd} disabled={!pair}>
+                <Button onClick={handleAdd} disabled={!pair || !memo}>
                   Add/Update
                 </Button>
                 <Button
