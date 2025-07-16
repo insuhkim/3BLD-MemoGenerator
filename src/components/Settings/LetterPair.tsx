@@ -10,6 +10,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Fragment, useContext, useState } from "react";
 
@@ -95,7 +101,9 @@ export default function LetterPair() {
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                 />
-                <Button onClick={handleAdd}>Add/Update</Button>
+                <Button onClick={handleAdd} disabled={!pair}>
+                  Add/Update
+                </Button>
                 <Button
                   onClick={handleDelete}
                   variant="destructive"
@@ -106,62 +114,88 @@ export default function LetterPair() {
               </div>
 
               <div className="overflow-x-auto">
-                <div className="grid grid-cols-[auto_repeat(25,minmax(0,1fr))] gap-px bg-border text-xs">
-                  <div className="p-1 bg-muted"></div>
-                  <div className="p-1 bg-muted"></div>
-                  {alphabet.map((letter) => (
-                    <div
-                      key={letter}
-                      className="p-1 font-bold text-center bg-muted"
-                    >
-                      {letter}
-                    </div>
-                  ))}
-                  {alphabet.map((rowLetter) => (
-                    <Fragment key={rowLetter}>
+                <TooltipProvider>
+                  <div className="grid grid-cols-[auto_repeat(25,minmax(0,1fr))] gap-px bg-border text-xs">
+                    <div className="p-1 bg-muted"></div>
+                    <div className="p-1 bg-muted"></div>
+                    {alphabet.map((letter) => (
                       <div
-                        key={rowLetter}
+                        key={letter}
                         className="p-1 font-bold text-center bg-muted"
                       >
-                        {rowLetter}
+                        {letter}
                       </div>
-                      {(() => {
-                        const singleLetterMemo =
-                          settings.letterPairs[rowLetter];
-                        return (
-                          <div
-                            key={rowLetter + "_single"}
-                            onClick={() => handleCellClick(rowLetter)}
-                            className={`p-1 truncate cursor-pointer text-center ${
-                              singleLetterMemo
-                                ? "bg-primary/20 hover:bg-primary/30"
-                                : "bg-background hover:bg-muted"
-                            }`}
-                          >
-                            {singleLetterMemo || "-"}
-                          </div>
-                        );
-                      })()}
-                      {alphabet.map((colLetter) => {
-                        const currentPair = rowLetter + colLetter;
-                        const currentMemo = settings.letterPairs[currentPair];
-                        return (
-                          <div
-                            key={currentPair}
-                            onClick={() => handleCellClick(currentPair)}
-                            className={`p-1 truncate cursor-pointer text-center ${
-                              currentMemo
-                                ? "bg-primary/20 hover:bg-primary/30"
-                                : "bg-background hover:bg-muted"
-                            }`}
-                          >
-                            {currentMemo || "-"}
-                          </div>
-                        );
-                      })}
-                    </Fragment>
-                  ))}
-                </div>
+                    ))}
+                    {alphabet.map((rowLetter) => (
+                      <Fragment key={rowLetter}>
+                        <div
+                          key={rowLetter}
+                          className="p-1 font-bold text-center bg-muted"
+                        >
+                          {rowLetter}
+                        </div>
+                        {(() => {
+                          const singleLetterMemo =
+                            settings.letterPairs[rowLetter];
+                          const cell = (
+                            <div
+                              key={rowLetter + "_single"}
+                              onClick={() => handleCellClick(rowLetter)}
+                              className={`p-1 truncate cursor-pointer text-center ${
+                                singleLetterMemo
+                                  ? "bg-primary/20 hover:bg-primary/30"
+                                  : "bg-background hover:bg-muted"
+                              }`}
+                            >
+                              {singleLetterMemo || "-"}
+                            </div>
+                          );
+
+                          if (singleLetterMemo) {
+                            return (
+                              <Tooltip key={rowLetter + "_single"}>
+                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{singleLetterMemo}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          }
+                          return cell;
+                        })()}
+                        {alphabet.map((colLetter) => {
+                          const currentPair = rowLetter + colLetter;
+                          const currentMemo = settings.letterPairs[currentPair];
+                          const cell = (
+                            <div
+                              key={currentPair}
+                              onClick={() => handleCellClick(currentPair)}
+                              className={`p-1 truncate cursor-pointer text-center ${
+                                currentMemo
+                                  ? "bg-primary/20 hover:bg-primary/30"
+                                  : "bg-background hover:bg-muted"
+                              }`}
+                            >
+                              {currentMemo || "-"}
+                            </div>
+                          );
+
+                          if (currentMemo) {
+                            return (
+                              <Tooltip key={currentPair}>
+                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{currentMemo}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          }
+                          return cell;
+                        })}
+                      </Fragment>
+                    ))}
+                  </div>
+                </TooltipProvider>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
