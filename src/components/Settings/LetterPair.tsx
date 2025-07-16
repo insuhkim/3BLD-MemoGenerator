@@ -123,8 +123,7 @@ export default function LetterPair() {
 
               <div className="overflow-x-auto">
                 <TooltipProvider>
-                  <div className="grid grid-cols-[auto_repeat(25,minmax(0,1fr))] gap-px bg-border text-xs">
-                    <div className="p-1 bg-muted"></div>
+                  <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                     <div className="p-1 bg-muted"></div>
                     {alphabet.map((letter) => (
                       <div
@@ -142,35 +141,6 @@ export default function LetterPair() {
                         >
                           {rowLetter}
                         </div>
-                        {(() => {
-                          const singleLetterMemo =
-                            settings.letterPairs[rowLetter];
-                          const cell = (
-                            <div
-                              key={rowLetter + "_single"}
-                              onClick={() => handleCellClick(rowLetter)}
-                              className={`p-1 truncate cursor-pointer text-center ${
-                                singleLetterMemo
-                                  ? "bg-primary/20 hover:bg-primary/30"
-                                  : "bg-background hover:bg-muted"
-                              }`}
-                            >
-                              {singleLetterMemo || "-"}
-                            </div>
-                          );
-
-                          if (singleLetterMemo) {
-                            return (
-                              <Tooltip key={rowLetter + "_single"}>
-                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{singleLetterMemo}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            );
-                          }
-                          return cell;
-                        })()}
                         {alphabet.map((colLetter) => {
                           const currentPair = rowLetter + colLetter;
                           const currentMemo = settings.letterPairs[currentPair];

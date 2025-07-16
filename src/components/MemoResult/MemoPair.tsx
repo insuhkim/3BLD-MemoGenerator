@@ -52,7 +52,7 @@ export default function MemoPair({
   } = context;
 
   const [isModifyOpen, setIsModifyOpen] = useState(false);
-  const pairString = target2 ? `${target1}${target2}` : target1;
+  const pairString = target2 ? `${target1}${target2}` : `${target1}${target1}`;
   const customMemo = letterPairs[pairString.toUpperCase()];
   const [modifiedMemo, setModifiedMemo] = useState(customMemo || "");
 
