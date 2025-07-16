@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -53,57 +53,62 @@ export default function LetterPair() {
           onCheckedChange={handleToggle}
         />
       </div>
-      <Card className={!settings.useCustomLetterPairs ? "hidden" : ""}>
-        <CardHeader>
-          <CardTitle>Custom Letter Pairs</CardTitle>
-          <CardDescription>
-            Create, modify, or delete your custom letter pairs. These will
-            override the default memos.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2 mb-4">
-            <Input
-              placeholder="Pair (e.g., AP)"
-              value={pair}
-              onChange={(e) => setPair(e.target.value)}
-              maxLength={2}
-              className="uppercase"
-            />
-            <Input
-              placeholder="Memo (e.g., Apple)"
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-            />
-            <Button onClick={handleAdd}>Add/Update</Button>
-          </div>
-          <div className="space-y-2">
-            {Object.entries(settings.letterPairs).map(([p, m]) => (
-              <div
-                key={p}
-                className="flex items-center justify-between p-2 border rounded-md"
-              >
-                <div>
-                  <span className="font-mono font-bold">{p}</span>:{" "}
-                  <span>{m}</span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => deleteLetterPair(p)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+      {settings.useCustomLetterPairs && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Manage Custom Letter Pairs</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Custom Letter Pairs</DialogTitle>
+              <DialogDescription>
+                Create, modify, or delete your custom letter pairs. These will
+                override the default memos.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <div className="flex gap-2 mb-4">
+                <Input
+                  placeholder="Pair (e.g., AP)"
+                  value={pair}
+                  onChange={(e) => setPair(e.target.value.toUpperCase())}
+                  maxLength={2}
+                  className="uppercase"
+                />
+                <Input
+                  placeholder="Memo (e.g., Apple)"
+                  value={memo}
+                  onChange={(e) => setMemo(e.target.value)}
+                />
+                <Button onClick={handleAdd}>Add/Update</Button>
               </div>
-            ))}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <p className="text-sm text-muted-foreground">
-            {Object.keys(settings.letterPairs).length} custom pair(s).
-          </p>
-        </CardFooter>
-      </Card>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {Object.entries(settings.letterPairs).map(([p, m]) => (
+                  <div
+                    key={p}
+                    className="flex items-center justify-between p-2 border rounded-md"
+                  >
+                    <div>
+                      <span className="font-mono font-bold">{p}</span>:{" "}
+                      <span>{m}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => deleteLetterPair(p)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {Object.keys(settings.letterPairs).length} custom pair(s).
+            </p>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
