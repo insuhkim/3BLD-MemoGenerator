@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
 import CustomLetterScheme from "./CustomLetterScheme";
 import CycleBreakPriority from "./CycleBreakPriority";
+import ImportExport from "./ImportExport";
 import LetterPair from "./LetterPair";
 import MemoSwap from "./MemoSwapParity";
 import PreviewStyle from "./PreviewStyle";
@@ -53,6 +54,7 @@ const settingsSections = [
     Component: PreviewStyle,
   },
   { value: "item-6", title: "Custom Letter Pairs", Component: LetterPair },
+  { value: "item-7", title: "Import / Export", Component: ImportExport },
 ];
 
 export default function Settings() {
