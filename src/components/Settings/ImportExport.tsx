@@ -102,7 +102,13 @@ const ImportExport: React.FC = () => {
           const parsedSettings = JSON.parse(text);
 
           if (!isSettings(parsedSettings)) {
-            throw new Error("Invalid settings format");
+            setDialogState({
+              isOpen: true,
+              title: "Import Failed",
+              description:
+                "Failed to import settings. The file might be corrupted or not a valid settings file.",
+            });
+            return;
           }
 
           setDialogState({
@@ -127,6 +133,7 @@ const ImportExport: React.FC = () => {
           });
         }
       } catch (error) {
+        // Handle unexpected errors (e.g., JSON parsing errors)
         console.error("Error parsing settings file:", error);
         setDialogState({
           isOpen: true,
