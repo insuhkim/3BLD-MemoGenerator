@@ -72,12 +72,17 @@ export default function ResultStyle() {
         </Select>
       </div>
 
-      <div className="space-y-3">
-        <Label className="text-sm font-medium">
-          Show Flipped Edge/Corners Separately
-        </Label>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">
+            Show Flipped Edge/Corners Separately
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            Display flipped pieces as single letters in brackets.
+          </p>
+        </div>
         <div className="space-y-4 pl-2">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label
               htmlFor="flippedEdgeSelect"
               className="text-xs text-muted-foreground"
@@ -108,7 +113,7 @@ export default function ResultStyle() {
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label
               htmlFor="flippedCornerSelect"
               className="text-xs text-muted-foreground"

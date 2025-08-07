@@ -88,14 +88,19 @@ export default function MemoResultCorner({
       ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
       : undefined;
 
+    const target2 = allTargets[i + 1];
+    const target2Character = target2
+      ? speffzToLocation(scheme, target2, "corner")
+      : undefined;
+
     components.push(
       <MemoPair
         key={`pair-corner-${i}`}
         url={url}
         target1={allTargets[i]}
-        target2={allTargets[i + 1]}
+        target2={target2}
         target1Character={speffzToLocation(scheme, allTargets[i], "corner")}
-        target2Character={speffzToLocation(scheme, allTargets[i + 1], "corner")}
+        target2Character={target2Character}
         infix={infix}
         prefix={prefix}
         suffix={suffix}
