@@ -18,6 +18,11 @@ export default function CustomLetterScheme() {
         Define your personal letter scheme for each sticker on the cube. This
         scheme is used to generate the memo.
       </p>
+      <p className="text-sm text-muted-foreground">
+        Note: Changing the letter scheme only affects the generated letter
+        pairs. The internal logic still uses the Speffz letter scheme for
+        scramble analysis.
+      </p>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">Edit Letter Scheme</Button>
