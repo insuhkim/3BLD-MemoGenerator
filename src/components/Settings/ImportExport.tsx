@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Settings } from "@/utils/types/Settings";
 import React, { useRef, useState } from "react";
 
 const ImportExport: React.FC = () => {
@@ -67,6 +68,26 @@ const ImportExport: React.FC = () => {
     }
   };
 
+  const isSettings = (obj: any): obj is Settings => {
+    if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+      return false;
+    }
+
+    // Check for a few key properties to be reasonably sure it's a settings object.
+    return (
+      "edgePriority" in obj &&
+      Array.isArray(obj.edgePriority) &&
+      "cornerPriority" in obj &&
+      Array.isArray(obj.cornerPriority) &&
+      "edgeBuffer" in obj &&
+      typeof obj.edgeBuffer === "string" &&
+      "cornerBuffer" in obj &&
+      typeof obj.cornerBuffer === "string" &&
+      "letteringScheme" in obj &&
+      typeof obj.letteringScheme === "string"
+    );
+  };
+
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) {
@@ -78,8 +99,11 @@ const ImportExport: React.FC = () => {
       try {
         const text = e.target?.result;
         if (typeof text === "string") {
-          // Validate that the imported string is valid JSON
-          JSON.parse(text);
+          const parsedSettings = JSON.parse(text);
+
+          if (!isSettings(parsedSettings)) {
+            throw new Error("Invalid settings format");
+          }
 
           setDialogState({
             isOpen: true,
