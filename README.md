@@ -30,7 +30,7 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Support for wide moves and cube rotations
 - [x] Hyperlink letterpair to [BLDDB](https://blddb.net/)
 - [x] Customizable Letter Scheme
-- [ ] Customizable Letter Pair
+- [x] Customizable Letter Pair
 
 ### Improvements
 
