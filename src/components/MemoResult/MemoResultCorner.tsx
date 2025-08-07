@@ -12,6 +12,12 @@ import { Speffz } from "@/utils/types/Speffz";
 import { JSX } from "react";
 import MemoPair from "./MemoPair";
 
+function isCWRotation(cornerFrom: Speffz, cornerTo: Speffz): boolean {
+  return (
+    (speffzToCorner(cornerFrom)[1] - speffzToCorner(cornerTo)[1] + 3) % 3 === 1
+  );
+}
+
 export default function MemoResultCorner({
   memo,
   buffer,
@@ -82,8 +88,14 @@ export default function MemoResultCorner({
     }
 
     const isLastParity = !!allTargets[i + 1];
+
     const url = isLastParity
-      ? CornerToURL(buffer, allTargets[i], allTargets[i + 1])
+      ? isSameCornerSpeffz(allTargets[i], allTargets[i + 1])
+        ? ((isCW: boolean) =>
+            CornerTwistURL(buffer, !isCW, allTargets[i], isCW))(
+            isCWRotation(allTargets[i], allTargets[i + 1])
+          )
+        : CornerToURL(buffer, allTargets[i], allTargets[i + 1])
       : memoSwap
       ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
       : undefined;
@@ -110,10 +122,7 @@ export default function MemoResultCorner({
 
   if (showFlippedCorner !== "none") {
     flippedCycles.forEach((cycle, index) => {
-      const cornerFrom = speffzToCorner(cycle[0]);
-      const cornerTo = speffzToCorner(cycle[1]);
-
-      const isCW = (cornerFrom[1] - cornerTo[1] + 3) % 3 === 1;
+      const isCW = isCWRotation(cycle[0], cycle[1]);
       let stickerOrientationToShow: 1 | 2;
       if (showFlippedCorner === "W/Y") {
         stickerOrientationToShow = isCW ? 1 : 2;
@@ -122,7 +131,10 @@ export default function MemoResultCorner({
         stickerOrientationToShow = isCW ? 2 : 1;
       }
 
-      const showingCorner: Corner = [cornerFrom[0], stickerOrientationToShow];
+      const showingCorner: Corner = [
+        speffzToCorner(cycle[0])[0],
+        stickerOrientationToShow,
+      ];
       const representation = ` [${cornerToSpeffz(showingCorner)}]`;
       components.push(
         <MemoPair
