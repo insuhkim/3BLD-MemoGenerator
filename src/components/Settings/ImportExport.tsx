@@ -89,13 +89,16 @@ const ImportExport: React.FC = () => {
             showCancel: true,
             onConfirm: () => {
               localStorage.setItem("settings", text);
-              setDialogState({
-                isOpen: true,
-                title: "Import Successful",
-                description:
-                  "Settings imported successfully. The page will now reload.",
-                onConfirm: () => window.location.reload(),
-              });
+              // Use a timeout to allow the current dialog to close before opening the next one.
+              setTimeout(() => {
+                setDialogState({
+                  isOpen: true,
+                  title: "Import Successful",
+                  description:
+                    "Settings imported successfully. The page will now reload.",
+                  onConfirm: () => window.location.reload(),
+                });
+              }, 100);
             },
           });
         }
