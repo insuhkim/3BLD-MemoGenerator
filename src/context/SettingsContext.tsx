@@ -7,6 +7,8 @@ import { Settings } from "@/utils/types/Settings";
 type SettingsContextType = {
   settings: Settings;
   setSettings: React.Dispatch<React.SetStateAction<Settings>>;
+  addLetterPair: (pair: string, memo: string) => void;
+  deleteLetterPair: (pair: string) => void;
 };
 
 // Create the context with a default value (will be overridden by provider)
@@ -25,14 +27,16 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     cornerPriority: [],
     edgeBuffer: "C",
     cornerBuffer: "C",
-    resultSeparator: ", ",
     cycleStyle: "vertical",
     showFlippedEdge: "none",
     showFlippedCorner: "none",
-    postRotation: "",
     cubePreviewStyle: "3D",
     memoSwap: "none",
     applyScrambleRotationToPreview: false,
+    orientation: "wg",
+    letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
+    letterPairs: {},
+    useCustomLetterPairs: true,
   };
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
@@ -54,8 +58,31 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     }
   }, [settings]);
 
+  const addLetterPair = (pair: string, memo: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      letterPairs: {
+        ...prev.letterPairs,
+        [pair.toUpperCase()]: memo,
+      },
+    }));
+  };
+
+  const deleteLetterPair = (pair: string) => {
+    setSettings((prev) => {
+      const newLetterPairs = { ...prev.letterPairs };
+      delete newLetterPairs[pair.toUpperCase()];
+      return {
+        ...prev,
+        letterPairs: newLetterPairs,
+      };
+    });
+  };
+
   return (
-    <SettingsContext.Provider value={{ settings, setSettings }}>
+    <SettingsContext.Provider
+      value={{ settings, setSettings, addLetterPair, deleteLetterPair }}
+    >
       {children}
     </SettingsContext.Provider>
   );

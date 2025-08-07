@@ -55,60 +55,73 @@ export default function BufferSelection() {
   const { settings, setSettings } = context;
   return (
     <div className="space-y-6">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[150px]">Method</TableHead>
-            <TableHead className="text-center">Edge</TableHead>
-            <TableHead className="text-center">Corner</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell>M2R2</TableCell>
-            <TableCell className="text-center">U</TableCell>
-            <TableCell className="text-center">V</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Old Pochmann</TableCell>
-            <TableCell className="text-center">B</TableCell>
-            <TableCell className="text-center">A</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>3Style</TableCell>
-            <TableCell className="text-center">C</TableCell>
-            <TableCell className="text-center">C</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-        <div className="flex-1">
-          <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
-            Edge Buffer
-          </Label>
-          <BufferSelectionBox
-            buffer={settings.edgeBuffer}
-            setBuffer={(buffer) =>
-              setSettings((prev) => ({
-                ...prev,
-                edgeBuffer: buffer,
-              }))
-            }
-          />
+      <div>
+        <p className="text-sm text-muted-foreground">
+          Common buffer pieces for popular blindfolded methods.
+        </p>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[150px]">Method</TableHead>
+              <TableHead className="text-center">Edge</TableHead>
+              <TableHead className="text-center">Corner</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>M2/R2</TableCell>
+              <TableCell className="text-center">U</TableCell>
+              <TableCell className="text-center">V</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Old Pochmann</TableCell>
+              <TableCell className="text-center">B</TableCell>
+              <TableCell className="text-center">A</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>3-Style</TableCell>
+              <TableCell className="text-center">C</TableCell>
+              <TableCell className="text-center">C</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Custom Buffer</Label>
+          <p className="text-sm text-muted-foreground">
+            Select your own buffer pieces for edges and corners.
+          </p>
         </div>
-        <div className="flex-1">
-          <Label htmlFor="cornerBufferSelect" className="text-sm font-medium">
-            Corner Buffer
-          </Label>
-          <BufferSelectionBox
-            buffer={settings.cornerBuffer}
-            setBuffer={(buffer) =>
-              setSettings((prev) => ({
-                ...prev,
-                cornerBuffer: buffer,
-              }))
-            }
-          />
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
+              Edge Buffer
+            </Label>
+            <BufferSelectionBox
+              buffer={settings.edgeBuffer}
+              setBuffer={(buffer) =>
+                setSettings((prev) => ({
+                  ...prev,
+                  edgeBuffer: buffer,
+                }))
+              }
+            />
+          </div>
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="cornerBufferSelect" className="text-sm font-medium">
+              Corner Buffer
+            </Label>
+            <BufferSelectionBox
+              buffer={settings.cornerBuffer}
+              setBuffer={(buffer) =>
+                setSettings((prev) => ({
+                  ...prev,
+                  cornerBuffer: buffer,
+                }))
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

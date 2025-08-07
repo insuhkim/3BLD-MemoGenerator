@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import simplifyScramble from "@/utils/scramble/simplifyScramble";
 import { useState } from "react";
 import CubeSidebar from "./CubePreview/CubeSidebar";
-import MemoResult from "./MemoResult";
+import MemoResult from "./MemoResult/MemoResult";
 import ScrambleButton from "./ScrambleGenerator/ScrambleButton";
 import ScrambleInputField from "./ScrambleGenerator/ScrambleInputField";
 import Settings from "./Settings/Settings";

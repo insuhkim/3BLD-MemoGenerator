@@ -6,9 +6,6 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
-import makeCornerLetterPair from "@/utils/makeLetterPair/makeCornerLetterPair";
-import makeEdgeLetterPair from "@/utils/makeLetterPair/makeEdgeLetterPair";
-import { hasParity } from "@/utils/makeLetterPair/makeLetterpair";
 import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
 import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { ChevronsUpDown } from "lucide-react";
@@ -16,6 +13,8 @@ import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
 import { convertMoves } from "@/utils/scramble/translateRotation";
+import MemoResultCorner from "./MemoResultCorner";
+import MemoResultEdge from "./MemoResultEdge";
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
@@ -44,6 +43,8 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     settings.cornerBuffer,
     settings.cornerPriority
   );
+  const hasParity = (memo: string[][]) =>
+    memo.reduce((sum, cycle) => sum + cycle.length, 0) % 2 === 1;
   const hasCornerParity = hasParity(corner);
   const memoSwap =
     hasCornerParity && settings.memoSwap !== "none"
@@ -55,18 +56,6 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     settings.edgeBuffer,
     settings.edgePriority,
     memoSwap
-  );
-  const edgeString = makeEdgeLetterPair(
-    edge,
-    settings.resultSeparator,
-    settings.cycleStyle,
-    settings.showFlippedEdge
-  );
-  const cornerString = makeCornerLetterPair(
-    corner,
-    settings.resultSeparator,
-    settings.cycleStyle,
-    settings.showFlippedCorner
   );
 
   return (
@@ -87,25 +76,40 @@ export default function MemoResult({ scramble }: { scramble: string }) {
             </Button>
           </div>
         </CollapsibleTrigger>
+
         <CollapsibleContent>
-          <div className="text-xl md:text-2xl break-words pt-2">
-            {edgeString && (
+          <div className="break-words pt-2">
+            {edge.length > 0 && (
               <div className="mb-2">
                 <h2 className="text-lg font-semibold text-muted-foreground">
                   Edge
                 </h2>
-                <h3 className="font-mono">{edgeString}</h3>
+                <MemoResultEdge
+                  memo={edge}
+                  showFlippedEdge={settings.showFlippedEdge}
+                  buffer={settings.edgeBuffer}
+                  cycleStyle={settings.cycleStyle}
+                  scheme={settings.letteringScheme}
+                />
               </div>
             )}
-            {edgeString && cornerString && (
+            {edge.length > 0 && corner.length > 0 && (
               <Separator className="my-3 w-3/5 mx-auto" />
             )}
-            {cornerString && (
-              <div className="mt-2">
+            {corner.length > 0 && (
+              <div className="mb-2">
                 <h2 className="text-lg font-semibold text-muted-foreground">
                   Corner
                 </h2>
-                <h3 className="font-mono">{cornerString}</h3>
+                <MemoResultCorner
+                  memo={corner}
+                  showFlippedCorner={settings.showFlippedCorner}
+                  buffer={settings.cornerBuffer}
+                  cycleStyle={settings.cycleStyle}
+                  edgeBuffer={settings.edgeBuffer}
+                  memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
+                  scheme={settings.letteringScheme}
+                />
               </div>
             )}
             <Separator className="my-3 w-3/5 mx-auto" />

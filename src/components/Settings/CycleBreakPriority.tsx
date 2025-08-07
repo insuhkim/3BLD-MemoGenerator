@@ -13,14 +13,16 @@ export default function CycleBreakPriority() {
   const { settings, setSettings } = context;
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        Choose which cycle to break first after buffer is blocked.
-        <br />
-        After visiting all provided locations, the rest will be visited in
-        oriented, alphabetical Speffz order.
-      </p>
+      <div className="space-y-2">
+        <Label className="text-sm font-medium">Cycle Break Priority</Label>
+        <p className="text-sm text-muted-foreground">
+          Choose which cycle to break first after the buffer is blocked. After
+          visiting all provided locations, the rest will be visited in oriented,
+          alphabetical Speffz order.
+        </p>
+      </div>
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-2">
           <Label htmlFor="edgePriority" className="text-sm font-medium">
             Edge Priority
           </Label>
@@ -43,7 +45,7 @@ export default function CycleBreakPriority() {
             }}
           />
         </div>
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-2">
           <Label htmlFor="cornerPriority" className="text-sm font-medium">
             Corner Priority
           </Label>

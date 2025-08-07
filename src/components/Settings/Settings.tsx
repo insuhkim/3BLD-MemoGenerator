@@ -14,12 +14,19 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
+import CustomLetterScheme from "./CustomLetterScheme";
 import CycleBreakPriority from "./CycleBreakPriority";
-import MemoSwap from "./MemoSwap";
+import LetterPair from "./LetterPair";
+import MemoSwap from "./MemoSwapParity";
 import PreviewStyle from "./PreviewStyle";
 import ResultStyle from "./ResultStyle";
 
 const settingsSections = [
+  {
+    value: "item-0",
+    title: "Custom Letter Scheme",
+    Component: CustomLetterScheme,
+  },
   {
     value: "item-1",
     title: "Buffer Selection",
@@ -37,7 +44,7 @@ const settingsSections = [
   },
   {
     value: "item-4",
-    title: "Memo Swap",
+    title: "Memo Swap Parity",
     Component: MemoSwap,
   },
   {
@@ -45,6 +52,7 @@ const settingsSections = [
     title: "Preview Style",
     Component: PreviewStyle,
   },
+  { value: "item-6", title: "Custom Letter Pairs", Component: LetterPair },
 ];
 
 export default function Settings() {
@@ -73,7 +81,7 @@ export default function Settings() {
                   {/* Added px-6 for horizontal alignment & common hover style */}
                   <span className="flex-grow text-center">{title}</span>
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4 pt-2">
+                <AccordionContent className="px-6 pb-6 pt-2">
                   {/* Added px-6 for alignment, and vertical padding */}
                   <Component />
                 </AccordionContent>
