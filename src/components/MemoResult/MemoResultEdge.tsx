@@ -90,7 +90,9 @@ export default function MemoResultEdge({
       );
     }
     const url = allTargets[i + 1]
-      ? EdgeToURL(buffer, allTargets[i], allTargets[i + 1])
+      ? isSameEdgeSpeffz(allTargets[i], allTargets[i + 1])
+        ? EdgeFlipURL(buffer, allTargets[i])
+        : EdgeToURL(buffer, allTargets[i], allTargets[i + 1])
       : undefined;
 
     const target2 = allTargets[i + 1];
