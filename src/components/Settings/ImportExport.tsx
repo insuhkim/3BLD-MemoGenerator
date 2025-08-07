@@ -114,6 +114,26 @@ const ImportExport: React.FC = () => {
     event.target.value = "";
   };
 
+  const handleResetToDefault = () => {
+    setDialogState({
+      isOpen: true,
+      title: "Confirm Reset",
+      description:
+        "Are you sure you want to reset all settings to their default values? This action cannot be undone.",
+      showCancel: true,
+      onConfirm: () => {
+        localStorage.removeItem("settings");
+        setDialogState({
+          isOpen: true,
+          title: "Reset Successful",
+          description:
+            "All settings have been reset to default. The page will now reload.",
+          onConfirm: () => window.location.reload(),
+        });
+      },
+    });
+  };
+
   const handleImportClick = () => {
     fileInputRef.current?.click();
   };
@@ -127,10 +147,13 @@ const ImportExport: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button onClick={handleExport}>Export Settings</Button>
           <Button variant="outline" onClick={handleImportClick}>
             Import Settings
+          </Button>
+          <Button variant="destructive" onClick={handleResetToDefault}>
+            Reset to Default
           </Button>
           <input
             type="file"
