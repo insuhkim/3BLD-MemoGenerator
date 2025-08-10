@@ -30,7 +30,7 @@ function rotateSpeffzCorner(speffz: Speffz, CW: boolean = true): Speffz {
     }
   }
   throw new Error(
-    "rotateSpeffzCorner: speffz not found in cornerMap: " + speffz
+    "rotateSpeffzCorner: speffz not found in cornerMap: " + speffz,
   );
 }
 
@@ -49,8 +49,8 @@ export function speffzToCorner(speffz: Speffz) {
   const orientation = Object.keys(cornerMap).includes(speffz)
     ? 0
     : CWorientations.includes(speffz)
-    ? 1
-    : 2;
+      ? 1
+      : 2;
   const orientedSpeffz = (
     orientation === 0 ? speffz : rotateSpeffzCorner(speffz, orientation === 2)
   ) as keyof typeof cornerMap;
@@ -119,7 +119,7 @@ function speffzToCubeCorner(cube: Cube, speffz: Speffz) {
   const color2 = speffzToCubeColorCorner(cube, rotateSpeffzCorner(speffz));
   const color3 = speffzToCubeColorCorner(
     cube,
-    rotateSpeffzCorner(speffz, false)
+    rotateSpeffzCorner(speffz, false),
   );
   return colorsToCorner([color1, color2, color3]);
 }
@@ -133,22 +133,22 @@ export function isSameCornerSpeffz(c1: Speffz, c2: Speffz) {
 export default function makeCornerMemo(
   cube: Cube,
   buffer: Speffz,
-  priority: Speffz[] = []
+  priority: Speffz[] = [],
 ) {
   const solved = solvedCube({ type: "3x3" });
   const allOrientedCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
   // Merge and deduplicate priorities and allOrientedCorners
-  const toVisit: Speffz[] = [...new Set([...priority, ...allOrientedCorners])];
+  const toVisit: Speffz[] = [
+    ...new Set([...priority, ...allOrientedCorners]),
+  ].filter((corner) => !isSameCornerSpeffz(corner, buffer));
 
   const nextTarget = (cube: Cube, current: Speffz) =>
     cornerToSpeffz(speffzToCubeCorner(cube, current));
 
-  function getCycle(target: Speffz, cycleStart: Speffz): Speffz[] {
-    if (speffzToCorner(target)[0] === speffzToCorner(cycleStart)[0]) {
-      return [target];
-    }
-    return [target, ...getCycle(nextTarget(cube, target), cycleStart)];
-  }
+  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
+    speffzToCorner(target)[0] === speffzToCorner(cycleStart)[0]
+      ? [target]
+      : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
   let unsolvedCorners = toVisit.filter((c) => {
     const corner = speffzToCubeCorner(cube, c);
@@ -164,11 +164,11 @@ export default function makeCornerMemo(
   if (!bufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
     unsolvedCorners = unsolvedCorners.filter((c) =>
-      firstCycle.every((c1) => !isSameCornerSpeffz(c, c1))
+      firstCycle.every((c1) => !isSameCornerSpeffz(c, c1)),
     );
   } else {
     unsolvedCorners = unsolvedCorners.filter(
-      (c) => !isSameCornerSpeffz(c, buffer)
+      (c) => !isSameCornerSpeffz(c, buffer),
     );
   }
 
@@ -178,7 +178,7 @@ export default function makeCornerMemo(
     const target = nextTarget(cube, start);
     const cycle = getCycle(target, start);
     const remaining = unsolved.filter((c) =>
-      cycle.every((c1) => !isSameCornerSpeffz(c, c1))
+      cycle.every((c1) => !isSameCornerSpeffz(c, c1)),
     );
     return [[start, ...cycle], ...solveAll(remaining)];
   }

@@ -152,44 +152,41 @@ export default function makeEdgeMemo(
   cube: Cube,
   buffer: Speffz,
   priority: Speffz[] = [],
-  memoSwap: Speffz = buffer // Think memoSwap as buffer, buffer as memoSwap
+  memoSwap: Speffz = buffer, // Think memoSwap as buffer, buffer as memoSwap
 ) {
   const solved = solvedCube({ type: "3x3" });
+  // prettier-ignore
   const allOrientedEdges: Speffz[] = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "L",
-    "J",
-    "T",
-    "R",
-    "U",
-    "V",
-    "W",
-    "X",
+    "A", "B", "C", "D",
+    "L", "J", "T", "R",
+    "U", "V", "W", "X",
   ];
-  const toVisit: Speffz[] = [...new Set([...priority, ...allOrientedEdges])];
 
+  const toVisit: Speffz[] = [
+    ...new Set([...priority, ...allOrientedEdges]),
+  ].filter((edge) => !isSameEdgeSpeffz(edge, buffer));
+
+  // A function that finds where current piece belongs
   const currentBelongs = (cube: Cube, current: Speffz) =>
     edgeToSpeffz(speffzToCubeEdge(cube, current));
 
   const nextTarget = (cube: Cube, current: Speffz) => {
     const edgeBelongs = currentBelongs(cube, current);
-    if (isSameEdgeSpeffz(edgeBelongs, memoSwap))
-      return edgeBelongs !== memoSwap ? flipSpeffzEdge(buffer) : buffer;
-    else if (isSameEdgeSpeffz(edgeBelongs, buffer))
-      return edgeBelongs !== buffer ? flipSpeffzEdge(memoSwap) : memoSwap;
-
-    return edgeBelongs;
+    return isSameEdgeSpeffz(edgeBelongs, memoSwap)
+      ? edgeBelongs === memoSwap
+        ? buffer
+        : flipSpeffzEdge(buffer)
+      : isSameEdgeSpeffz(edgeBelongs, buffer)
+        ? edgeBelongs === buffer
+          ? memoSwap
+          : flipSpeffzEdge(memoSwap)
+        : edgeBelongs;
   };
 
-  function getCycle(target: Speffz, cycleStart: Speffz): Speffz[] {
-    if (target === cycleStart || target === flipSpeffzEdge(cycleStart))
-      return [target];
-
-    return [target, ...getCycle(nextTarget(cube, target), cycleStart)];
-  }
+  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
+    target === cycleStart || target === flipSpeffzEdge(cycleStart)
+      ? [target]
+      : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
   let unsolvedEdges = toVisit.filter((c) => {
     const edge = speffzToCubeEdge(cube, c);
@@ -204,7 +201,7 @@ export default function makeEdgeMemo(
   if (!bufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
     unsolvedEdges = unsolvedEdges.filter((c) =>
-      firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1))
+      firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1)),
     );
   } else {
     unsolvedEdges = unsolvedEdges.filter((c) => !isSameEdgeSpeffz(c, memoSwap));
@@ -218,7 +215,7 @@ export default function makeEdgeMemo(
     const remaining = unsolved.filter(
       (c) =>
         cycle.every((c1) => !isSameEdgeSpeffz(c, c1)) &&
-        !isSameEdgeSpeffz(c, memoSwap)
+        !isSameEdgeSpeffz(c, memoSwap),
     );
     return [[start, ...cycle], ...solveAll(remaining)];
   }
