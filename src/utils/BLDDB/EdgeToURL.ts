@@ -1,4 +1,4 @@
-import { speffzToEdge } from "../makeMemo/makeEdgeMemo";
+import { speffzToEdge } from "../makeMemo/edgeHelper";
 import { Speffz } from "../types/Speffz";
 
 function SpeffzEdgeToPosition(edge: Speffz): string {
