@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -30,6 +31,8 @@ export default function LetterPair() {
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
+  const [activeView, setActiveView] = useState("list");
+  const [filter, setFilter] = useState("");
 
   const handleAdd = () => {
     if (pair && memo) {
@@ -65,6 +68,13 @@ export default function LetterPair() {
     }
   };
 
+  const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase();
+    // Only allow A-X characters
+    const filtered = value.replace(/[^A-X]/g, "");
+    setPair(filtered);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-lg border p-4">
@@ -94,11 +104,11 @@ export default function LetterPair() {
               </DialogDescription>
             </DialogHeader>
             <div className="py-4 space-y-4">
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <Input
                   placeholder="Pair (e.g., AP)"
                   value={pair}
-                  onChange={(e) => setPair(e.target.value.toUpperCase())}
+                  onChange={handlePairChange}
                   maxLength={2}
                   className="uppercase w-24"
                   onKeyDown={handleKeyDown}
@@ -108,6 +118,7 @@ export default function LetterPair() {
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                   onKeyDown={handleKeyDown}
+                  className="flex-1 min-w-[150px]"
                 />
                 <Button onClick={handleAdd} disabled={!pair || !memo}>
                   Add/Update
@@ -121,60 +132,108 @@ export default function LetterPair() {
                 </Button>
               </div>
 
-              <div className="overflow-x-auto">
-                <TooltipProvider>
-                  <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
-                    <div className="p-1 bg-muted"></div>
-                    {alphabet.map((letter) => (
-                      <div
-                        key={letter}
-                        className="p-1 font-bold text-center bg-muted"
-                      >
-                        {letter}
+              <Tabs defaultValue="list" onValueChange={setActiveView}>
+                <TabsList className="w-full justify-start">
+                  <TabsTrigger value="grid">Grid View</TabsTrigger>
+                  <TabsTrigger value="list">List View</TabsTrigger>
+                </TabsList>
+                <TabsContent value="grid" className="mt-2">
+                  <div className="overflow-x-auto pb-2 relative">
+                    <div className="min-w-[640px] overflow-y-visible">
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-background/80 px-2 py-1 rounded-l-md border border-r-0 text-xs animate-pulse">
+                        Scroll →
                       </div>
-                    ))}
-                    {alphabet.map((rowLetter) => (
-                      <Fragment key={rowLetter}>
-                        <div
-                          key={rowLetter}
-                          className="p-1 font-bold text-center bg-muted"
-                        >
-                          {rowLetter}
-                        </div>
-                        {alphabet.map((colLetter) => {
-                          const currentPair = rowLetter + colLetter;
-                          const currentMemo = settings.letterPairs[currentPair];
-                          const cell = (
+                      <TooltipProvider>
+                        <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
+                          <div className="p-1 bg-muted sticky left-0 z-10"></div>
+                          {alphabet.map((letter) => (
                             <div
-                              key={currentPair}
-                              onClick={() => handleCellClick(currentPair)}
-                              className={`p-1 truncate cursor-pointer text-center ${
-                                currentMemo
-                                  ? "bg-primary/20 hover:bg-primary/30"
-                                  : "bg-background hover:bg-muted"
-                              }`}
+                              key={letter}
+                              className="p-1 font-bold text-center bg-muted"
                             >
-                              {currentMemo || "-"}
+                              {letter}
                             </div>
-                          );
+                          ))}
+                          {alphabet.map((rowLetter) => (
+                            <Fragment key={rowLetter}>
+                              <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
+                                {rowLetter}
+                              </div>
+                              {alphabet.map((colLetter) => {
+                                const currentPair = rowLetter + colLetter;
+                                const currentMemo =
+                                  settings.letterPairs[currentPair];
+                                const cell = (
+                                  <div
+                                    key={currentPair}
+                                    onClick={() => handleCellClick(currentPair)}
+                                    className={`p-1 truncate cursor-pointer text-center ${
+                                      currentMemo
+                                        ? "bg-primary/20 hover:bg-primary/30"
+                                        : "bg-background hover:bg-muted"
+                                    }`}
+                                  >
+                                    {currentMemo || "-"}
+                                  </div>
+                                );
 
-                          if (currentMemo) {
-                            return (
-                              <Tooltip key={currentPair}>
-                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{currentMemo}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            );
-                          }
-                          return cell;
-                        })}
-                      </Fragment>
-                    ))}
+                                if (currentMemo) {
+                                  return (
+                                    <Tooltip key={currentPair}>
+                                      <TooltipTrigger asChild>
+                                        {cell}
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>{currentMemo}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  );
+                                }
+                                return cell;
+                              })}
+                            </Fragment>
+                          ))}
+                        </div>
+                      </TooltipProvider>
+                    </div>
                   </div>
-                </TooltipProvider>
-              </div>
+                </TabsContent>
+                <TabsContent value="list" className="mt-2">
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Filter pairs or memos..."
+                      value={filter}
+                      onChange={(e) => setFilter(e.target.value)}
+                      className="mb-2"
+                    />
+                    <div className="max-h-[50vh] overflow-y-auto border rounded-md">
+                      {Object.entries(settings.letterPairs)
+                        .filter(
+                          ([pair, memo]) =>
+                            filter === "" ||
+                            pair.toLowerCase().includes(filter.toLowerCase()) ||
+                            memo.toLowerCase().includes(filter.toLowerCase())
+                        )
+                        .sort(([a], [b]) => a.localeCompare(b))
+                        .map(([pair, memo]) => (
+                          <div
+                            key={pair}
+                            onClick={() => handleCellClick(pair)}
+                            className="flex justify-between items-center p-2 hover:bg-muted cursor-pointer border-b last:border-0"
+                          >
+                            <div className="font-medium">{pair}</div>
+                            <div>{memo}</div>
+                          </div>
+                        ))}
+                      {Object.keys(settings.letterPairs).length === 0 && (
+                        <div className="p-4 text-center text-muted-foreground">
+                          No letter pairs added yet
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
             <p className="text-sm text-muted-foreground">
               {Object.keys(settings.letterPairs).length} custom pair(s).
