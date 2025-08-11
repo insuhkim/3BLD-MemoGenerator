@@ -14,7 +14,7 @@ import MemoPair from "./MemoPair";
 
 function isCWRotation(cornerFrom: Speffz, cornerTo: Speffz): boolean {
   return (
-    (speffzToCorner(cornerFrom)[1] - speffzToCorner(cornerTo)[1] + 3) % 3 === 1
+    (speffzToCorner(cornerTo)[1] - speffzToCorner(cornerFrom)[1] + 3) % 3 === 1
   );
 }
 
