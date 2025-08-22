@@ -135,7 +135,11 @@ export default function MemoResultCorner({
         speffzToCorner(cycle[0])[0],
         stickerOrientationToShow,
       ];
-      const representation = ` [${cornerToSpeffz(showingCorner)}]`;
+      const representation = ` [${speffzToLocation(
+        scheme,
+        cornerToSpeffz(showingCorner),
+        "corner"
+      )}]`;
       components.push(
         <MemoPair
           key={`flipped-${index}`}

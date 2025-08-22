@@ -14,14 +14,14 @@ import MemoPair from "./MemoPair";
 function getFlippedEdgeStringRepresentation(
   cycle: Speffz[],
   flippedEdgeStyle: FlippedEdgeStyle
-): string {
+): Speffz {
   const edgePiece = speffzToEdge(cycle[0])[0]; // Get the piece identifier, e.g., "UF"
 
   const orientationValueForShowingEdge: boolean =
     flippedEdgeStyle === "unoriented";
 
   const showingEdge: Edge = [edgePiece, orientationValueForShowingEdge];
-  return ` [${edgeToSpeffz(showingEdge)}]`;
+  return edgeToSpeffz(showingEdge);
 }
 
 export default function MemoResultEdge({
@@ -130,7 +130,11 @@ export default function MemoResultEdge({
           target2={cycle[1]}
           target1Character={speffzToLocation(scheme, cycle[0], "edge")}
           target2Character={speffzToLocation(scheme, cycle[1], "edge")}
-          entireString={representation}
+          entireString={` [${speffzToLocation(
+            scheme,
+            representation,
+            "edge"
+          )}]`}
         />
       );
     });
