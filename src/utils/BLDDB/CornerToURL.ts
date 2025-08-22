@@ -1,4 +1,4 @@
-import { speffzToCorner } from "../makeMemo/makeCornerMemo";
+import { speffzToCorner } from "../makeMemo/cornerHelper";
 import { Speffz } from "../types/Speffz";
 
 export function SpeffzCornerToPosition(corner: Speffz): string {

@@ -3,7 +3,7 @@ import {
   edgeToSpeffz,
   isSameEdgeSpeffz,
   speffzToEdge,
-} from "@/utils/makeMemo/makeEdgeMemo";
+} from "@/utils/makeMemo/edgeHelper";
 import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Edge } from "@/utils/types/Edge";
 import { CycleNotationStyle, FlippedEdgeStyle } from "@/utils/types/Settings";

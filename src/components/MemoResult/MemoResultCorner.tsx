@@ -4,7 +4,7 @@ import {
   cornerToSpeffz,
   isSameCornerSpeffz,
   speffzToCorner,
-} from "@/utils/makeMemo/makeCornerMemo";
+} from "@/utils/makeMemo/cornerHelper";
 import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Corner } from "@/utils/types/Corner";
 import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";

@@ -6,12 +6,12 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
-import makeCornerMemo from "@/utils/makeMemo/makeCornerMemo";
-import makeEdgeMemo from "@/utils/makeMemo/makeEdgeMemo";
 import { ChevronsUpDown } from "lucide-react";
 import { useContext, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
+import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
+import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
 import { convertMoves } from "@/utils/scramble/translateRotation";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
