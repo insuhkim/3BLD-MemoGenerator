@@ -1,20 +1,21 @@
+import { SettingsContext } from "@/context/SettingsContext";
 import { CornerToURL, CornerTwistURL } from "@/utils/BLDDB/CornerToURL";
 import { ParityURL } from "@/utils/BLDDB/ParityURL";
 import {
   cornerToSpeffz,
   isSameCornerSpeffz,
   speffzToCorner,
-} from "@/utils/makeMemo/makeCornerMemo";
+} from "@/utils/makeMemo/cornerHelper";
 import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Corner } from "@/utils/types/Corner";
 import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
-import { JSX } from "react";
+import { JSX, useContext } from "react";
 import MemoPair from "./MemoPair";
 
 function isCWRotation(cornerFrom: Speffz, cornerTo: Speffz): boolean {
   return (
-    (speffzToCorner(cornerFrom)[1] - speffzToCorner(cornerTo)[1] + 3) % 3 === 1
+    (speffzToCorner(cornerTo)[1] - speffzToCorner(cornerFrom)[1] + 3) % 3 === 1
   );
 }
 
@@ -36,6 +37,14 @@ export default function MemoResultCorner({
   memoSwap?: Speffz;
 }) {
   if (memo.length === 0) return null;
+
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("MemoPair must be used within a SettingsProvider");
+  }
+  const {
+    settings: { useCustomLetterPairsCorner },
+  } = context;
 
   const components: JSX.Element[] = [];
 
@@ -116,6 +125,7 @@ export default function MemoResultCorner({
         infix={infix}
         prefix={prefix}
         suffix={suffix}
+        useCustomLetterPairs={useCustomLetterPairsCorner}
       />
     );
   }
@@ -135,7 +145,11 @@ export default function MemoResultCorner({
         speffzToCorner(cycle[0])[0],
         stickerOrientationToShow,
       ];
-      const representation = ` [${cornerToSpeffz(showingCorner)}]`;
+      const representation = ` [${speffzToLocation(
+        scheme,
+        cornerToSpeffz(showingCorner),
+        "corner"
+      )}]`;
       components.push(
         <MemoPair
           key={`flipped-${index}`}
@@ -145,6 +159,7 @@ export default function MemoResultCorner({
           target1Character={speffzToLocation(scheme, cycle[0], "corner")}
           target2Character={speffzToLocation(scheme, cycle[1], "corner")}
           entireString={representation}
+          useCustomLetterPairs={useCustomLetterPairsCorner}
         />
       );
     });

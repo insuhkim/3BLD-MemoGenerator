@@ -27,5 +27,6 @@ export type Settings = {
   orientation: Orientation;
   letteringScheme: string;
   letterPairs: { [key: string]: string };
-  useCustomLetterPairs: boolean;
+  useCustomLetterPairsEdge: boolean;
+  useCustomLetterPairsCorner: boolean;
 };

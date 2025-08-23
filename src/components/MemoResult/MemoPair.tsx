@@ -29,6 +29,7 @@ interface MemoPairProps {
   target1Character?: string;
   target2Character?: string;
   entireString?: string;
+  useCustomLetterPairs: boolean;
 }
 
 export default function MemoPair({
@@ -41,13 +42,14 @@ export default function MemoPair({
   target1Character = target1,
   target2Character = target2,
   entireString,
+  useCustomLetterPairs,
 }: MemoPairProps) {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error("MemoPair must be used within a SettingsProvider");
   }
   const {
-    settings: { letterPairs, useCustomLetterPairs },
+    settings: { letterPairs },
     addLetterPair,
   } = context;
 

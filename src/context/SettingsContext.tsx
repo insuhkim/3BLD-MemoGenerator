@@ -36,27 +36,38 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     orientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
-    useCustomLetterPairs: true,
+    useCustomLetterPairsEdge: true,
+    useCustomLetterPairsCorner: true,
   };
 
+  // Initialize with default settings on both server and client to prevent hydration mismatch.
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
-  // Load settings from localStorage on mount
+  // On the client, after the initial render, load settings from localStorage.
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    try {
       const saved = localStorage.getItem("settings");
       if (saved) {
-        setSettings(JSON.parse(saved));
+        const savedSettings = JSON.parse(saved);
+        // Merge with defaults to ensure new settings are included.
+        setSettings((prev) => ({ ...prev, ...savedSettings }));
+      }
+    } catch (error) {
+      console.error("Failed to parse settings from localStorage", error);
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount.
+
+  // Save settings to localStorage whenever they change.
+  useEffect(() => {
+    // Avoid saving the initial default state to localStorage on first render.
+    if (settings !== defaultSettings) {
+      try {
+        localStorage.setItem("settings", JSON.stringify(settings));
+      } catch (error) {
+        console.error("Failed to save settings to localStorage", error);
       }
     }
-  }, []);
-
-  // Save settings to localStorage on change
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("settings", JSON.stringify(settings));
-    }
-  }, [settings]);
+  }, [settings, defaultSettings]);
 
   const addLetterPair = (pair: string, memo: string) => {
     setSettings((prev) => ({
