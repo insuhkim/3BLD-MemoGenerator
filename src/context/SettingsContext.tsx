@@ -39,33 +39,34 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     useCustomLetterPairs: true,
   };
 
-  const [settings, setSettings] = useState<Settings>(() => {
-    // This function runs only on the initial render
-    if (typeof window === "undefined") {
-      return defaultSettings;
-    }
+  // Initialize with default settings on both server and client to prevent hydration mismatch.
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
+
+  // On the client, after the initial render, load settings from localStorage.
+  useEffect(() => {
     try {
       const saved = localStorage.getItem("settings");
       if (saved) {
-        // Merge saved settings with defaults to include any new default properties
-        return { ...defaultSettings, ...JSON.parse(saved) };
+        const savedSettings = JSON.parse(saved);
+        // Merge with defaults to ensure new settings are included.
+        setSettings((prev) => ({ ...prev, ...savedSettings }));
       }
     } catch (error) {
       console.error("Failed to parse settings from localStorage", error);
-      // Fallback to defaults if parsing fails
-      return defaultSettings;
     }
-    return defaultSettings;
-  });
+  }, []); // Empty dependency array ensures this runs only once on mount.
 
-  // This effect now only serves to save settings when they change.
+  // Save settings to localStorage whenever they change.
   useEffect(() => {
-    try {
-      localStorage.setItem("settings", JSON.stringify(settings));
-    } catch (error) {
-      console.error("Failed to save settings to localStorage", error);
+    // Avoid saving the initial default state to localStorage on first render.
+    if (settings !== defaultSettings) {
+      try {
+        localStorage.setItem("settings", JSON.stringify(settings));
+      } catch (error) {
+        console.error("Failed to save settings to localStorage", error);
+      }
     }
-  }, [settings]);
+  }, [settings, defaultSettings]);
 
   const addLetterPair = (pair: string, memo: string) => {
     setSettings((prev) => ({
