@@ -50,10 +50,17 @@ export default function LetterPair() {
     }
   };
 
-  const handleToggle = (checked: boolean) => {
+  const handleToggleEdge = (checked: boolean) => {
     setSettings((prev) => ({
       ...prev,
-      useCustomLetterPairs: checked,
+      useCustomLetterPairsEdge: checked,
+    }));
+  };
+
+  const handleToggleCorner = (checked: boolean) => {
+    setSettings((prev) => ({
+      ...prev,
+      useCustomLetterPairsCorner: checked,
     }));
   };
 
@@ -77,20 +84,42 @@ export default function LetterPair() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between rounded-lg border p-4">
-        <Label htmlFor="use-custom-pairs" className="flex flex-col space-y-1">
-          <span>Use Custom Letter Pairs</span>
-          <span className="font-normal leading-snug text-muted-foreground">
-            Enable to use your custom memos instead of the default letter pairs.
-          </span>
-        </Label>
-        <Switch
-          id="use-custom-pairs"
-          checked={settings.useCustomLetterPairs}
-          onCheckedChange={handleToggle}
-        />
+      <div className="rounded-lg border">
+        <div className="flex items-center justify-between p-4">
+          <Label
+            htmlFor="use-custom-pairs-edge"
+            className="flex flex-col space-y-1"
+          >
+            <span>Use Custom Edge Pairs</span>
+            <span className="font-normal leading-snug text-muted-foreground">
+              Enable to use your custom memos for edge pieces.
+            </span>
+          </Label>
+          <Switch
+            id="use-custom-pairs-edge"
+            checked={settings.useCustomLetterPairsEdge}
+            onCheckedChange={handleToggleEdge}
+          />
+        </div>
+        <div className="border-t" />
+        <div className="flex items-center justify-between p-4">
+          <Label
+            htmlFor="use-custom-pairs-corner"
+            className="flex flex-col space-y-1"
+          >
+            <span>Use Custom Corner Pairs</span>
+            <span className="font-normal leading-snug text-muted-foreground">
+              Enable to use your custom memos for corner pieces.
+            </span>
+          </Label>
+          <Switch
+            id="use-custom-pairs-corner"
+            checked={settings.useCustomLetterPairsCorner}
+            onCheckedChange={handleToggleCorner}
+          />
+        </div>
       </div>
-      {settings.useCustomLetterPairs && (
+      {
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">Manage Custom Letter Pairs</Button>
@@ -104,32 +133,41 @@ export default function LetterPair() {
               </DialogDescription>
             </DialogHeader>
             <div className="py-4 space-y-4">
-              <div className="flex gap-2 flex-wrap">
-                <Input
-                  placeholder="Pair (e.g., AP)"
-                  value={pair}
-                  onChange={handlePairChange}
-                  maxLength={2}
-                  className="uppercase w-24"
-                  onKeyDown={handleKeyDown}
-                />
-                <Input
-                  placeholder="Memo (e.g., Apple)"
-                  value={memo}
-                  onChange={(e) => setMemo(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="flex-1 min-w-[150px]"
-                />
-                <Button onClick={handleAdd} disabled={!pair || !memo}>
-                  Add/Update
-                </Button>
-                <Button
-                  onClick={handleDelete}
-                  variant="destructive"
-                  disabled={!pair}
-                >
-                  Delete
-                </Button>
+              <div className="space-y-2">
+                <div className="flex gap-2 flex-wrap">
+                  <Input
+                    placeholder="Pair (e.g., AP)"
+                    value={pair}
+                    onChange={handlePairChange}
+                    maxLength={2}
+                    className="uppercase w-24"
+                    onKeyDown={handleKeyDown}
+                  />
+                  <Input
+                    placeholder="Memo (e.g., Apple)"
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="flex-1 min-w-[150px]"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleAdd}
+                    disabled={!pair || !memo}
+                    className="flex-1"
+                  >
+                    Add/Update
+                  </Button>
+                  <Button
+                    onClick={handleDelete}
+                    variant="destructive"
+                    disabled={!pair}
+                    className="flex-1"
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
 
               <Tabs defaultValue="list" onValueChange={setActiveView}>
@@ -140,9 +178,6 @@ export default function LetterPair() {
                 <TabsContent value="grid" className="mt-2">
                   <div className="overflow-x-auto pb-2 relative">
                     <div className="min-w-[640px] overflow-y-visible">
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-background/80 px-2 py-1 rounded-l-md border border-r-0 text-xs animate-pulse">
-                        Scroll →
-                      </div>
                       <TooltipProvider>
                         <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                           <div className="p-1 bg-muted sticky left-0 z-10"></div>
@@ -240,7 +275,7 @@ export default function LetterPair() {
             </p>
           </DialogContent>
         </Dialog>
-      )}
+      }
     </div>
   );
 }

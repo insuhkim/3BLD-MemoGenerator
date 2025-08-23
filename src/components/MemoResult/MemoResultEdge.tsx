@@ -1,3 +1,4 @@
+import { SettingsContext } from "@/context/SettingsContext";
 import { EdgeFlipURL, EdgeToURL } from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
@@ -8,7 +9,7 @@ import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Edge } from "@/utils/types/Edge";
 import { CycleNotationStyle, FlippedEdgeStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
-import { JSX } from "react";
+import { JSX, useContext } from "react";
 import MemoPair from "./MemoPair";
 
 function getFlippedEdgeStringRepresentation(
@@ -40,6 +41,15 @@ export default function MemoResultEdge({
   if (memo.length === 0) {
     return null;
   }
+
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("MemoPair must be used within a SettingsProvider");
+  }
+  const {
+    settings: { useCustomLetterPairsEdge },
+  } = context;
+
   const components: JSX.Element[] = [];
 
   const isFlipped = (cycle: Speffz[]) =>
@@ -111,6 +121,7 @@ export default function MemoResultEdge({
         infix={infix}
         prefix={prefix}
         suffix={suffix}
+        useCustomLetterPairs={useCustomLetterPairsEdge}
       />
     );
   }
@@ -135,6 +146,7 @@ export default function MemoResultEdge({
             representation,
             "edge"
           )}]`}
+          useCustomLetterPairs={useCustomLetterPairsEdge}
         />
       );
     });

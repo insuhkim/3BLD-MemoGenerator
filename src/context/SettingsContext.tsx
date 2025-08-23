@@ -36,7 +36,8 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     orientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
-    useCustomLetterPairs: true,
+    useCustomLetterPairsEdge: true,
+    useCustomLetterPairsCorner: true,
   };
 
   // Initialize with default settings on both server and client to prevent hydration mismatch.
