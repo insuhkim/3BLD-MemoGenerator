@@ -1,4 +1,3 @@
-import { SettingsContext } from "@/context/SettingsContext";
 import { CornerToURL, CornerTwistURL } from "@/utils/BLDDB/CornerToURL";
 import { ParityURL } from "@/utils/BLDDB/ParityURL";
 import {
@@ -10,7 +9,7 @@ import { speffzToLocation } from "@/utils/speffzToLocation";
 import { Corner } from "@/utils/types/Corner";
 import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
-import { JSX, useContext } from "react";
+import { JSX } from "react";
 import MemoPair from "./MemoPair";
 
 function isCWRotation(cornerFrom: Speffz, cornerTo: Speffz): boolean {
@@ -27,6 +26,7 @@ export default function MemoResultCorner({
   memoSwap,
   edgeBuffer,
   scheme,
+  useCustomLetterPairsCorner,
 }: {
   memo: Speffz[][];
   showFlippedCorner: FlippedCornerStyle;
@@ -35,16 +35,9 @@ export default function MemoResultCorner({
   edgeBuffer: Speffz;
   scheme: string;
   memoSwap?: Speffz;
+  useCustomLetterPairsCorner: boolean;
 }) {
   if (memo.length === 0) return null;
-
-  const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error("MemoPair must be used within a SettingsProvider");
-  }
-  const {
-    settings: { useCustomLetterPairsCorner },
-  } = context;
 
   const components: JSX.Element[] = [];
 

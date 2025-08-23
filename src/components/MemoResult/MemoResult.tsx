@@ -90,6 +90,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   buffer={settings.edgeBuffer}
                   cycleStyle={settings.cycleStyle}
                   scheme={settings.letteringScheme}
+                  useCustomLetterPairsEdge={settings.useCustomLetterPairsEdge}
                 />
               </div>
             )}
@@ -109,6 +110,9 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   edgeBuffer={settings.edgeBuffer}
                   memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
                   scheme={settings.letteringScheme}
+                  useCustomLetterPairsCorner={
+                    settings.useCustomLetterPairsCorner
+                  }
                 />
               </div>
             )}
