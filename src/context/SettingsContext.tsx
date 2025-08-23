@@ -39,22 +39,31 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     useCustomLetterPairs: true,
   };
 
-  const [settings, setSettings] = useState<Settings>(defaultSettings);
-
-  // Load settings from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
+  const [settings, setSettings] = useState<Settings>(() => {
+    // This function runs only on the initial render
+    if (typeof window === "undefined") {
+      return defaultSettings;
+    }
+    try {
       const saved = localStorage.getItem("settings");
       if (saved) {
-        setSettings(JSON.parse(saved));
+        // Merge saved settings with defaults to include any new default properties
+        return { ...defaultSettings, ...JSON.parse(saved) };
       }
+    } catch (error) {
+      console.error("Failed to parse settings from localStorage", error);
+      // Fallback to defaults if parsing fails
+      return defaultSettings;
     }
-  }, []);
+    return defaultSettings;
+  });
 
-  // Save settings to localStorage on change
+  // This effect now only serves to save settings when they change.
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    try {
       localStorage.setItem("settings", JSON.stringify(settings));
+    } catch (error) {
+      console.error("Failed to save settings to localStorage", error);
     }
   }, [settings]);
 
