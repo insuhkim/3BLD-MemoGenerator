@@ -176,31 +176,44 @@ const ImportExport: React.FC = () => {
   };
 
   return (
-    <Card className="mt-5">
-      <CardHeader>
-        <CardTitle>Import / Export Settings</CardTitle>
-        <CardDescription>
-          Save your settings to a file or load them from one.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={handleExport}>Export Settings</Button>
-          <Button variant="outline" onClick={handleImportClick}>
-            Import Settings
-          </Button>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Import / Export Settings</CardTitle>
+          <CardDescription>
+            Save your settings to a file or load them from one.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={handleExport}>Export Settings</Button>
+            <Button variant="outline" onClick={handleImportClick}>
+              Import Settings
+            </Button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleImport}
+              accept=".json"
+            />
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="border-destructive">
+        <CardHeader>
+          <CardTitle>Reset Settings</CardTitle>
+          <CardDescription>
+            Reset all settings to their default values. This action cannot be
+            undone.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <Button variant="destructive" onClick={handleResetToDefault}>
             Reset to Default
           </Button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImport}
-            accept=".json"
-          />
-        </div>
-      </CardContent>
+        </CardContent>
+      </Card>
       <AlertDialog
         open={dialogState.isOpen}
         onOpenChange={(isOpen) =>
@@ -224,7 +237,7 @@ const ImportExport: React.FC = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Card>
+    </>
   );
 };
 

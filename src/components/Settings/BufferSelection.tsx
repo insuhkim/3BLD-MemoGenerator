@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -32,7 +39,7 @@ function BufferSelectionBox({
       value={buffer}
       onValueChange={(value) => setBuffer(value as Speffz)}
     >
-      <SelectTrigger className="w-full mt-1 sm:w-[120px]">
+      <SelectTrigger className="w-full mt-1">
         <SelectValue placeholder="Select buffer" />
       </SelectTrigger>
       <SelectContent>
@@ -46,6 +53,12 @@ function BufferSelectionBox({
   );
 }
 
+const presets = [
+  { method: "M2/R2", edge: "U", corner: "V" },
+  { method: "Old Pochmann", edge: "B", corner: "A" },
+  { method: "3-Style", edge: "C", corner: "C" },
+];
+
 export default function BufferSelection() {
   const context = useContext(SettingsContext);
   if (!context) {
@@ -55,75 +68,87 @@ export default function BufferSelection() {
   const { settings, setSettings } = context;
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-sm text-muted-foreground">
-          Common buffer pieces for popular blindfolded methods.
-        </p>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[150px]">Method</TableHead>
-              <TableHead className="text-center">Edge</TableHead>
-              <TableHead className="text-center">Corner</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>M2/R2</TableCell>
-              <TableCell className="text-center">U</TableCell>
-              <TableCell className="text-center">V</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Old Pochmann</TableCell>
-              <TableCell className="text-center">B</TableCell>
-              <TableCell className="text-center">A</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>3-Style</TableCell>
-              <TableCell className="text-center">C</TableCell>
-              <TableCell className="text-center">C</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Custom Buffer</Label>
-          <p className="text-sm text-muted-foreground">
+      <Card>
+        <CardHeader>
+          <CardTitle>Presets</CardTitle>
+          <CardDescription>
+            Select a common buffer set for popular blindfolded methods.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[150px]">Method</TableHead>
+                <TableHead className="text-center">Edge</TableHead>
+                <TableHead className="text-center">Corner</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {presets.map((preset) => (
+                <TableRow
+                  key={preset.method}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      edgeBuffer: preset.edge as Speffz,
+                      cornerBuffer: preset.corner as Speffz,
+                    }))
+                  }
+                >
+                  <TableCell className="font-medium">{preset.method}</TableCell>
+                  <TableCell className="text-center">{preset.edge}</TableCell>
+                  <TableCell className="text-center">{preset.corner}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Custom Buffer</CardTitle>
+          <CardDescription>
             Select your own buffer pieces for edges and corners.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
-              Edge Buffer
-            </Label>
-            <BufferSelectionBox
-              buffer={settings.edgeBuffer}
-              setBuffer={(buffer) =>
-                setSettings((prev) => ({
-                  ...prev,
-                  edgeBuffer: buffer,
-                }))
-              }
-            />
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
+                Edge Buffer
+              </Label>
+              <BufferSelectionBox
+                buffer={settings.edgeBuffer}
+                setBuffer={(buffer) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    edgeBuffer: buffer,
+                  }))
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="cornerBufferSelect"
+                className="text-sm font-medium"
+              >
+                Corner Buffer
+              </Label>
+              <BufferSelectionBox
+                buffer={settings.cornerBuffer}
+                setBuffer={(buffer) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    cornerBuffer: buffer,
+                  }))
+                }
+              />
+            </div>
           </div>
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="cornerBufferSelect" className="text-sm font-medium">
-              Corner Buffer
-            </Label>
-            <BufferSelectionBox
-              buffer={settings.cornerBuffer}
-              setBuffer={(buffer) =>
-                setSettings((prev) => ({
-                  ...prev,
-                  cornerBuffer: buffer,
-                }))
-              }
-            />
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -12,6 +13,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import BufferSelection from "./BufferSelection";
 import CustomLetterScheme from "./CustomLetterScheme";
@@ -45,12 +48,12 @@ const settingsSections = [
   },
   {
     value: "item-4",
-    title: "Memo Swap Parity",
+    title: "Memo Swap for Parity",
     Component: MemoSwap,
   },
   {
     value: "item-5",
-    title: "Preview Style",
+    title: "Cube Preview",
     Component: PreviewStyle,
   },
   { value: "item-6", title: "Custom Letter Pairs", Component: LetterPair },
@@ -58,6 +61,12 @@ const settingsSections = [
 ];
 
 export default function Settings() {
+  const [activeSection, setActiveSection] = useState(settingsSections[0].value);
+
+  const ActiveComponent =
+    settingsSections.find((s) => s.value === activeSection)?.Component ||
+    settingsSections[0].Component;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -67,29 +76,46 @@ export default function Settings() {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="w-full sm:w-[400px] flex flex-col p-0" // Removed default padding
+        className="w-full sm:max-w-3xl flex flex-col p-0" // Removed default padding
       >
         <SheetHeader className="px-6 pt-6 pb-4 border-b">
-          {" "}
-          {/* Added padding and border */}
           <SheetTitle>Settings</SheetTitle>
         </SheetHeader>
-        {/* This div handles scrolling for the accordion content */}
-        <div className="flex-1 overflow-y-auto">
-          <Accordion type="single" collapsible className="w-full">
-            {settingsSections.map(({ value, title, Component }) => (
-              <AccordionItem value={value} key={value}>
-                <AccordionTrigger className="px-6 hover:no-underline">
-                  {/* Added px-6 for horizontal alignment & common hover style */}
-                  <span className="flex-grow text-center">{title}</span>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-6 pt-2">
-                  {/* Added px-6 for alignment, and vertical padding */}
-                  <Component />
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-[200px_1fr] overflow-hidden">
+          <aside className="hidden md:block border-r overflow-y-auto">
+            <nav className="flex flex-col gap-1 p-2">
+              {settingsSections.map(({ value, title }) => (
+                <Button
+                  key={value}
+                  variant="ghost"
+                  className={cn(
+                    "justify-start",
+                    activeSection === value && "bg-muted"
+                  )}
+                  onClick={() => setActiveSection(value)}
+                >
+                  {title}
+                </Button>
+              ))}
+            </nav>
+          </aside>
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="md:hidden pb-4">
+              <Select value={activeSection} onValueChange={setActiveSection}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a section" />
+                </SelectTrigger>
+                <SelectContent>
+                  {settingsSections.map(({ value, title }) => (
+                    <SelectItem key={value} value={value}>
+                      {title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <ActiveComponent />
+          </div>
         </div>
       </SheetContent>
     </Sheet>

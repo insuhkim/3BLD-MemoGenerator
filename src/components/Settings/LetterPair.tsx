@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -83,43 +90,50 @@ export default function LetterPair() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-lg border">
-        <div className="flex items-center justify-between p-4">
-          <Label
-            htmlFor="use-custom-pairs-edge"
-            className="flex flex-col space-y-1"
-          >
-            <span>Use Custom Edge Pairs</span>
-            <span className="font-normal leading-snug text-muted-foreground">
-              Enable to use your custom memos for edge pieces.
-            </span>
-          </Label>
-          <Switch
-            id="use-custom-pairs-edge"
-            checked={settings.useCustomLetterPairsEdge}
-            onCheckedChange={handleToggleEdge}
-          />
+    <Card>
+      <CardHeader>
+        <CardTitle>Custom Letter Pair Memos</CardTitle>
+        <CardDescription>
+          Enable and manage custom memos for your letter pairs. These will
+          override the default generated words.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-4 rounded-lg border p-4">
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="use-custom-pairs-edge"
+              className="flex flex-col space-y-1"
+            >
+              <span>Use Custom Edge Pairs</span>
+              <span className="font-normal leading-snug text-muted-foreground">
+                Enable to use your custom memos for edge pieces.
+              </span>
+            </Label>
+            <Switch
+              id="use-custom-pairs-edge"
+              checked={settings.useCustomLetterPairsEdge}
+              onCheckedChange={handleToggleEdge}
+            />
+          </div>
+          <div className="border-t" />
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="use-custom-pairs-corner"
+              className="flex flex-col space-y-1"
+            >
+              <span>Use Custom Corner Pairs</span>
+              <span className="font-normal leading-snug text-muted-foreground">
+                Enable to use your custom memos for corner pieces.
+              </span>
+            </Label>
+            <Switch
+              id="use-custom-pairs-corner"
+              checked={settings.useCustomLetterPairsCorner}
+              onCheckedChange={handleToggleCorner}
+            />
+          </div>
         </div>
-        <div className="border-t" />
-        <div className="flex items-center justify-between p-4">
-          <Label
-            htmlFor="use-custom-pairs-corner"
-            className="flex flex-col space-y-1"
-          >
-            <span>Use Custom Corner Pairs</span>
-            <span className="font-normal leading-snug text-muted-foreground">
-              Enable to use your custom memos for corner pieces.
-            </span>
-          </Label>
-          <Switch
-            id="use-custom-pairs-corner"
-            checked={settings.useCustomLetterPairsCorner}
-            onCheckedChange={handleToggleCorner}
-          />
-        </div>
-      </div>
-      {
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">Manage Custom Letter Pairs</Button>
@@ -275,7 +289,7 @@ export default function LetterPair() {
             </p>
           </DialogContent>
         </Dialog>
-      }
-    </div>
+      </CardContent>
+    </Card>
   );
 }

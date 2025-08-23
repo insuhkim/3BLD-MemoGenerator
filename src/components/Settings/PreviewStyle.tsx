@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -26,8 +33,14 @@ export default function PreviewStyle() {
   const { settings, setSettings } = context;
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
+    <Card>
+      <CardHeader>
+        <CardTitle>Cube Preview</CardTitle>
+        <CardDescription>
+          Customize the appearance and behavior of the cube preview.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
         <div className="flex items-center justify-between rounded-lg border p-4">
           <Label
             htmlFor="applyScrambleRotationToPreview"
@@ -51,36 +64,39 @@ export default function PreviewStyle() {
             }}
           />
         </div>
-      </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="cubePreviewStyleSelect" className="text-sm font-medium">
-          Cube Preview Style
-        </Label>
-        <Select
-          value={settings.cubePreviewStyle}
-          onValueChange={(value) => {
-            setSettings((prev) => ({
-              ...prev,
-              cubePreviewStyle: value as "2D" | "3D",
-            }));
-          }}
-        >
-          <SelectTrigger
-            id="cubePreviewStyleSelect"
-            className="w-full sm:w-[180px]"
+        <div className="space-y-2">
+          <Label
+            htmlFor="cubePreviewStyleSelect"
+            className="text-sm font-medium"
           >
-            <SelectValue placeholder="Select preview style" />
-          </SelectTrigger>
-          <SelectContent>
-            {CUBE_PREVIEW_STYLE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+            Cube Preview Style
+          </Label>
+          <Select
+            value={settings.cubePreviewStyle}
+            onValueChange={(value) => {
+              setSettings((prev) => ({
+                ...prev,
+                cubePreviewStyle: value as "2D" | "3D",
+              }));
+            }}
+          >
+            <SelectTrigger
+              id="cubePreviewStyleSelect"
+              className="w-full sm:w-[180px]"
+            >
+              <SelectValue placeholder="Select preview style" />
+            </SelectTrigger>
+            <SelectContent>
+              {CUBE_PREVIEW_STYLE_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

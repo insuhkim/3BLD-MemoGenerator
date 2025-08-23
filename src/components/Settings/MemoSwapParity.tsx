@@ -1,4 +1,10 @@
-import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -27,29 +33,29 @@ export default function MemoSwap() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="memoSwapSelect" className="text-sm font-medium">
-          Memo Swap for Parity
-        </Label>
-        <p className="text-sm text-muted-foreground">
+    <Card>
+      <CardHeader>
+        <CardTitle>Memo Swap for Parity</CardTitle>
+        <CardDescription>
           Choose a target to swap with your buffer piece when parity occurs.
           This solves the parity of edge permutation.
-        </p>
-      </div>
-      <Select value={settings.memoSwap} onValueChange={handleValueChange}>
-        <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
-          <SelectValue placeholder="Select memo swap target" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="none">None</SelectItem>
-          {AtoX.split("").map((letter) => (
-            <SelectItem key={letter} value={letter}>
-              {letter}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Select value={settings.memoSwap} onValueChange={handleValueChange}>
+          <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Select memo swap target" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">None</SelectItem>
+            {AtoX.split("").map((letter) => (
+              <SelectItem key={letter} value={letter}>
+                {letter}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </CardContent>
+    </Card>
   );
 }

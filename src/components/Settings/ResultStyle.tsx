@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -45,107 +52,113 @@ export default function ResultStyle() {
   const { settings, setSettings } = context;
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="cycleStyleSelect" className="text-sm font-medium">
-          Cycle Break Style
-        </Label>
-        <Select
-          value={settings.cycleStyle}
-          onValueChange={(value) => {
-            setSettings((prev) => ({
-              ...prev,
-              cycleStyle: value as CycleNotationStyle,
-            }));
-          }}
-        >
-          <SelectTrigger id="cycleStyleSelect" className="w-full sm:w-[200px]">
-            <SelectValue placeholder="Select cycle style" />
-          </SelectTrigger>
-          <SelectContent>
-            {CYCLE_STYLE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>Result Style</CardTitle>
+        <CardDescription>
+          Customize how the generated memo for cycles, flips, and twists is
+          displayed.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Show Flipped Edge/Corners Separately
+          <Label htmlFor="cycleStyleSelect" className="text-sm font-medium">
+            Cycle Break Style
           </Label>
-          <p className="text-sm text-muted-foreground">
-            Display flipped pieces as single letters in brackets.
-          </p>
+          <Select
+            value={settings.cycleStyle}
+            onValueChange={(value) => {
+              setSettings((prev) => ({
+                ...prev,
+                cycleStyle: value as CycleNotationStyle,
+              }));
+            }}
+          >
+            <SelectTrigger
+              id="cycleStyleSelect"
+              className="w-full sm:w-[200px]"
+            >
+              <SelectValue placeholder="Select cycle style" />
+            </SelectTrigger>
+            <SelectContent>
+              {CYCLE_STYLE_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div className="space-y-4 pl-2">
+
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label
-              htmlFor="flippedEdgeSelect"
-              className="text-xs text-muted-foreground"
-            >
-              Edges:
+            <Label className="text-sm font-medium">
+              Show Flipped Edge/Corners Separately
             </Label>
-            <Select
-              value={settings.showFlippedEdge}
-              onValueChange={(value) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  showFlippedEdge: value as FlippedEdgeStyle,
-                }));
-              }}
-            >
-              <SelectTrigger
-                id="flippedEdgeSelect"
-                className="w-full sm:w-[320px]"
-              >
-                <SelectValue placeholder="Select flipped edge style" />
-              </SelectTrigger>
-              <SelectContent>
-                {FLIPPED_EDGE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <p className="text-sm text-muted-foreground">
+              Display flipped pieces as single letters in brackets.
+            </p>
           </div>
-          <div className="space-y-2">
-            <Label
-              htmlFor="flippedCornerSelect"
-              className="text-xs text-muted-foreground"
-            >
-              Corners:
-            </Label>
-            <Select
-              value={settings.showFlippedCorner}
-              onValueChange={(value) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  showFlippedCorner: value as FlippedCornerStyle,
-                }));
-              }}
-            >
-              <SelectTrigger
-                id="flippedCornerSelect"
-                className="w-full sm:w-[320px]"
+          <div className="space-y-4 pt-2">
+            <div className="space-y-2">
+              <Label
+                htmlFor="flippedEdgeSelect"
+                className="text-sm font-medium"
               >
-                <SelectValue placeholder="Select flipped corner style" />
-              </SelectTrigger>
-              <SelectContent>
-                {FLIPPED_CORNER_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                Edges
+              </Label>
+              <Select
+                value={settings.showFlippedEdge}
+                onValueChange={(value) => {
+                  setSettings((prev) => ({
+                    ...prev,
+                    showFlippedEdge: value as FlippedEdgeStyle,
+                  }));
+                }}
+              >
+                <SelectTrigger id="flippedEdgeSelect" className="w-full">
+                  <SelectValue placeholder="Select flipped edge style" />
+                </SelectTrigger>
+                <SelectContent>
+                  {FLIPPED_EDGE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="flippedCornerSelect"
+                className="text-sm font-medium"
+              >
+                Corners
+              </Label>
+              <Select
+                value={settings.showFlippedCorner}
+                onValueChange={(value) => {
+                  setSettings((prev) => ({
+                    ...prev,
+                    showFlippedCorner: value as FlippedCornerStyle,
+                  }));
+                }}
+              >
+                <SelectTrigger id="flippedCornerSelect" className="w-full">
+                  <SelectValue placeholder="Select flipped corner style" />
+                </SelectTrigger>
+                <SelectContent>
+                  {FLIPPED_CORNER_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
