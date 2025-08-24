@@ -14,16 +14,6 @@ export function makeEdgeMemo(
   memoSwap: Speffz = buffer // Think memoSwap as buffer, buffer as memoSwap
 ) {
   const solved = solvedCube({ type: "3x3" });
-  // prettier-ignore
-  const allOrientedEdges: Speffz[] = [
-    "A", "B", "C", "D",
-    "L", "J", "T", "R",
-    "U", "V", "W", "X",
-  ];
-
-  const toVisit: Speffz[] = [
-    ...new Set([...priority, ...allOrientedEdges]),
-  ].filter((edge) => !isSameEdgeSpeffz(edge, buffer));
 
   // A function that finds where current piece belongs
   const currentBelongs = (cube: Cube, current: Speffz) =>
@@ -47,18 +37,28 @@ export function makeEdgeMemo(
       ? [target]
       : [target, ...getCycle(nextTarget(cube, target), cycleStart)];
 
-  let unsolvedEdges = toVisit.filter((c) => {
-    const edge = speffzToCubeEdge(cube, c);
-    const solvedEdge = speffzToCubeEdge(solved, c);
-    return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
-  });
+  // prettier-ignore
+  const allOrientedEdges: Speffz[] = [
+    "A", "B", "C", "D",
+    "L", "J", "T", "R",
+    "U", "V", "W", "X",
+  ];
 
-  const bufferBlocked =
+  let unsolvedEdges = [...new Set([...priority, ...allOrientedEdges])]
+    .filter((edge) => !isSameEdgeSpeffz(edge, buffer))
+    .filter((c) => {
+      const edge = speffzToCubeEdge(cube, c);
+      const solvedEdge = speffzToCubeEdge(solved, c);
+      return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
+    });
+
+  const isBufferBlocked =
     speffzToCubeEdge(cube, buffer)[0] === speffzToCubeEdge(solved, memoSwap)[0];
 
   let firstCycle: Speffz[] = [];
-  if (!bufferBlocked) {
+  if (!isBufferBlocked) {
     firstCycle = getCycle(nextTarget(cube, buffer), buffer);
+    firstCycle.pop();
     unsolvedEdges = unsolvedEdges.filter((c) =>
       firstCycle.every((c1) => !isSameEdgeSpeffz(c, c1))
     );
@@ -66,23 +66,18 @@ export function makeEdgeMemo(
     unsolvedEdges = unsolvedEdges.filter((c) => !isSameEdgeSpeffz(c, memoSwap));
   }
 
-  function solveAll(unsolved: Speffz[]): Speffz[][] {
-    if (unsolved.length === 0) return [];
-    const start = unsolved[0];
+  let result: Speffz[][] = isBufferBlocked ? [] : [firstCycle];
+  while (unsolvedEdges.length > 0) {
+    const start = unsolvedEdges[0];
     const target = nextTarget(cube, start);
     const cycle = getCycle(target, start);
-    const remaining = unsolved.filter(
+    unsolvedEdges = unsolvedEdges.filter(
       (c) =>
         cycle.every((c1) => !isSameEdgeSpeffz(c, c1)) &&
         !isSameEdgeSpeffz(c, memoSwap)
     );
-    return [[start, ...cycle], ...solveAll(remaining)];
+    result.push([start, ...cycle]);
   }
 
-  const result = solveAll(unsolvedEdges);
-  if (!bufferBlocked && firstCycle.length > 0) {
-    firstCycle.pop();
-    result.unshift(firstCycle);
-  }
   return result;
 }
