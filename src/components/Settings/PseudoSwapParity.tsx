@@ -17,7 +17,7 @@ import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
 
-export default function MemoSwap() {
+export default function PseudoSwap() {
   const context = useContext(SettingsContext);
   if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
@@ -49,7 +49,7 @@ export default function MemoSwap() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Memo Swap for Parity</CardTitle>
+        <CardTitle>Pseudo Swap for Parity</CardTitle>
         <CardDescription>
           Choose a target to swap with your buffer piece when parity occurs.
           This solves the parity of edge permutation.

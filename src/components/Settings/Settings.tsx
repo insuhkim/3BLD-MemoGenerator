@@ -21,16 +21,11 @@ import CustomLetterScheme from "./CustomLetterScheme";
 import CycleBreakPriority from "./CycleBreakPriority";
 import ImportExport from "./ImportExport";
 import LetterPair from "./LetterPair";
-import MemoSwap from "./MemoSwapParity";
 import PreviewStyle from "./PreviewStyle";
+import PseudoSwap from "./PseudoSwapParity";
 import ResultStyle from "./ResultStyle";
 
 const settingsSections = [
-  {
-    value: "item-0",
-    title: "Custom Letter Scheme",
-    Component: CustomLetterScheme,
-  },
   {
     value: "item-1",
     title: "Buffer Selection",
@@ -48,16 +43,21 @@ const settingsSections = [
   },
   {
     value: "item-4",
-    title: "Memo Swap for Parity",
-    Component: MemoSwap,
+    title: "Pseudo Swap for Parity",
+    Component: PseudoSwap,
   },
   {
     value: "item-5",
     title: "Cube Preview",
     Component: PreviewStyle,
   },
-  { value: "item-6", title: "Custom Letter Pairs", Component: LetterPair },
-  { value: "item-7", title: "Import / Export", Component: ImportExport },
+  {
+    value: "item-6",
+    title: "Custom Letter Scheme",
+    Component: CustomLetterScheme,
+  },
+  { value: "item-7", title: "Custom Letter Pairs", Component: LetterPair },
+  { value: "item-8", title: "Import / Export", Component: ImportExport },
 ];
 
 export default function Settings() {
