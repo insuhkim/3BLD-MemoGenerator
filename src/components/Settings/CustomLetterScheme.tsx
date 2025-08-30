@@ -17,11 +17,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 import { SettingsContext } from "@/context/SettingsContext";
 import "@/styles/letterScheme.css";
+import { isValidScheme } from "@/utils/scheme/isValidScheme";
 import { useContext, useEffect, useRef, useState } from "react";
-import { isValidScheme } from "@/utils/speffzToLocation";
+import { toast } from "sonner";
 
 function LetterScheme() {
   const context = useContext(SettingsContext);
@@ -71,7 +71,7 @@ function LetterScheme() {
   const handleOrientationChange = (selectedIndex: number) => {
     const selectedColor = facesMap[selectedIndex].map((key) => colorList[key]);
     const newFaces = selectedColor.map(
-      (color, i) => `face-${faceList[i]} ${color}`,
+      (color, i) => `face-${faceList[i]} ${color}`
     );
     setFaces(newFaces);
     setSelectedOrientationIndex(selectedIndex);
@@ -115,8 +115,8 @@ function LetterScheme() {
         setCellWidth(
           Math.min(
             Math.trunc(elementRef.current.offsetWidth / cubeSize / 4),
-            60,
-          ),
+            60
+          )
         );
     };
     handleResize();
@@ -133,7 +133,7 @@ function LetterScheme() {
     if (index !== -1) {
       const selectedColor = facesMap[index].map((key) => colorList[key]);
       const newFaces = selectedColor.map(
-        (color, i) => `face-${faceList[i]} ${color}`,
+        (color, i) => `face-${faceList[i]} ${color}`
       );
       setFaces(newFaces);
       setSelectedOrientationIndex(index);
@@ -238,11 +238,11 @@ function LetterScheme() {
                       onChange={(e) =>
                         handleChange(
                           faceIndex * faceSize + cellIndex,
-                          e.target.value ?? "",
+                          e.target.value ?? ""
                         )
                       }
                     />
-                  ),
+                  )
                 )}
               </div>
             ))}

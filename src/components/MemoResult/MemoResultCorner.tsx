@@ -5,7 +5,7 @@ import {
   isSameCornerSpeffz,
   speffzToCorner,
 } from "@/utils/makeMemo/cornerHelper";
-import { speffzToLocation } from "@/utils/speffzToLocation";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Corner } from "@/utils/types/Corner";
 import { CycleNotationStyle, FlippedCornerStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
@@ -104,7 +104,7 @@ export default function MemoResultCorner({
 
     const target2 = allTargets[i + 1];
     const target2Character = target2
-      ? speffzToLocation(scheme, target2, "corner")
+      ? speffzToScheme(scheme, target2, "corner")
       : undefined;
 
     components.push(
@@ -113,7 +113,7 @@ export default function MemoResultCorner({
         url={url}
         target1={allTargets[i]}
         target2={target2}
-        target1Character={speffzToLocation(scheme, allTargets[i], "corner")}
+        target1Character={speffzToScheme(scheme, allTargets[i], "corner")}
         target2Character={target2Character}
         infix={infix}
         prefix={prefix}
@@ -138,7 +138,7 @@ export default function MemoResultCorner({
         speffzToCorner(cycle[0])[0],
         stickerOrientationToShow,
       ];
-      const representation = ` [${speffzToLocation(
+      const representation = ` [${speffzToScheme(
         scheme,
         cornerToSpeffz(showingCorner),
         "corner"
@@ -149,8 +149,8 @@ export default function MemoResultCorner({
           url={CornerTwistURL(buffer, !isCW, cycle[0], isCW)}
           target1={cycle[0]}
           target2={cycle[1]}
-          target1Character={speffzToLocation(scheme, cycle[0], "corner")}
-          target2Character={speffzToLocation(scheme, cycle[1], "corner")}
+          target1Character={speffzToScheme(scheme, cycle[0], "corner")}
+          target2Character={speffzToScheme(scheme, cycle[1], "corner")}
           entireString={representation}
           useCustomLetterPairs={useCustomLetterPairsCorner}
         />
