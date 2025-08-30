@@ -17,9 +17,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { SettingsContext } from "@/context/SettingsContext";
 import "@/styles/letterScheme.css";
 import { useContext, useEffect, useRef, useState } from "react";
+import { isValidScheme } from "@/utils/speffzToLocation";
 
 function LetterScheme() {
   const context = useContext(SettingsContext);
@@ -76,8 +78,17 @@ function LetterScheme() {
   };
 
   const [inputValues, setInputValues] = useState("");
+  const dialogCloseRef = useRef<HTMLButtonElement>(null);
 
   const handleSave = () => {
+    if (!isValidScheme(inputValues)) {
+      toast("Invalid letter scheme", {
+        description:
+          "Please check that all positions have unique letters and there's no blank space",
+        position: "top-center",
+      });
+      return;
+    }
     setSettings((prev) => ({
       ...prev,
       letteringScheme: inputValues,
@@ -85,6 +96,9 @@ function LetterScheme() {
         selectedOrientationIndex
       ] as typeof prev.orientation,
     }));
+
+    // Close dialog on successful save
+    dialogCloseRef.current?.click();
   };
 
   const handleCancel = () => {
@@ -178,8 +192,9 @@ function LetterScheme() {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button onClick={handleSave}>Save</Button>
+            <button ref={dialogCloseRef} className="hidden" />
           </DialogClose>
+          <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
 

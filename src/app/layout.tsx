@@ -3,6 +3,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
+import { Toaster } from "sonner";
 
 const siteUrl = "https://3bld-memo-generator.vercel.app";
 
@@ -87,6 +88,7 @@ export default function RootLayout({
           </header>
           <main className="flex-1">{children}</main>
           <Analytics />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
