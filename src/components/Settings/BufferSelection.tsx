@@ -22,52 +22,44 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SettingsContext } from "@/context/SettingsContext";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
-
-function BufferSelectionBox({
-  buffer,
-  setBuffer,
-}: {
-  buffer: Speffz;
-  setBuffer: (buffer: Speffz) => void;
-}) {
-  const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
-
-  return (
-    <Select
-      value={buffer}
-      onValueChange={(value) => setBuffer(value as Speffz)}
-    >
-      <SelectTrigger className="w-full mt-1">
-        <SelectValue placeholder="Select buffer" />
-      </SelectTrigger>
-      <SelectContent>
-        {AtoX.split("").map((letter) => (
-          <SelectItem key={letter} value={letter}>
-            {letter}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
-
-const presets = [
-  { method: "M2/R2", edge: "U", corner: "V" },
-  { method: "Old Pochmann", edge: "B", corner: "A" },
-  { method: "3-Style", edge: "C", corner: "C" },
-];
 
 export default function BufferSelection() {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error("SettingsPanel must be used within a SettingsProvider");
   }
+  const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
-  const { settings, setSettings } = context;
+  const {
+    settings: { edgeBuffer, cornerBuffer, letteringScheme },
+    setSettings,
+  } = context;
+
+  const isSpeffz =
+    letteringScheme ===
+    "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW";
+
+  const applyEdgePreset = (speffz: Speffz) =>
+    isSpeffz
+      ? speffz
+      : `${speffzToScheme(letteringScheme, speffz, "edge")} (${speffz})`;
+  const applyCornerPreset = (speffz: Speffz) =>
+    isSpeffz
+      ? speffz
+      : `${speffzToScheme(letteringScheme, speffz, "corner")} (${speffz})`;
+
+  const presets = [
+    { method: "M2/R2", edge: "U", corner: "V" },
+    { method: "Old Pochmann", edge: "B", corner: "A" },
+    { method: "3-Style", edge: "C", corner: "C" },
+  ];
+
   return (
     <div className="space-y-6">
+      {/* Presets Table */}
       <Card>
         <CardHeader>
           <CardTitle>Presets</CardTitle>
@@ -98,14 +90,20 @@ export default function BufferSelection() {
                   }
                 >
                   <TableCell className="font-medium">{preset.method}</TableCell>
-                  <TableCell className="text-center">{preset.edge}</TableCell>
-                  <TableCell className="text-center">{preset.corner}</TableCell>
+                  <TableCell className="text-center">
+                    {applyEdgePreset(preset.edge as Speffz)}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {applyCornerPreset(preset.corner as Speffz)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+
+      {/* Custom Buffer Selection */}
       <Card>
         <CardHeader>
           <CardTitle>Custom Buffer</CardTitle>
@@ -119,15 +117,26 @@ export default function BufferSelection() {
               <Label htmlFor="edgeBufferSelect" className="text-sm font-medium">
                 Edge Buffer
               </Label>
-              <BufferSelectionBox
-                buffer={settings.edgeBuffer}
-                setBuffer={(buffer) =>
+              <Select
+                value={edgeBuffer}
+                onValueChange={(value) =>
                   setSettings((prev) => ({
                     ...prev,
-                    edgeBuffer: buffer,
+                    edgeBuffer: value as Speffz,
                   }))
                 }
-              />
+              >
+                <SelectTrigger className="w-full mt-1">
+                  <SelectValue placeholder="Select buffer" />
+                </SelectTrigger>
+                <SelectContent>
+                  {AtoX.split("").map((letter) => (
+                    <SelectItem key={letter} value={letter}>
+                      {applyEdgePreset(letter as Speffz)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label
@@ -136,15 +145,26 @@ export default function BufferSelection() {
               >
                 Corner Buffer
               </Label>
-              <BufferSelectionBox
-                buffer={settings.cornerBuffer}
-                setBuffer={(buffer) =>
+              <Select
+                value={cornerBuffer}
+                onValueChange={(value) =>
                   setSettings((prev) => ({
                     ...prev,
-                    cornerBuffer: buffer,
+                    cornerBuffer: value as Speffz,
                   }))
                 }
-              />
+              >
+                <SelectTrigger className="w-full mt-1">
+                  <SelectValue placeholder="Select buffer" />
+                </SelectTrigger>
+                <SelectContent>
+                  {AtoX.split("").map((letter) => (
+                    <SelectItem key={letter} value={letter}>
+                      {applyCornerPreset(letter as Speffz)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardContent>

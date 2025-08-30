@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SettingsContext } from "@/context/SettingsContext";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
 
@@ -24,6 +25,19 @@ export default function MemoSwap() {
   const { settings, setSettings } = context;
 
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
+
+  const isSpeffz =
+    settings.letteringScheme ===
+    "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW";
+
+  const applyPreset = (speffz: Speffz) =>
+    isSpeffz
+      ? speffz
+      : `${speffzToScheme(
+          settings.letteringScheme,
+          speffz,
+          "edge"
+        )} (${speffz})`;
 
   const handleValueChange = (value: string) => {
     setSettings((prev) => ({
@@ -50,7 +64,7 @@ export default function MemoSwap() {
             <SelectItem value="none">None</SelectItem>
             {AtoX.split("").map((letter) => (
               <SelectItem key={letter} value={letter}>
-                {letter}
+                {applyPreset(letter as Speffz)}
               </SelectItem>
             ))}
           </SelectContent>
