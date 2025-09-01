@@ -33,15 +33,37 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { Speffz } from "@/utils/types/Speffz";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
 
 export default function LetterPair() {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("LetterPair must be used within a SettingsProvider");
-  }
-  const { settings, setSettings, addLetterPair, deleteLetterPair } = context;
+
+  const {
+    setSettings,
+    addLetterPair,
+    deleteLetterPair,
+    settings: {
+      letterPairs,
+      letteringScheme,
+      useCustomLetterPairsEdge,
+      useCustomLetterPairsCorner,
+    },
+  } = context;
+
+  const [showCustomScheme, setShowCustomScheme] = useState(true);
+  const applyScheme = (speffz: Speffz) =>
+    showCustomScheme
+      ? speffzToScheme(letteringScheme, speffz, "corner")
+      : speffz;
+
+  const handleToggleCustomScheme = (checked: boolean) => {
+    setShowCustomScheme(checked);
+  };
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
@@ -79,13 +101,11 @@ export default function LetterPair() {
 
   const handleCellClick = (p: string) => {
     setPair(p);
-    setMemo(settings.letterPairs[p] || "");
+    setMemo(letterPairs[p] || "");
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleAdd();
-    }
+    if (event.key === "Enter") handleAdd();
   };
 
   const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +138,7 @@ export default function LetterPair() {
             </Label>
             <Switch
               id="use-custom-pairs-edge"
-              checked={settings.useCustomLetterPairsEdge}
+              checked={useCustomLetterPairsEdge}
               onCheckedChange={handleToggleEdge}
             />
           </div>
@@ -135,7 +155,7 @@ export default function LetterPair() {
             </Label>
             <Switch
               id="use-custom-pairs-corner"
-              checked={settings.useCustomLetterPairsCorner}
+              checked={useCustomLetterPairsCorner}
               onCheckedChange={handleToggleCorner}
             />
           </div>
@@ -190,6 +210,29 @@ export default function LetterPair() {
                 </div>
               </div>
 
+              {letteringScheme !==
+                "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW" && (
+                <div className="space-y-2 rounded-lg border p-3">
+                  <div className="flex items-center justify-between">
+                    <Label
+                      htmlFor="show-custom-scheme"
+                      className="flex flex-col space-y-1"
+                    >
+                      <span>Show Custom Letter Scheme</span>
+                      <span className="font-normal leading-snug text-muted-foreground">
+                        Display letters using your custom lettering scheme
+                        instead of standard Speffz.
+                      </span>
+                    </Label>
+                    <Switch
+                      id="show-custom-scheme"
+                      checked={showCustomScheme}
+                      onCheckedChange={handleToggleCustomScheme}
+                    />
+                  </div>
+                </div>
+              )}
+
               <Tabs defaultValue="grid">
                 <TabsList className="w-full justify-start">
                   <TabsTrigger value="grid">Grid View</TabsTrigger>
@@ -206,18 +249,17 @@ export default function LetterPair() {
                               key={letter}
                               className="p-1 font-bold text-center bg-muted"
                             >
-                              {letter}
+                              {applyScheme(letter as Speffz)}
                             </div>
                           ))}
                           {alphabet.map((rowLetter) => (
                             <Fragment key={rowLetter}>
                               <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
-                                {rowLetter}
+                                {applyScheme(rowLetter as Speffz)}
                               </div>
                               {alphabet.map((colLetter) => {
                                 const currentPair = rowLetter + colLetter;
-                                const currentMemo =
-                                  settings.letterPairs[currentPair];
+                                const currentMemo = letterPairs[currentPair];
                                 const cell = (
                                   <div
                                     key={currentPair}
@@ -270,7 +312,7 @@ export default function LetterPair() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {Object.entries(settings.letterPairs)
+                          {Object.entries(letterPairs)
                             .filter(
                               ([pair, memo]) =>
                                 filter === "" ||
@@ -279,7 +321,7 @@ export default function LetterPair() {
                                   .includes(filter.toLowerCase()) ||
                                 memo
                                   .toLowerCase()
-                                  .includes(filter.toLowerCase())
+                                  .includes(filter.toLowerCase()),
                             )
                             .sort(([a], [b]) => a.localeCompare(b))
                             .map(([pair, memo]) => (
@@ -288,7 +330,8 @@ export default function LetterPair() {
                                 onClick={() => handleCellClick(pair)}
                               >
                                 <TableCell className="font-medium text-center">
-                                  {pair}
+                                  {applyScheme(pair[0] as Speffz) +
+                                    applyScheme(pair[1] as Speffz)}
                                 </TableCell>
                                 <TableCell className="text-center">
                                   {memo}
@@ -297,7 +340,7 @@ export default function LetterPair() {
                             ))}
                         </TableBody>
                       </Table>
-                      {Object.keys(settings.letterPairs).length === 0 && (
+                      {Object.keys(letterPairs).length === 0 && (
                         <div className="p-4 text-center text-muted-foreground">
                           No letter pairs added yet
                         </div>
@@ -308,7 +351,7 @@ export default function LetterPair() {
               </Tabs>
             </div>
             <p className="text-sm text-muted-foreground">
-              {Object.keys(settings.letterPairs).length} custom pair(s).
+              {Object.keys(letterPairs).length} custom pair(s).
             </p>
           </DialogContent>
         </Dialog>
