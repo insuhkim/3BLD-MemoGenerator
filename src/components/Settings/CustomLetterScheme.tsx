@@ -264,10 +264,11 @@ export default function CustomLetterScheme() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
           Note: Changing the letter scheme only affects the generated letter
-          pairs. The internal logic still uses the Speffz letter scheme for
-          scramble analysis.
+          pairs in result. The internal logic still uses the Speffz letter
+          scheme, so don't be confused when configuring other settings such as
+          Custom Letter Pairs.
         </p>
         <Dialog>
           <DialogTrigger asChild>
