@@ -5,32 +5,23 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 
 ---
 
-## ✨ Features
-
-- Generate memo sequences for both edges and corners
-- Customizable buffer and cycle break priority
-- Clean, user-friendly interface for blindfolded cubers
-- Option to scramble only edges or corners
-- Interactive cube visualization with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
-- Separate display for flipped edges/corners
-
----
-
-## 🛠️ Roadmap
+## ✨ Features & 🛠️ Roadmap
 
 ### Features
 
 - [x] Custom buffer selection
 - [x] Custom cycle break priority
-- [x] Integration with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
+- [x] Cube Preview with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
 - [x] Option to show flipped edges/corners separately
-- [x] Scramble only edges or corners
-- [x] Select top/front face colors in preview
+- [x] Scramble only Edges / Corners
+- [x] Select orientation in preview
 - [x] Support for Memo Swapping
 - [x] Support for wide moves and cube rotations
 - [x] Hyperlink letterpair to [BLDDB](https://blddb.net/)
 - [x] Customizable Letter Scheme
 - [x] Customizable Letter Pair
+- [ ] Support for Floating Buffer
+- [ ] Inline cycle break selection
 
 ### Improvements
 

@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,19 +25,48 @@ import {
 } from "@/components/ui/tooltip";
 import { SettingsContext } from "@/context/SettingsContext";
 import { Fragment, KeyboardEvent, useContext, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
+import { Speffz } from "@/utils/types/Speffz";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
 
 export default function LetterPair() {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("LetterPair must be used within a SettingsProvider");
-  }
-  const { settings, setSettings, addLetterPair, deleteLetterPair } = context;
+
+  const {
+    setSettings,
+    addLetterPair,
+    deleteLetterPair,
+    settings: {
+      letterPairs,
+      letteringScheme,
+      useCustomLetterPairsEdge,
+      useCustomLetterPairsCorner,
+    },
+  } = context;
+
+  const [showCustomScheme, setShowCustomScheme] = useState(true);
+  const applyScheme = (speffz: Speffz) =>
+    showCustomScheme
+      ? speffzToScheme(letteringScheme, speffz, "corner")
+      : speffz;
+
+  const handleToggleCustomScheme = (checked: boolean) => {
+    setShowCustomScheme(checked);
+  };
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
-  const [activeView, setActiveView] = useState("list");
   const [filter, setFilter] = useState("");
 
   const handleAdd = () => {
@@ -66,13 +101,11 @@ export default function LetterPair() {
 
   const handleCellClick = (p: string) => {
     setPair(p);
-    setMemo(settings.letterPairs[p] || "");
+    setMemo(letterPairs[p] || "");
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleAdd();
-    }
+    if (event.key === "Enter") handleAdd();
   };
 
   const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,43 +116,50 @@ export default function LetterPair() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-lg border">
-        <div className="flex items-center justify-between p-4">
-          <Label
-            htmlFor="use-custom-pairs-edge"
-            className="flex flex-col space-y-1"
-          >
-            <span>Use Custom Edge Pairs</span>
-            <span className="font-normal leading-snug text-muted-foreground">
-              Enable to use your custom memos for edge pieces.
-            </span>
-          </Label>
-          <Switch
-            id="use-custom-pairs-edge"
-            checked={settings.useCustomLetterPairsEdge}
-            onCheckedChange={handleToggleEdge}
-          />
+    <Card>
+      <CardHeader>
+        <CardTitle>Custom Letter Pair Memos</CardTitle>
+        <CardDescription>
+          Enable and manage custom memos for your letter pairs. These will
+          override the default generated words.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-4 rounded-lg border p-4">
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="use-custom-pairs-edge"
+              className="flex flex-col space-y-1"
+            >
+              <span>Use Custom Edge Pairs</span>
+              <span className="font-normal leading-snug text-muted-foreground">
+                Enable to use your custom memos for edge pieces.
+              </span>
+            </Label>
+            <Switch
+              id="use-custom-pairs-edge"
+              checked={useCustomLetterPairsEdge}
+              onCheckedChange={handleToggleEdge}
+            />
+          </div>
+          <div className="border-t" />
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="use-custom-pairs-corner"
+              className="flex flex-col space-y-1"
+            >
+              <span>Use Custom Corner Pairs</span>
+              <span className="font-normal leading-snug text-muted-foreground">
+                Enable to use your custom memos for corner pieces.
+              </span>
+            </Label>
+            <Switch
+              id="use-custom-pairs-corner"
+              checked={useCustomLetterPairsCorner}
+              onCheckedChange={handleToggleCorner}
+            />
+          </div>
         </div>
-        <div className="border-t" />
-        <div className="flex items-center justify-between p-4">
-          <Label
-            htmlFor="use-custom-pairs-corner"
-            className="flex flex-col space-y-1"
-          >
-            <span>Use Custom Corner Pairs</span>
-            <span className="font-normal leading-snug text-muted-foreground">
-              Enable to use your custom memos for corner pieces.
-            </span>
-          </Label>
-          <Switch
-            id="use-custom-pairs-corner"
-            checked={settings.useCustomLetterPairsCorner}
-            onCheckedChange={handleToggleCorner}
-          />
-        </div>
-      </div>
-      {
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">Manage Custom Letter Pairs</Button>
@@ -127,24 +167,24 @@ export default function LetterPair() {
           <DialogContent className="sm:max-w-4xl">
             <DialogHeader>
               <DialogTitle>Custom Letter Pairs</DialogTitle>
-              <DialogDescription>
+              {/* <DialogDescription>
                 Create, modify, or delete your custom letter pairs. These will
                 override the default memos. Click a cell to edit.
-              </DialogDescription>
+              </DialogDescription> */}
             </DialogHeader>
             <div className="py-4 space-y-4">
               <div className="space-y-2">
                 <div className="flex gap-2 flex-wrap">
                   <Input
-                    placeholder="Pair (e.g., AP)"
+                    placeholder="Pair (AP)"
                     value={pair}
                     onChange={handlePairChange}
                     maxLength={2}
-                    className="uppercase w-24"
+                    className="w-24"
                     onKeyDown={handleKeyDown}
                   />
                   <Input
-                    placeholder="Memo (e.g., Apple)"
+                    placeholder="Memo (Apple)"
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
                     onKeyDown={handleKeyDown}
@@ -170,14 +210,37 @@ export default function LetterPair() {
                 </div>
               </div>
 
-              <Tabs defaultValue="list" onValueChange={setActiveView}>
+              {letteringScheme !==
+                "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW" && (
+                <div className="space-y-2 rounded-lg border p-3">
+                  <div className="flex items-center justify-between">
+                    <Label
+                      htmlFor="show-custom-scheme"
+                      className="flex flex-col space-y-1"
+                    >
+                      <span>Show Custom Letter Scheme</span>
+                      <span className="font-normal leading-snug text-muted-foreground">
+                        Display letters using your custom lettering scheme
+                        instead of standard Speffz.
+                      </span>
+                    </Label>
+                    <Switch
+                      id="show-custom-scheme"
+                      checked={showCustomScheme}
+                      onCheckedChange={handleToggleCustomScheme}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <Tabs defaultValue="grid">
                 <TabsList className="w-full justify-start">
                   <TabsTrigger value="grid">Grid View</TabsTrigger>
                   <TabsTrigger value="list">List View</TabsTrigger>
                 </TabsList>
                 <TabsContent value="grid" className="mt-2">
                   <div className="overflow-x-auto pb-2 relative">
-                    <div className="min-w-[640px] overflow-y-visible">
+                    <div className="overflow-y-visible">
                       <TooltipProvider>
                         <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                           <div className="p-1 bg-muted sticky left-0 z-10"></div>
@@ -186,23 +249,22 @@ export default function LetterPair() {
                               key={letter}
                               className="p-1 font-bold text-center bg-muted"
                             >
-                              {letter}
+                              {applyScheme(letter as Speffz)}
                             </div>
                           ))}
                           {alphabet.map((rowLetter) => (
                             <Fragment key={rowLetter}>
                               <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
-                                {rowLetter}
+                                {applyScheme(rowLetter as Speffz)}
                               </div>
                               {alphabet.map((colLetter) => {
                                 const currentPair = rowLetter + colLetter;
-                                const currentMemo =
-                                  settings.letterPairs[currentPair];
+                                const currentMemo = letterPairs[currentPair];
                                 const cell = (
                                   <div
                                     key={currentPair}
                                     onClick={() => handleCellClick(currentPair)}
-                                    className={`p-1 truncate cursor-pointer text-center ${
+                                    className={`p-1 cursor-pointer text-center ${
                                       currentMemo
                                         ? "bg-primary/20 hover:bg-primary/30"
                                         : "bg-background hover:bg-muted"
@@ -242,25 +304,43 @@ export default function LetterPair() {
                       className="mb-2"
                     />
                     <div className="max-h-[50vh] overflow-y-auto border rounded-md">
-                      {Object.entries(settings.letterPairs)
-                        .filter(
-                          ([pair, memo]) =>
-                            filter === "" ||
-                            pair.toLowerCase().includes(filter.toLowerCase()) ||
-                            memo.toLowerCase().includes(filter.toLowerCase())
-                        )
-                        .sort(([a], [b]) => a.localeCompare(b))
-                        .map(([pair, memo]) => (
-                          <div
-                            key={pair}
-                            onClick={() => handleCellClick(pair)}
-                            className="flex justify-between items-center p-2 hover:bg-muted cursor-pointer border-b last:border-0"
-                          >
-                            <div className="font-medium">{pair}</div>
-                            <div>{memo}</div>
-                          </div>
-                        ))}
-                      {Object.keys(settings.letterPairs).length === 0 && (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-center">PAIR</TableHead>
+                            <TableHead className="text-center">MEMO</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {Object.entries(letterPairs)
+                            .filter(
+                              ([pair, memo]) =>
+                                filter === "" ||
+                                pair
+                                  .toLowerCase()
+                                  .includes(filter.toLowerCase()) ||
+                                memo
+                                  .toLowerCase()
+                                  .includes(filter.toLowerCase()),
+                            )
+                            .sort(([a], [b]) => a.localeCompare(b))
+                            .map(([pair, memo]) => (
+                              <TableRow
+                                key={pair}
+                                onClick={() => handleCellClick(pair)}
+                              >
+                                <TableCell className="font-medium text-center">
+                                  {applyScheme(pair[0] as Speffz) +
+                                    applyScheme(pair[1] as Speffz)}
+                                </TableCell>
+                                <TableCell className="text-center">
+                                  {memo}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                      {Object.keys(letterPairs).length === 0 && (
                         <div className="p-4 text-center text-muted-foreground">
                           No letter pairs added yet
                         </div>
@@ -271,11 +351,11 @@ export default function LetterPair() {
               </Tabs>
             </div>
             <p className="text-sm text-muted-foreground">
-              {Object.keys(settings.letterPairs).length} custom pair(s).
+              {Object.keys(letterPairs).length} custom pair(s).
             </p>
           </DialogContent>
         </Dialog>
-      }
-    </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -3,7 +3,6 @@ import { Speffz } from "../types/Speffz";
 import {
   cornerToSpeffz,
   isSameCornerSpeffz,
-  speffzToCorner,
   speffzToCubeCorner,
 } from "./cornerHelper";
 
@@ -18,7 +17,7 @@ export function makeCornerMemo(
     cornerToSpeffz(speffzToCubeCorner(cube, current));
 
   const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
-    speffzToCorner(target)[0] === speffzToCorner(cycleStart)[0]
+    isSameCornerSpeffz(target, cycleStart)
       ? [target]
       : [target, ...getCycle(nextTarget(target), cycleStart)];
 
@@ -44,19 +43,17 @@ export function makeCornerMemo(
     );
   }
 
-  function solveAll(unsolved: Speffz[]): Speffz[][] {
-    if (unsolved.length === 0) return [];
-    const start = unsolved[0];
+  let result: Speffz[][] = isBufferBlocked ? [] : [firstCycle];
+
+  while (unsolvedCorners.length > 0) {
+    const start = unsolvedCorners[0];
     const target = nextTarget(start);
     const cycle = getCycle(target, start);
-    const remaining = unsolved.filter((c) =>
+    unsolvedCorners = unsolvedCorners.filter((c) =>
       cycle.every((c1) => !isSameCornerSpeffz(c, c1))
     );
-    return [[start, ...cycle], ...solveAll(remaining)];
+    result.push([start, ...cycle]);
   }
-
-  const result = solveAll(unsolvedCorners);
-  if (!isBufferBlocked) result.unshift(firstCycle);
 
   return result;
 }

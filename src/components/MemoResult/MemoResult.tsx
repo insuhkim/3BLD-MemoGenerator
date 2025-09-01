@@ -12,7 +12,6 @@ import { applyScramble } from "react-rubiks-cube-utils";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
-import { convertMoves } from "@/utils/scramble/translateRotation";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
 
@@ -24,8 +23,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
 
-  const [simpleMoves, rotations] = convertMoves(scramble.split(" "));
-  const cube = applyScramble({ type: "3x3", scramble: simpleMoves });
+  const cube = applyScramble({ type: "3x3", scramble: scramble });
   if (!cube) {
     return (
       <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center">
@@ -90,6 +88,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   buffer={settings.edgeBuffer}
                   cycleStyle={settings.cycleStyle}
                   scheme={settings.letteringScheme}
+                  useCustomLetterPairsEdge={settings.useCustomLetterPairsEdge}
                 />
               </div>
             )}
@@ -109,6 +108,9 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                   edgeBuffer={settings.edgeBuffer}
                   memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
                   scheme={settings.letteringScheme}
+                  useCustomLetterPairsCorner={
+                    settings.useCustomLetterPairsCorner
+                  }
                 />
               </div>
             )}

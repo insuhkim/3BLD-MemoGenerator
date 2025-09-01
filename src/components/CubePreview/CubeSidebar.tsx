@@ -5,7 +5,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { convertMoves } from "@/utils/scramble/translateRotation";
 import { Orientation } from "@/utils/types/Settings";
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
@@ -68,7 +67,13 @@ function orientationToRotation(orientation: Orientation): Rotation {
     case "br": return "x y'";
   }
 }
-export default function CubeSidebar({ scramble }: { scramble: string }) {
+export default function CubeSidebar({
+  scramble,
+  rotation,
+}: {
+  scramble: string;
+  rotation: string;
+}) {
   const context = useContext(SettingsContext);
   if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
@@ -82,9 +87,7 @@ export default function CubeSidebar({ scramble }: { scramble: string }) {
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
-  const [converted, rotation] = convertMoves(scramble.split(" "));
 
-  scramble = converted;
   if (settings.cubePreviewStyle === "3D") {
     if (settings.applyScrambleRotationToPreview)
       scramble = `${scramble} ${rotation}`;

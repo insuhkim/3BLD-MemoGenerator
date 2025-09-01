@@ -1,15 +1,14 @@
-import { SettingsContext } from "@/context/SettingsContext";
 import { EdgeFlipURL, EdgeToURL } from "@/utils/BLDDB/EdgeToURL";
 import {
   edgeToSpeffz,
   isSameEdgeSpeffz,
   speffzToEdge,
 } from "@/utils/makeMemo/edgeHelper";
-import { speffzToLocation } from "@/utils/speffzToLocation";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Edge } from "@/utils/types/Edge";
 import { CycleNotationStyle, FlippedEdgeStyle } from "@/utils/types/Settings";
 import { Speffz } from "@/utils/types/Speffz";
-import { JSX, useContext } from "react";
+import { JSX } from "react";
 import MemoPair from "./MemoPair";
 
 function getFlippedEdgeStringRepresentation(
@@ -31,24 +30,18 @@ export default function MemoResultEdge({
   buffer,
   cycleStyle,
   scheme,
+  useCustomLetterPairsEdge,
 }: {
   memo: Speffz[][];
   showFlippedEdge: FlippedEdgeStyle;
   buffer: Speffz;
   cycleStyle: CycleNotationStyle;
   scheme: string;
+  useCustomLetterPairsEdge: boolean;
 }) {
   if (memo.length === 0) {
     return null;
   }
-
-  const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error("MemoPair must be used within a SettingsProvider");
-  }
-  const {
-    settings: { useCustomLetterPairsEdge },
-  } = context;
 
   const components: JSX.Element[] = [];
 
@@ -107,7 +100,7 @@ export default function MemoResultEdge({
 
     const target2 = allTargets[i + 1];
     const target2Character = target2
-      ? speffzToLocation(scheme, target2, "edge")
+      ? speffzToScheme(scheme, target2, "edge")
       : undefined;
 
     components.push(
@@ -116,7 +109,7 @@ export default function MemoResultEdge({
         url={url}
         target1={allTargets[i]}
         target2={target2}
-        target1Character={speffzToLocation(scheme, allTargets[i], "edge")}
+        target1Character={speffzToScheme(scheme, allTargets[i], "edge")}
         target2Character={target2Character}
         infix={infix}
         prefix={prefix}
@@ -139,13 +132,9 @@ export default function MemoResultEdge({
           url={EdgeFlipURL(buffer, cycle[0])}
           target1={cycle[0]}
           target2={cycle[1]}
-          target1Character={speffzToLocation(scheme, cycle[0], "edge")}
-          target2Character={speffzToLocation(scheme, cycle[1], "edge")}
-          entireString={` [${speffzToLocation(
-            scheme,
-            representation,
-            "edge"
-          )}]`}
+          target1Character={speffzToScheme(scheme, cycle[0], "edge")}
+          target2Character={speffzToScheme(scheme, cycle[1], "edge")}
+          entireString={` [${speffzToScheme(scheme, representation, "edge")}]`}
           useCustomLetterPairs={useCustomLetterPairsEdge}
         />
       );
