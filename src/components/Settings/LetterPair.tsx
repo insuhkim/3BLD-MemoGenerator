@@ -122,9 +122,9 @@ export default function LetterPair() {
           override the default generated words.
         </CardDescription>
         <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
-          Note: If you are using a custom letter scheme instead of Speffz, the
-          letter pair will be saved as Speffz because the internal logic still
-          uses the Speffz letter scheme. Don't be confused by this!
+          Note: If you are using a custom letter scheme other than Speffz, the
+          letter pair will still be saved as Speffz. Don't be confused by this!
+          Also, corner custom scheme is used.
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -254,19 +254,30 @@ export default function LetterPair() {
                                   </div>
                                 );
 
-                                if (currentMemo) {
-                                  return (
-                                    <Tooltip key={currentPair}>
-                                      <TooltipTrigger asChild>
-                                        {cell}
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>{currentMemo}</p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  );
-                                }
-                                return cell;
+                                return (
+                                  <Tooltip key={currentPair}>
+                                    <TooltipTrigger asChild>
+                                      {cell}
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>
+                                        {speffzToScheme(
+                                          letteringScheme,
+                                          currentPair[0] as Speffz,
+                                          "corner",
+                                        ) +
+                                          speffzToScheme(
+                                            letteringScheme,
+                                            currentPair[1] as Speffz,
+                                            "corner",
+                                          ) +
+                                          (currentMemo
+                                            ? ` (${currentMemo})`
+                                            : "")}
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                );
                               })}
                             </Fragment>
                           ))}
@@ -295,13 +306,14 @@ export default function LetterPair() {
                           {Object.entries(letterPairs)
                             .filter(
                               ([pair, memo]) =>
-                                filter === "" ||
-                                pair
-                                  .toLowerCase()
-                                  .includes(filter.toLowerCase()) ||
-                                memo
-                                  .toLowerCase()
-                                  .includes(filter.toLowerCase()),
+                                memo !== "" &&
+                                (filter === "" ||
+                                  pair
+                                    .toLowerCase()
+                                    .includes(filter.toLowerCase()) ||
+                                  memo
+                                    .toLowerCase()
+                                    .includes(filter.toLowerCase())),
                             )
                             .sort(([a], [b]) => {
                               const schemeA =
