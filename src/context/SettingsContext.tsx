@@ -13,7 +13,7 @@ type SettingsContextType = {
 
 // Create the context with a default value (will be overridden by provider)
 export const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 type SettingsProviderProps = {
@@ -36,7 +36,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     orientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
-    useCustomLetterPairsEdge: true,
+    useCustomLetterPairsEdge: false,
     useCustomLetterPairsCorner: true,
   };
 
