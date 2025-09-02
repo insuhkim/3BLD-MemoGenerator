@@ -26,7 +26,7 @@ function getAllVisitingCorners(cycle: Speffz[]) {
       ...cycle,
       ...rotateAllCorners(cycle, true),
       ...rotateAllCorners(cycle, false),
-    ])
+    ]),
   ).sort();
 }
 
@@ -69,8 +69,8 @@ function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
     return start === cycleStart
       ? cycle
       : rotateSpeffzCorner(start, true) === cycleStart
-      ? rotateAllCorners(cycle, true)
-      : rotateAllCorners(cycle, false);
+        ? rotateAllCorners(cycle, true)
+        : rotateAllCorners(cycle, false);
 
   const cycleRotation =
     (speffzToCorner(cycleStart)[1] - speffzToCorner(start)[1] + 3) % 3;
@@ -82,8 +82,8 @@ function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
       cycleRotation === 0
         ? cycleStart
         : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
+          ? rotateSpeffzCorner(cycleStart, true)
+          : rotateSpeffzCorner(cycleStart, false),
     ];
   const rotatedCWStartIdx = cycle.indexOf(rotateSpeffzCorner(cycleStart, true));
   if (rotatedCWStartIdx !== -1) {
@@ -94,12 +94,12 @@ function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
       cycleRotation === 0
         ? cycleStart
         : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
+          ? rotateSpeffzCorner(cycleStart, true)
+          : rotateSpeffzCorner(cycleStart, false),
     ];
   }
   const rotatedCCWStartIdx = cycle.indexOf(
-    rotateSpeffzCorner(cycleStart, false)
+    rotateSpeffzCorner(cycleStart, false),
   );
   if (rotatedCCWStartIdx !== -1) {
     const rotatedCycle = rotateAllCorners(cycle, false);
@@ -109,9 +109,18 @@ function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
       cycleRotation === 0
         ? cycleStart
         : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
+          ? rotateSpeffzCorner(cycleStart, true)
+          : rotateSpeffzCorner(cycleStart, false),
     ];
   }
   return cycle; // cycleStart not found
 }
+
+export {
+  flipAllEdges,
+  rotateAllCorners,
+  getAllVisitingCorners,
+  getAllVisitingEdges,
+  shiftCycleCorner,
+  shiftCycleEdge,
+};
