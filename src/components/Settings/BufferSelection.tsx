@@ -40,6 +40,19 @@ export default function BufferSelection() {
     setSettings,
   } = context;
 
+  // Sort alphabet by the scheme-transformed letters
+  const sortedAlphabetForEdges = AtoX.split("").sort((a, b) =>
+    speffzToScheme(letteringScheme, a as Speffz, "edge").localeCompare(
+      speffzToScheme(letteringScheme, b as Speffz, "edge"),
+    ),
+  );
+
+  const sortedAlphabetForCorners = AtoX.split("").sort((a, b) =>
+    speffzToScheme(letteringScheme, a as Speffz, "corner").localeCompare(
+      speffzToScheme(letteringScheme, b as Speffz, "corner"),
+    ),
+  );
+
   const applyEdgePreset = (speffz: Speffz) =>
     `${speffzToScheme(letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
   const applyCornerPreset = (speffz: Speffz) =>
@@ -124,7 +137,7 @@ export default function BufferSelection() {
                   <SelectValue placeholder="Select buffer" />
                 </SelectTrigger>
                 <SelectContent>
-                  {AtoX.split("").map((letter) => (
+                  {sortedAlphabetForEdges.map((letter) => (
                     <SelectItem key={letter} value={letter}>
                       {applyEdgePreset(letter as Speffz)}
                     </SelectItem>
@@ -152,7 +165,7 @@ export default function BufferSelection() {
                   <SelectValue placeholder="Select buffer" />
                 </SelectTrigger>
                 <SelectContent>
-                  {AtoX.split("").map((letter) => (
+                  {sortedAlphabetForCorners.map((letter) => (
                     <SelectItem key={letter} value={letter}>
                       {applyCornerPreset(letter as Speffz)}
                     </SelectItem>

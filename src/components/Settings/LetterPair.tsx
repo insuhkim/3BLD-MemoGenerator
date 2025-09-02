@@ -58,6 +58,11 @@ export default function LetterPair() {
   const applyScheme = (speffz: Speffz) =>
     speffzToScheme(letteringScheme, speffz, "corner");
 
+  // Sort alphabet by the scheme-transformed letters
+  const sortedAlphabet = [...alphabet].sort((a, b) =>
+    applyScheme(a as Speffz).localeCompare(applyScheme(b as Speffz)),
+  );
+
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
   const [filter, setFilter] = useState("");
@@ -219,7 +224,7 @@ export default function LetterPair() {
                       <TooltipProvider>
                         <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                           <div className="p-1 bg-muted sticky left-0 z-10"></div>
-                          {alphabet.map((letter) => (
+                          {sortedAlphabet.map((letter) => (
                             <div
                               key={letter}
                               className="p-1 font-bold text-center bg-muted"
@@ -227,12 +232,12 @@ export default function LetterPair() {
                               {applyScheme(letter as Speffz)}
                             </div>
                           ))}
-                          {alphabet.map((rowLetter) => (
+                          {sortedAlphabet.map((rowLetter) => (
                             <Fragment key={rowLetter}>
                               <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
                                 {applyScheme(rowLetter as Speffz)}
                               </div>
-                              {alphabet.map((colLetter) => {
+                              {sortedAlphabet.map((colLetter) => {
                                 const currentPair = rowLetter + colLetter;
                                 const currentMemo = letterPairs[currentPair];
                                 const cell = (
@@ -298,7 +303,15 @@ export default function LetterPair() {
                                   .toLowerCase()
                                   .includes(filter.toLowerCase()),
                             )
-                            .sort(([a], [b]) => a.localeCompare(b))
+                            .sort(([a], [b]) => {
+                              const schemeA =
+                                applyScheme(a[0] as Speffz) +
+                                applyScheme(a[1] as Speffz);
+                              const schemeB =
+                                applyScheme(b[0] as Speffz) +
+                                applyScheme(b[1] as Speffz);
+                              return schemeA.localeCompare(schemeB);
+                            })
                             .map(([pair, memo]) => (
                               <TableRow
                                 key={pair}

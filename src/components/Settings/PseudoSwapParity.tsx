@@ -27,6 +27,13 @@ export default function PseudoSwap() {
 
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
+  // Sort alphabet by the scheme-transformed letters
+  const sortedAlphabet = AtoX.split("").sort((a, b) =>
+    speffzToScheme(settings.letteringScheme, a as Speffz, "edge").localeCompare(
+      speffzToScheme(settings.letteringScheme, b as Speffz, "edge"),
+    ),
+  );
+
   const applyPreset = (speffz: Speffz) =>
     `${speffzToScheme(settings.letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
 
@@ -53,7 +60,7 @@ export default function PseudoSwap() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
-            {AtoX.split("").map((letter) => (
+            {sortedAlphabet.map((letter) => (
               <SelectItem key={letter} value={letter}>
                 {applyPreset(letter as Speffz)}
               </SelectItem>
