@@ -1,3 +1,6 @@
+// Thanks to https://github.com/nbwzx/blddb
+// Source code in https://github.com/nbwzx/blddb/blob/v2/src/components/Code/index.tsx
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -104,9 +107,7 @@ function LetterScheme() {
   const handleCancel = () => {
     setInputValues(settings.letteringScheme);
     const index = orientations.indexOf(settings.orientation);
-    if (index !== -1) {
-      handleOrientationChange(index);
-    }
+    if (index !== -1) handleOrientationChange(index);
   };
 
   useEffect(() => {

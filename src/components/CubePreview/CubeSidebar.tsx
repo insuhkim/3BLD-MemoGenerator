@@ -12,31 +12,14 @@ import { Button } from "../ui/button";
 import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
 
+//prettier-ignore
 type Rotation =
-  | ""
-  | "y"
-  | "y2"
-  | "y'"
-  | "z2"
-  | "z2 y"
-  | "z2 y2"
-  | "z2 y'"
-  | "z'"
-  | "z' y"
-  | "z' y2"
-  | "z' y'"
-  | "z"
-  | "z y"
-  | "z y2"
-  | "z y'"
-  | "x'"
-  | "x' y"
-  | "x' y2"
-  | "x' y'"
-  | "x"
-  | "x y"
-  | "x y2"
-  | "x y'";
+  | "" | "y" | "y2" | "y'"
+  | "z2" | "z2 y" | "z2 y2" | "z2 y'"
+  | "z'" | "z' y" | "z' y2" | "z' y'"
+  | "z" | "z y" | "z y2" | "z y'"
+  | "x'" | "x' y" | "x' y2" | "x' y'"
+  | "x" | "x y" | "x y2" | "x y'";
 
 function orientationToRotation(orientation: Orientation): Rotation {
   //prettier-ignore

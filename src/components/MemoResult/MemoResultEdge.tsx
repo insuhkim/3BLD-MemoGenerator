@@ -11,19 +11,6 @@ import { Speffz } from "@/utils/types/Speffz";
 import { JSX } from "react";
 import MemoPair from "./MemoPair";
 
-function getFlippedEdgeStringRepresentation(
-  cycle: Speffz[],
-  flippedEdgeStyle: FlippedEdgeStyle
-): Speffz {
-  const edgePiece = speffzToEdge(cycle[0])[0]; // Get the piece identifier, e.g., "UF"
-
-  const orientationValueForShowingEdge: boolean =
-    flippedEdgeStyle === "unoriented";
-
-  const showingEdge: Edge = [edgePiece, orientationValueForShowingEdge];
-  return edgeToSpeffz(showingEdge);
-}
-
 export default function MemoResultEdge({
   memo,
   showFlippedEdge,
@@ -39,9 +26,7 @@ export default function MemoResultEdge({
   scheme: string;
   useCustomLetterPairsEdge: boolean;
 }) {
-  if (memo.length === 0) {
-    return null;
-  }
+  if (memo.length === 0) return null;
 
   const components: JSX.Element[] = [];
 
@@ -63,7 +48,7 @@ export default function MemoResultEdge({
       acc.push(lastIndex + cycle.length);
       return acc;
     },
-    [-1]
+    [-1],
   );
 
   for (let i = 0; i < allTargets.length; i += 2) {
@@ -75,8 +60,8 @@ export default function MemoResultEdge({
       ? cycleStyle === "parenthesis"
         ? ")("
         : cycleStyle === "vertical"
-        ? "|"
-        : ""
+          ? "|"
+          : ""
       : "";
     const prefix = cycleBreakStart && cycleStyle === "parenthesis" ? "(" : "";
     const suffix =
@@ -89,7 +74,7 @@ export default function MemoResultEdge({
       components.push(
         <span key={`cycle-break-start-${i}`} className="p-0">
           |
-        </span>
+        </span>,
       );
     }
     const url = allTargets[i + 1]
@@ -115,17 +100,20 @@ export default function MemoResultEdge({
         prefix={prefix}
         suffix={suffix}
         useCustomLetterPairs={useCustomLetterPairsEdge}
-      />
+      />,
     );
   }
 
   // Render flipped pieces separately if required
   if (showFlippedEdge !== "none") {
     flippedCycles.forEach((cycle, index) => {
-      const representation = getFlippedEdgeStringRepresentation(
-        cycle,
-        showFlippedEdge
-      );
+      const edgePiece = speffzToEdge(cycle[0])[0]; // Get the piece identifier, e.g., "UF"
+
+      const orientationValueForShowingEdge: boolean =
+        showFlippedEdge === "unoriented";
+
+      const showingEdge: Edge = [edgePiece, orientationValueForShowingEdge];
+      const representation = edgeToSpeffz(showingEdge);
       components.push(
         <MemoPair
           key={`flipped-${index}`}
@@ -136,10 +124,11 @@ export default function MemoResultEdge({
           target2Character={speffzToScheme(scheme, cycle[1], "edge")}
           entireString={` [${speffzToScheme(scheme, representation, "edge")}]`}
           useCustomLetterPairs={useCustomLetterPairsEdge}
-        />
+        />,
       );
     });
   }
+
   return (
     <div className="flex flex-wrap gap-x-1 justify-center font-mono text-xl md:text-2xl">
       {components.map((component, index) => (
