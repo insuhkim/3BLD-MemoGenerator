@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { SettingsContext } from "@/context/SettingsContext";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { Link, Pencil } from "lucide-react";
 import { KeyboardEvent, useContext, useState } from "react";
@@ -49,13 +50,16 @@ export default function MemoPair({
     throw new Error("MemoPair must be used within a SettingsProvider");
   }
   const {
-    settings: { letterPairs },
+    settings: { letterPairs, letteringScheme },
     addLetterPair,
   } = context;
 
   const [isModifyOpen, setIsModifyOpen] = useState(false);
-  const pairString = target2 ? `${target1}${target2}` : `${target1}${target1}`;
-  const customMemo = letterPairs[pairString.toUpperCase()];
+  const pairString = `${target1}${target2 ?? target1}`;
+  const pairStringScheme =
+    speffzToScheme(letteringScheme, target1, "corner") +
+    speffzToScheme(letteringScheme, target2 ?? target1, "corner");
+  const customMemo = letterPairs[pairString];
   const [modifiedMemo, setModifiedMemo] = useState(customMemo || "");
 
   const handleModify = () => {
@@ -81,12 +85,12 @@ export default function MemoPair({
           <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
             {useCustomLetterPairs && customMemo
               ? customMemo
-              : entireString ??
+              : (entireString ??
                 prefix +
                   target1Character +
                   (target2 ? infix : "") +
                   (target2Character ?? "") +
-                  suffix}
+                  suffix)}
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -112,7 +116,9 @@ export default function MemoPair({
       </DropdownMenu>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Modify Memo for {pairString.toUpperCase()}</DialogTitle>
+          <DialogTitle>
+            Modify Memo for {pairStringScheme} ({pairString} in Speffz)
+          </DialogTitle>
         </DialogHeader>
         <Input
           value={modifiedMemo}
