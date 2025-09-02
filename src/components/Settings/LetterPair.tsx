@@ -116,6 +116,11 @@ export default function LetterPair() {
           Enable and manage custom memos for your letter pairs. These will
           override the default generated words.
         </CardDescription>
+        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
+          Note: If you are using a custom letter scheme instead of Speffz, the
+          letter pair will be saved as Speffz because the internal logic still
+          uses the Speffz letter scheme. Don't be confused by this!
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4 rounded-lg border p-4">

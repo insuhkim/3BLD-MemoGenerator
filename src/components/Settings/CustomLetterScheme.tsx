@@ -71,7 +71,7 @@ function LetterScheme() {
   const handleOrientationChange = (selectedIndex: number) => {
     const selectedColor = facesMap[selectedIndex].map((key) => colorList[key]);
     const newFaces = selectedColor.map(
-      (color, i) => `face-${faceList[i]} ${color}`
+      (color, i) => `face-${faceList[i]} ${color}`,
     );
     setFaces(newFaces);
     setSelectedOrientationIndex(selectedIndex);
@@ -115,8 +115,8 @@ function LetterScheme() {
         setCellWidth(
           Math.min(
             Math.trunc(elementRef.current.offsetWidth / cubeSize / 4),
-            60
-          )
+            60,
+          ),
         );
     };
     handleResize();
@@ -133,7 +133,7 @@ function LetterScheme() {
     if (index !== -1) {
       const selectedColor = facesMap[index].map((key) => colorList[key]);
       const newFaces = selectedColor.map(
-        (color, i) => `face-${faceList[i]} ${color}`
+        (color, i) => `face-${faceList[i]} ${color}`,
       );
       setFaces(newFaces);
       setSelectedOrientationIndex(index);
@@ -238,11 +238,11 @@ function LetterScheme() {
                       onChange={(e) =>
                         handleChange(
                           faceIndex * faceSize + cellIndex,
-                          e.target.value ?? ""
+                          e.target.value ?? "",
                         )
                       }
                     />
-                  )
+                  ),
                 )}
               </div>
             ))}
@@ -264,12 +264,6 @@ export default function CustomLetterScheme() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
-          Note: Changing the letter scheme only affects the generated letter
-          pairs in result. The internal logic still uses the Speffz letter
-          scheme, so don't be confused when configuring other settings such as
-          Custom Letter Pairs.
-        </p>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="mt-4">
