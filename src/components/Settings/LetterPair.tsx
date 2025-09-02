@@ -55,15 +55,8 @@ export default function LetterPair() {
     },
   } = context;
 
-  const [showCustomScheme, setShowCustomScheme] = useState(true);
   const applyScheme = (speffz: Speffz) =>
-    showCustomScheme
-      ? speffzToScheme(letteringScheme, speffz, "corner")
-      : speffz;
-
-  const handleToggleCustomScheme = (checked: boolean) => {
-    setShowCustomScheme(checked);
-  };
+    speffzToScheme(letteringScheme, speffz, "corner");
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
@@ -209,29 +202,6 @@ export default function LetterPair() {
                   </Button>
                 </div>
               </div>
-
-              {letteringScheme !==
-                "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW" && (
-                <div className="space-y-2 rounded-lg border p-3">
-                  <div className="flex items-center justify-between">
-                    <Label
-                      htmlFor="show-custom-scheme"
-                      className="flex flex-col space-y-1"
-                    >
-                      <span>Show Custom Letter Scheme</span>
-                      <span className="font-normal leading-snug text-muted-foreground">
-                        Display letters using your custom lettering scheme
-                        instead of standard Speffz.
-                      </span>
-                    </Label>
-                    <Switch
-                      id="show-custom-scheme"
-                      checked={showCustomScheme}
-                      onCheckedChange={handleToggleCustomScheme}
-                    />
-                  </div>
-                </div>
-              )}
 
               <Tabs defaultValue="grid">
                 <TabsList className="w-full justify-start">

@@ -22,15 +22,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SettingsContext } from "@/context/SettingsContext";
+import { SpeffzCornerToPosition } from "@/utils/BLDDB/CornerToURL";
+import { SpeffzEdgeToOrientedPosition } from "@/utils/BLDDB/EdgeToURL";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
 
 export default function BufferSelection() {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
-  }
+
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
   const {
@@ -38,18 +40,10 @@ export default function BufferSelection() {
     setSettings,
   } = context;
 
-  const isSpeffz =
-    letteringScheme ===
-    "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW";
-
   const applyEdgePreset = (speffz: Speffz) =>
-    isSpeffz
-      ? speffz
-      : `${speffzToScheme(letteringScheme, speffz, "edge")} (${speffz})`;
+    `${speffzToScheme(letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
   const applyCornerPreset = (speffz: Speffz) =>
-    isSpeffz
-      ? speffz
-      : `${speffzToScheme(letteringScheme, speffz, "corner")} (${speffz})`;
+    `${speffzToScheme(letteringScheme, speffz, "corner")} (${SpeffzCornerToPosition(speffz)})`;
 
   const presets = [
     { method: "M2/R2", edge: "U", corner: "V" },
