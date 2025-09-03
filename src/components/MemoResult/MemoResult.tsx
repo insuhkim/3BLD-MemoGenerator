@@ -117,12 +117,12 @@ export default function MemoResult({ scramble }: { scramble: string }) {
               <div className="mb-2">
                 <Dialog>
                   <DialogTrigger>
-                    <h2 className="text-lg font-semibold text-muted-foreground flex items-center justify-center gap-2">
+                    <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
                       Edge
                       <Edit className="h-4 w-4" />
                     </h2>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="overflow-y-auto">
                     <DialogTitle> Quick Modify Edge </DialogTitle>
                     <QuickModify
                       memoResult={edgeMemo}
@@ -149,7 +149,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
               <div className="mb-2">
                 <Dialog>
                   <DialogTrigger>
-                    <h2 className="text-lg font-semibold text-muted-foreground flex items-center justify-center gap-2">
+                    <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
                       Corner
                       <Edit className="h-4 w-4" />
                     </h2>
