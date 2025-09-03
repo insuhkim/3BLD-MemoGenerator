@@ -55,15 +55,13 @@ export default function LetterPair() {
     },
   } = context;
 
-  const [showCustomScheme, setShowCustomScheme] = useState(true);
   const applyScheme = (speffz: Speffz) =>
-    showCustomScheme
-      ? speffzToScheme(letteringScheme, speffz, "corner")
-      : speffz;
+    speffzToScheme(letteringScheme, speffz, "corner");
 
-  const handleToggleCustomScheme = (checked: boolean) => {
-    setShowCustomScheme(checked);
-  };
+  // Sort alphabet by the scheme-transformed letters
+  const sortedAlphabet = [...alphabet].sort((a, b) =>
+    applyScheme(a as Speffz).localeCompare(applyScheme(b as Speffz)),
+  );
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
@@ -123,6 +121,11 @@ export default function LetterPair() {
           Enable and manage custom memos for your letter pairs. These will
           override the default generated words.
         </CardDescription>
+        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
+          Note: If you are using a custom letter scheme other than Speffz, the
+          letter pair will still be saved as Speffz. Don't be confused by this!
+          Also, corner custom scheme is used.
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4 rounded-lg border p-4">
@@ -210,29 +213,6 @@ export default function LetterPair() {
                 </div>
               </div>
 
-              {letteringScheme !==
-                "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW" && (
-                <div className="space-y-2 rounded-lg border p-3">
-                  <div className="flex items-center justify-between">
-                    <Label
-                      htmlFor="show-custom-scheme"
-                      className="flex flex-col space-y-1"
-                    >
-                      <span>Show Custom Letter Scheme</span>
-                      <span className="font-normal leading-snug text-muted-foreground">
-                        Display letters using your custom lettering scheme
-                        instead of standard Speffz.
-                      </span>
-                    </Label>
-                    <Switch
-                      id="show-custom-scheme"
-                      checked={showCustomScheme}
-                      onCheckedChange={handleToggleCustomScheme}
-                    />
-                  </div>
-                </div>
-              )}
-
               <Tabs defaultValue="grid">
                 <TabsList className="w-full justify-start">
                   <TabsTrigger value="grid">Grid View</TabsTrigger>
@@ -244,7 +224,7 @@ export default function LetterPair() {
                       <TooltipProvider>
                         <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                           <div className="p-1 bg-muted sticky left-0 z-10"></div>
-                          {alphabet.map((letter) => (
+                          {sortedAlphabet.map((letter) => (
                             <div
                               key={letter}
                               className="p-1 font-bold text-center bg-muted"
@@ -252,12 +232,12 @@ export default function LetterPair() {
                               {applyScheme(letter as Speffz)}
                             </div>
                           ))}
-                          {alphabet.map((rowLetter) => (
+                          {sortedAlphabet.map((rowLetter) => (
                             <Fragment key={rowLetter}>
                               <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
                                 {applyScheme(rowLetter as Speffz)}
                               </div>
-                              {alphabet.map((colLetter) => {
+                              {sortedAlphabet.map((colLetter) => {
                                 const currentPair = rowLetter + colLetter;
                                 const currentMemo = letterPairs[currentPair];
                                 const cell = (
@@ -274,19 +254,30 @@ export default function LetterPair() {
                                   </div>
                                 );
 
-                                if (currentMemo) {
-                                  return (
-                                    <Tooltip key={currentPair}>
-                                      <TooltipTrigger asChild>
-                                        {cell}
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>{currentMemo}</p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  );
-                                }
-                                return cell;
+                                return (
+                                  <Tooltip key={currentPair}>
+                                    <TooltipTrigger asChild>
+                                      {cell}
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>
+                                        {speffzToScheme(
+                                          letteringScheme,
+                                          currentPair[0] as Speffz,
+                                          "corner",
+                                        ) +
+                                          speffzToScheme(
+                                            letteringScheme,
+                                            currentPair[1] as Speffz,
+                                            "corner",
+                                          ) +
+                                          (currentMemo
+                                            ? ` (${currentMemo})`
+                                            : "")}
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                );
                               })}
                             </Fragment>
                           ))}
@@ -315,15 +306,24 @@ export default function LetterPair() {
                           {Object.entries(letterPairs)
                             .filter(
                               ([pair, memo]) =>
-                                filter === "" ||
-                                pair
-                                  .toLowerCase()
-                                  .includes(filter.toLowerCase()) ||
-                                memo
-                                  .toLowerCase()
-                                  .includes(filter.toLowerCase()),
+                                memo !== "" &&
+                                (filter === "" ||
+                                  pair
+                                    .toLowerCase()
+                                    .includes(filter.toLowerCase()) ||
+                                  memo
+                                    .toLowerCase()
+                                    .includes(filter.toLowerCase())),
                             )
-                            .sort(([a], [b]) => a.localeCompare(b))
+                            .sort(([a], [b]) => {
+                              const schemeA =
+                                applyScheme(a[0] as Speffz) +
+                                applyScheme(a[1] as Speffz);
+                              const schemeB =
+                                applyScheme(b[0] as Speffz) +
+                                applyScheme(b[1] as Speffz);
+                              return schemeA.localeCompare(schemeB);
+                            })
                             .map(([pair, memo]) => (
                               <TableRow
                                 key={pair}

@@ -1,3 +1,6 @@
+// Thanks to https://github.com/nbwzx/blddb
+// Source code in https://github.com/nbwzx/blddb/blob/v2/src/components/Code/index.tsx
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -22,6 +25,13 @@ import "@/styles/letterScheme.css";
 import { isValidScheme } from "@/utils/scheme/isValidScheme";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 function LetterScheme() {
   const context = useContext(SettingsContext);
@@ -71,7 +81,7 @@ function LetterScheme() {
   const handleOrientationChange = (selectedIndex: number) => {
     const selectedColor = facesMap[selectedIndex].map((key) => colorList[key]);
     const newFaces = selectedColor.map(
-      (color, i) => `face-${faceList[i]} ${color}`
+      (color, i) => `face-${faceList[i]} ${color}`,
     );
     setFaces(newFaces);
     setSelectedOrientationIndex(selectedIndex);
@@ -104,9 +114,7 @@ function LetterScheme() {
   const handleCancel = () => {
     setInputValues(settings.letteringScheme);
     const index = orientations.indexOf(settings.orientation);
-    if (index !== -1) {
-      handleOrientationChange(index);
-    }
+    if (index !== -1) handleOrientationChange(index);
   };
 
   useEffect(() => {
@@ -115,8 +123,8 @@ function LetterScheme() {
         setCellWidth(
           Math.min(
             Math.trunc(elementRef.current.offsetWidth / cubeSize / 4),
-            60
-          )
+            60,
+          ),
         );
     };
     handleResize();
@@ -133,7 +141,7 @@ function LetterScheme() {
     if (index !== -1) {
       const selectedColor = facesMap[index].map((key) => colorList[key]);
       const newFaces = selectedColor.map(
-        (color, i) => `face-${faceList[i]} ${color}`
+        (color, i) => `face-${faceList[i]} ${color}`,
       );
       setFaces(newFaces);
       setSelectedOrientationIndex(index);
@@ -173,17 +181,21 @@ function LetterScheme() {
           <label className="mb-2 block font-bold text-black dark:text-white">
             Orientation
           </label>
-          <select
-            className="w-full rounded-md border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-base text-black focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
-            onChange={(e) => handleOrientationChange(Number(e.target.value))}
-            value={selectedOrientationIndex}
+          <Select
+            onValueChange={(value) => handleOrientationChange(Number(value))}
+            value={selectedOrientationIndex.toString()}
           >
-            {orientations.map((orientation, index) => (
-              <option key={index} value={index}>
-                {orientation}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select orientation" />
+            </SelectTrigger>
+            <SelectContent>
+              {orientations.map((orientation, index) => (
+                <SelectItem key={index} value={index.toString()}>
+                  {orientation}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="mt-6 flex justify-end gap-2">
           <DialogClose asChild>
@@ -238,11 +250,11 @@ function LetterScheme() {
                       onChange={(e) =>
                         handleChange(
                           faceIndex * faceSize + cellIndex,
-                          e.target.value ?? ""
+                          e.target.value ?? "",
                         )
                       }
                     />
-                  )
+                  ),
                 )}
               </div>
             ))}
@@ -264,12 +276,6 @@ export default function CustomLetterScheme() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
-          Note: Changing the letter scheme only affects the generated letter
-          pairs in result. The internal logic still uses the Speffz letter
-          scheme, so don't be confused when configuring other settings such as
-          Custom Letter Pairs.
-        </p>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="mt-4">

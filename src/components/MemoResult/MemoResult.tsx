@@ -6,14 +6,21 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
-import { ChevronsUpDown } from "lucide-react";
-import { useContext, useState } from "react";
+import { ChevronsUpDown, Edit } from "lucide-react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { applyScramble } from "react-rubiks-cube-utils";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import QuickModify from "./QuickModify";
 
 export default function MemoResult({ scramble }: { scramble: string }) {
   const context = useContext(SettingsContext);
@@ -23,7 +30,11 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
 
-  const cube = applyScramble({ type: "3x3", scramble: scramble });
+  const cube = useMemo(
+    () => applyScramble({ type: "3x3", scramble: scramble }),
+    [scramble],
+  );
+
   if (!cube) {
     return (
       <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center">
@@ -36,25 +47,50 @@ export default function MemoResult({ scramble }: { scramble: string }) {
       </div>
     );
   }
-  const corner = makeCornerMemo(
+
+  const { corner, edge, hasCornerParity, memoSwap } = useMemo(() => {
+    const cornerMemo = makeCornerMemo(
+      cube,
+      settings.cornerBuffer,
+      settings.cornerPriority,
+    );
+    const hasParity = (memo: string[][]) =>
+      memo.reduce((sum, cycle) => sum + cycle.length, 0) % 2 === 1;
+    const cornerParity = hasParity(cornerMemo);
+    const swap =
+      cornerParity && settings.memoSwap !== "none"
+        ? settings.memoSwap
+        : settings.edgeBuffer;
+
+    const edgeMemo = makeEdgeMemo(
+      cube,
+      settings.edgeBuffer,
+      settings.edgePriority,
+      swap,
+    );
+
+    return {
+      corner: cornerMemo,
+      edge: edgeMemo,
+      hasCornerParity: cornerParity,
+      memoSwap: swap,
+    };
+  }, [
     cube,
     settings.cornerBuffer,
-    settings.cornerPriority
-  );
-  const hasParity = (memo: string[][]) =>
-    memo.reduce((sum, cycle) => sum + cycle.length, 0) % 2 === 1;
-  const hasCornerParity = hasParity(corner);
-  const memoSwap =
-    hasCornerParity && settings.memoSwap !== "none"
-      ? settings.memoSwap
-      : settings.edgeBuffer;
-
-  const edge = makeEdgeMemo(
-    cube,
+    settings.cornerPriority,
+    settings.memoSwap,
     settings.edgeBuffer,
     settings.edgePriority,
-    memoSwap
-  );
+  ]);
+
+  const [edgeMemo, setEdgeMemo] = useState(edge);
+  const [cornerMemo, setCornerMemo] = useState(corner);
+
+  useEffect(() => {
+    setEdgeMemo(edge);
+    setCornerMemo(corner);
+  }, [edge, corner]);
 
   return (
     <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center break-words">
@@ -79,11 +115,25 @@ export default function MemoResult({ scramble }: { scramble: string }) {
           <div className="break-words pt-2">
             {edge.length > 0 && (
               <div className="mb-2">
-                <h2 className="text-lg font-semibold text-muted-foreground">
-                  Edge
-                </h2>
+                <Dialog>
+                  <DialogTrigger>
+                    <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
+                      Edge
+                      <Edit className="h-4 w-4" />
+                    </h2>
+                  </DialogTrigger>
+                  <DialogContent className="overflow-y-auto">
+                    <DialogTitle> Quick Modify Edge </DialogTitle>
+                    <QuickModify
+                      memoResult={edgeMemo}
+                      setMemoResult={setEdgeMemo}
+                      type="edge"
+                      scheme={settings.letteringScheme}
+                    />
+                  </DialogContent>
+                </Dialog>
                 <MemoResultEdge
-                  memo={edge}
+                  memo={edgeMemo}
                   showFlippedEdge={settings.showFlippedEdge}
                   buffer={settings.edgeBuffer}
                   cycleStyle={settings.cycleStyle}
@@ -97,11 +147,25 @@ export default function MemoResult({ scramble }: { scramble: string }) {
             )}
             {corner.length > 0 && (
               <div className="mb-2">
-                <h2 className="text-lg font-semibold text-muted-foreground">
-                  Corner
-                </h2>
+                <Dialog>
+                  <DialogTrigger>
+                    <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
+                      Corner
+                      <Edit className="h-4 w-4" />
+                    </h2>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle> Quick Modify Corner</DialogTitle>
+                    <QuickModify
+                      memoResult={cornerMemo}
+                      setMemoResult={setCornerMemo}
+                      type="corner"
+                      scheme={settings.letteringScheme}
+                    />
+                  </DialogContent>
+                </Dialog>
                 <MemoResultCorner
-                  memo={corner}
+                  memo={cornerMemo}
                   showFlippedCorner={settings.showFlippedCorner}
                   buffer={settings.cornerBuffer}
                   cycleStyle={settings.cycleStyle}

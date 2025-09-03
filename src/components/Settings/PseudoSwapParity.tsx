@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SettingsContext } from "@/context/SettingsContext";
+import { SpeffzEdgeToOrientedPosition } from "@/utils/BLDDB/EdgeToURL";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
@@ -26,18 +27,15 @@ export default function PseudoSwap() {
 
   const AtoX = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
-  const isSpeffz =
-    settings.letteringScheme ===
-    "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW";
+  // Sort alphabet by the scheme-transformed letters
+  const sortedAlphabet = AtoX.split("").sort((a, b) =>
+    speffzToScheme(settings.letteringScheme, a as Speffz, "edge").localeCompare(
+      speffzToScheme(settings.letteringScheme, b as Speffz, "edge"),
+    ),
+  );
 
   const applyPreset = (speffz: Speffz) =>
-    isSpeffz
-      ? speffz
-      : `${speffzToScheme(
-          settings.letteringScheme,
-          speffz,
-          "edge"
-        )} (${speffz})`;
+    `${speffzToScheme(settings.letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
 
   const handleValueChange = (value: string) => {
     setSettings((prev) => ({
@@ -57,12 +55,15 @@ export default function PseudoSwap() {
       </CardHeader>
       <CardContent>
         <Select value={settings.memoSwap} onValueChange={handleValueChange}>
-          <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
+          <SelectTrigger
+            id="memoSwapSelect"
+            className="w-full sm:w-[180px] font-mono"
+          >
             <SelectValue placeholder="Select memo swap target" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="font-mono">
             <SelectItem value="none">None</SelectItem>
-            {AtoX.split("").map((letter) => (
+            {sortedAlphabet.map((letter) => (
               <SelectItem key={letter} value={letter}>
                 {applyPreset(letter as Speffz)}
               </SelectItem>

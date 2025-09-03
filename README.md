@@ -11,17 +11,16 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 
 - [x] Custom buffer selection
 - [x] Custom cycle break priority
-- [x] Cube Preview with [Cubing.js Twisty](https://js.cubing.net/cubing/twisty/)
+- [x] Cube Preview with [Cubing.js](https://js.cubing.net/cubing/twisty/) + orientation selection
 - [x] Option to show flipped edges/corners separately
-- [x] Scramble only Edges / Corners
-- [x] Select orientation in preview
-- [x] Support for Memo Swapping
+- [x] Scramble only Edges / Corners + Blindfoled scramble
+- [x] Support for Pseudo Swapping
 - [x] Support for wide moves and cube rotations
-- [x] Hyperlink letterpair to [BLDDB](https://blddb.net/)
+- [x] Hyperlink letterpair to [BLDDB](https://v2.blddb.net/)
 - [x] Customizable Letter Scheme
 - [x] Customizable Letter Pair
 - [ ] Support for Floating Buffer
-- [ ] Inline cycle break selection
+- [x] Inline cycle break edit
 
 ### Improvements
 
@@ -35,8 +34,10 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 ## 🚀 Getting Started
 
 1. Open the app in your browser: [3bld-memo-generator.vercel.app](https://3bld-memo-generator.vercel.app/)
-2. Set your buffer and priority in the options panel.
-3. Generate and review the memo sequence for blindfolded solving.
+2. Set your buffer, priority, and scheme in the options panel.
+3. Click the "Scramble" button to generate a new scramble.
+4. The result will be displayed automatically. You can modify the order of cycles or search corresponding 3style algorithms in [BLDDB](https://v2.blddb.net/)
+5. You can even display custom letterpairs, such as "AP" -> "Apple".
 
 ---
 

@@ -26,7 +26,7 @@ function getAllVisitingCorners(cycle: Speffz[]) {
       ...cycle,
       ...rotateAllCorners(cycle, true),
       ...rotateAllCorners(cycle, false),
-    ])
+    ]),
   ).sort();
 }
 
@@ -39,79 +39,59 @@ function shiftCycleEdge(cycle: Speffz[], newCycleStart: Speffz) {
     return start === newCycleStart ? cycle : flipAllEdges(cycle);
 
   const isOrientedCycle = start === last;
-  const startIdx = cycle.indexOf(newCycleStart);
-  if (startIdx !== -1)
-    return [
-      ...cycle.slice(startIdx, -1),
-      ...cycle.slice(0, startIdx),
-      isOrientedCycle ? newCycleStart : flipSpeffzEdge(newCycleStart),
-    ];
-
-  const flippedStartIdx = cycle.indexOf(flipSpeffzEdge(newCycleStart));
-  if (flippedStartIdx !== -1) {
-    const flippedCycle = flipAllEdges(cycle);
-    return [
-      ...flippedCycle.slice(flippedStartIdx),
-      ...flippedCycle.slice(0, flippedStartIdx),
-      isOrientedCycle ? newCycleStart : flipSpeffzEdge(newCycleStart),
-    ];
-  }
-
-  return cycle; // cycleStart not found
+  const startIdx = cycle.findIndex((speffz) =>
+    isSameEdgeSpeffz(speffz, newCycleStart),
+  );
+  if (startIdx === -1) return cycle; // cycleStart not found
+  const newCycle = [
+    ...cycle.slice(startIdx),
+    ...(isOrientedCycle ? cycle : flipAllEdges(cycle)).slice(1, startIdx + 1),
+  ];
+  return cycle[startIdx] === newCycleStart ? newCycle : flipAllEdges(newCycle);
 }
 
-function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
+function shiftCycleCorner(cycle: Speffz[], newCycleStart: Speffz) {
   const start = cycle[0];
   const last = cycle.at(-1) as Speffz;
-  if (!isSameEdgeSpeffz(start, last)) return cycle; // not a cycle
+  if (!isSameCornerSpeffz(start, last)) return cycle; // not a cycle
 
-  if (isSameCornerSpeffz(last, cycleStart))
-    return start === cycleStart
+  if (isSameCornerSpeffz(last, newCycleStart))
+    return start === newCycleStart
       ? cycle
-      : rotateSpeffzCorner(start, true) === cycleStart
-      ? rotateAllCorners(cycle, true)
-      : rotateAllCorners(cycle, false);
+      : rotateSpeffzCorner(start, true) === newCycleStart
+        ? rotateAllCorners(cycle, true)
+        : rotateAllCorners(cycle, false);
 
   const cycleRotation =
-    (speffzToCorner(cycleStart)[1] - speffzToCorner(start)[1] + 3) % 3;
-  const startIdx = cycle.indexOf(cycleStart);
-  if (startIdx !== -1)
-    return [
-      ...cycle.slice(startIdx, -1),
-      ...cycle.slice(0, startIdx),
-      cycleRotation === 0
-        ? cycleStart
-        : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
-    ];
-  const rotatedCWStartIdx = cycle.indexOf(rotateSpeffzCorner(cycleStart, true));
-  if (rotatedCWStartIdx !== -1) {
-    const rotatedCycle = rotateAllCorners(cycle, true);
-    return [
-      ...rotatedCycle.slice(rotatedCWStartIdx, -1),
-      ...rotatedCycle.slice(0, rotatedCWStartIdx),
-      cycleRotation === 0
-        ? cycleStart
-        : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
-    ];
-  }
-  const rotatedCCWStartIdx = cycle.indexOf(
-    rotateSpeffzCorner(cycleStart, false)
+    (speffzToCorner(last)[1] - speffzToCorner(start)[1] + 3) % 3;
+
+  const startIdx = cycle.findIndex((speffz) =>
+    isSameCornerSpeffz(speffz, newCycleStart),
   );
-  if (rotatedCCWStartIdx !== -1) {
-    const rotatedCycle = rotateAllCorners(cycle, false);
-    return [
-      ...rotatedCycle.slice(rotatedCCWStartIdx, -1),
-      ...rotatedCycle.slice(0, rotatedCCWStartIdx),
-      cycleRotation === 0
-        ? cycleStart
-        : cycleRotation === 1
-        ? rotateSpeffzCorner(cycleStart, true)
-        : rotateSpeffzCorner(cycleStart, false),
-    ];
-  }
-  return cycle; // cycleStart not found
+  if (startIdx === -1) return cycle;
+
+  const newCycle = [
+    ...cycle.slice(startIdx),
+    ...(cycleRotation === 0
+      ? cycle
+      : cycleRotation === 1
+        ? rotateAllCorners(cycle, true)
+        : rotateAllCorners(cycle, false)
+    ).slice(1, startIdx + 1),
+  ];
+  return newCycleStart === cycle[startIdx]
+    ? newCycle
+    : rotateAllCorners(
+        newCycle,
+        rotateSpeffzCorner(newCycleStart, true) !== cycle[startIdx],
+      );
 }
+
+export {
+  flipAllEdges,
+  rotateAllCorners,
+  getAllVisitingCorners,
+  getAllVisitingEdges,
+  shiftCycleCorner,
+  shiftCycleEdge,
+};
