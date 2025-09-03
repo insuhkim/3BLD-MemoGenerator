@@ -73,7 +73,8 @@ function shiftCycleCorner(cycle: Speffz[], cycleStart: Speffz) {
         : rotateAllCorners(cycle, false);
 
   const cycleRotation =
-    (speffzToCorner(cycleStart)[1] - speffzToCorner(start)[1] + 3) % 3;
+    (speffzToCorner(last)[1] - speffzToCorner(start)[1] + 3) % 3;
+
   const startIdx = cycle.indexOf(cycleStart);
   if (startIdx !== -1)
     return [
