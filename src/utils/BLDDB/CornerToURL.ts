@@ -1,4 +1,4 @@
-import { speffzToCorner } from "../makeMemo/cornerHelper";
+import { cornerToSpeffz, speffzToCorner } from "../makeMemo/cornerHelper";
 import { Speffz } from "../types/Speffz";
 
 export function SpeffzCornerToPosition(corner: Speffz): string {
@@ -23,28 +23,25 @@ export function SpeffzCornerToPosition(corner: Speffz): string {
   );
 }
 
-function positionIndex(position: string): number {
-  // This function converts a corner position string to an index.
-  // The order of the corners is UFR, UFL, UBR, UBL, DFR, DFL, DBR, DBL.
-  const positions = ["UFR", "UBR", "UFL", "UBL", "DFR", "DBR", "DFL", "DBL"];
-  return positions.indexOf(position);
-}
-
 export function CornerTwistURL(
   position1: Speffz,
   cw1: boolean,
   position2: Speffz,
-  cw2: boolean
+  cw2: boolean,
 ): string {
   // This function takes two side non W/Y speffz
   // and generates a URL for corner twists in the BLDDB database.
   // See https://v2.blddb.net/twists for more details.
-  const i1 = SpeffzCornerToPosition(position1);
-  const i2 = SpeffzCornerToPosition(position2);
+  //
+  const orient = (speffz: Speffz) =>
+    cornerToSpeffz([speffzToCorner(speffz)[0], 0]);
+  const i1 = SpeffzCornerToPosition(orient(position1));
+  const i2 = SpeffzCornerToPosition(orient(position2));
 
+  const positions = ["UFR", "UBR", "UFL", "UBL", "DFR", "DBR", "DFL", "DBL"];
   let arr = ["", "", "", "", "", "", "", ""];
-  arr[positionIndex(i1)] = cw1 ? "cw" : "ccw";
-  arr[positionIndex(i2)] = cw2 ? "cw" : "ccw";
+  arr[positions.indexOf(i1)] = cw1 ? "cw" : "ccw";
+  arr[positions.indexOf(i2)] = cw2 ? "cw" : "ccw";
   const position = arr.join("-");
 
   //https://v2.blddb.net/twists?position=--cw-ccw----&mode=manmade
@@ -54,11 +51,11 @@ export function CornerTwistURL(
 export function CornerToURL(
   buffer: Speffz,
   position1: Speffz,
-  position2: Speffz
+  position2: Speffz,
 ): string {
   return `https://v2.blddb.net/corner?position=${SpeffzCornerToPosition(
-    buffer
+    buffer,
   )}-${SpeffzCornerToPosition(position1)}-${SpeffzCornerToPosition(
-    position2
+    position2,
   )}&mode=manmade`;
 }
