@@ -25,6 +25,13 @@ import "@/styles/letterScheme.css";
 import { isValidScheme } from "@/utils/scheme/isValidScheme";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 function LetterScheme() {
   const context = useContext(SettingsContext);
@@ -174,17 +181,21 @@ function LetterScheme() {
           <label className="mb-2 block font-bold text-black dark:text-white">
             Orientation
           </label>
-          <select
-            className="w-full rounded-md border-gray-300 bg-gray-50 py-2 pl-3 pr-10 text-base text-black focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
-            onChange={(e) => handleOrientationChange(Number(e.target.value))}
-            value={selectedOrientationIndex}
+          <Select
+            onValueChange={(value) => handleOrientationChange(Number(value))}
+            value={selectedOrientationIndex.toString()}
           >
-            {orientations.map((orientation, index) => (
-              <option key={index} value={index}>
-                {orientation}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select orientation" />
+            </SelectTrigger>
+            <SelectContent>
+              {orientations.map((orientation, index) => (
+                <SelectItem key={index} value={index.toString()}>
+                  {orientation}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="mt-6 flex justify-end gap-2">
           <DialogClose asChild>

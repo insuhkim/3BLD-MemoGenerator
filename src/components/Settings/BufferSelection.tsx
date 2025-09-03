@@ -133,10 +133,10 @@ export default function BufferSelection() {
                   }))
                 }
               >
-                <SelectTrigger className="w-full mt-1">
+                <SelectTrigger className="w-full mt-1 font-mono">
                   <SelectValue placeholder="Select buffer" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="font-mono">
                   {sortedAlphabetForEdges.map((letter) => (
                     <SelectItem key={letter} value={letter}>
                       {applyEdgePreset(letter as Speffz)}
@@ -161,10 +161,10 @@ export default function BufferSelection() {
                   }))
                 }
               >
-                <SelectTrigger className="w-full mt-1">
+                <SelectTrigger className="w-full mt-1 font-mono">
                   <SelectValue placeholder="Select buffer" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="font-mono">
                   {sortedAlphabetForCorners.map((letter) => (
                     <SelectItem key={letter} value={letter}>
                       {applyCornerPreset(letter as Speffz)}

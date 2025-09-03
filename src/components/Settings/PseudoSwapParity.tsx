@@ -55,10 +55,13 @@ export default function PseudoSwap() {
       </CardHeader>
       <CardContent>
         <Select value={settings.memoSwap} onValueChange={handleValueChange}>
-          <SelectTrigger id="memoSwapSelect" className="w-full sm:w-[180px]">
+          <SelectTrigger
+            id="memoSwapSelect"
+            className="w-full sm:w-[180px] font-mono"
+          >
             <SelectValue placeholder="Select memo swap target" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="font-mono">
             <SelectItem value="none">None</SelectItem>
             {sortedAlphabet.map((letter) => (
               <SelectItem key={letter} value={letter}>
