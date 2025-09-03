@@ -9,6 +9,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   ArrowUp,
   ArrowDown,
   ArrowLeft,
@@ -22,6 +29,8 @@ import {
   shiftCycleEdge,
   flipAllEdges,
   rotateAllCorners,
+  getAllVisitingCorners,
+  getAllVisitingEdges,
 } from "@/utils/makeMemo/postProcess";
 import { isSameEdgeSpeffz } from "@/utils/makeMemo/edgeHelper";
 import { isSameCornerSpeffz } from "@/utils/makeMemo/cornerHelper";
@@ -126,30 +135,30 @@ export default function QuickModify({
     }, 200); // Match this with CSS transition duration
   };
 
-  const handleShift = (index: number) => {
-    const memo = memoResult[index];
-    if (memo.length <= 1) return;
+  // const handleShift = (index: number) => {
+  //   const memo = memoResult[index];
+  //   if (memo.length <= 1) return;
 
-    const newMemoResult = [...memoResult];
-    // Shift to the next element in the cycle (second element becomes the new start)
-    const nextElement = memo[1];
-    newMemoResult[index] =
-      type === "edge"
-        ? shiftCycleEdge(memo, nextElement)
-        : shiftCycleCorner(memo, nextElement);
+  //   const newMemoResult = [...memoResult];
+  //   // Shift to the next element in the cycle (second element becomes the new start)
+  //   const nextElement = memo[1];
+  //   newMemoResult[index] =
+  //     type === "edge"
+  //       ? shiftCycleEdge(memo, nextElement)
+  //       : shiftCycleCorner(memo, nextElement);
 
-    setMemoResult(newMemoResult);
-  };
+  //   setMemoResult(newMemoResult);
+  // };
 
-  const handleFlip = (index: number) => {
-    const memo = memoResult[index];
-    if (memo.length === 0) return;
+  // const handleFlip = (index: number) => {
+  //   const memo = memoResult[index];
+  //   if (memo.length === 0) return;
 
-    const newMemoResult = [...memoResult];
-    newMemoResult[index] =
-      type === "edge" ? flipAllEdges(memo) : rotateAllCorners(memo, true);
-    setMemoResult(newMemoResult);
-  };
+  //   const newMemoResult = [...memoResult];
+  //   newMemoResult[index] =
+  //     type === "edge" ? flipAllEdges(memo) : rotateAllCorners(memo, true);
+  //   setMemoResult(newMemoResult);
+  // };
 
   // Get animation style for a row
   const getRowStyle = (index: number) => {
@@ -180,6 +189,7 @@ export default function QuickModify({
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead>Cycle Start</TableHead>
           <TableHead>Memo</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -197,13 +207,45 @@ export default function QuickModify({
               animatingRows[index]?.animating && "bg-muted/30",
             )}
           >
+            <TableCell className="flex items-center">
+              <Select
+                value={memo[0]}
+                onValueChange={(value) => {
+                  const newMemoResult = [...memoResult];
+                  newMemoResult[index] = (
+                    type === "edge" ? shiftCycleEdge : shiftCycleCorner
+                  )(memo, value as Speffz);
+                  setMemoResult(newMemoResult);
+                }}
+                disabled={index === 0 && isFirstBufferBlocked}
+              >
+                <SelectTrigger className="w-[70px]">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(type === "edge"
+                    ? getAllVisitingEdges(memo)
+                    : getAllVisitingCorners(memo)
+                  ).map((piece, pieceIndex) => (
+                    <SelectItem key={`${index}-${pieceIndex}`} value={piece}>
+                      {speffzToScheme(scheme, piece, type)}
+                      {/*(
+                      {(type === "edge"
+                        ? SpeffzEdgeToOrientedPosition
+                        : SpeffzCornerToPosition)(piece)}
+                      )*/}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </TableCell>
             <TableCell>
               {memo
                 .map((speffz) => speffzToScheme(scheme, speffz, type))
                 .join(" ")}
             </TableCell>
             <TableCell className="flex justify-end gap-2">
-              <Button
+              {/*<Button
                 variant="outline"
                 size="icon"
                 onClick={() => handleShift(index)}
@@ -240,7 +282,7 @@ export default function QuickModify({
                 ) : (
                   <RotateCw className="h-4 w-4" />
                 )}
-              </Button>
+              </Button>*/}
               <Button
                 variant="outline"
                 size="icon"
