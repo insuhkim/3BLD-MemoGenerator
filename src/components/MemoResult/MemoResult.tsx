@@ -128,6 +128,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                       memoResult={edgeMemo}
                       setMemoResult={setEdgeMemo}
                       type="edge"
+                      scheme={settings.letteringScheme}
                     />
                   </DialogContent>
                 </Dialog>
@@ -159,6 +160,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
                       memoResult={cornerMemo}
                       setMemoResult={setCornerMemo}
                       type="corner"
+                      scheme={settings.letteringScheme}
                     />
                   </DialogContent>
                 </Dialog>

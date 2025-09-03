@@ -8,7 +8,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, RotateCcw, FlipHorizontal } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowDown,
+  ArrowLeft,
+  FlipHorizontal,
+  RotateCw,
+} from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -19,15 +25,18 @@ import {
 } from "@/utils/makeMemo/postProcess";
 import { isSameEdgeSpeffz } from "@/utils/makeMemo/edgeHelper";
 import { isSameCornerSpeffz } from "@/utils/makeMemo/cornerHelper";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 
 export default function QuickModify({
   memoResult,
   setMemoResult,
   type,
+  scheme,
 }: {
   memoResult: Speffz[][];
   setMemoResult: React.Dispatch<React.SetStateAction<Speffz[][]>>;
   type: "edge" | "corner";
+  scheme: string;
 }) {
   // Animation states for rows
   const [animatingRows, setAnimatingRows] = useState<{
@@ -40,9 +49,7 @@ export default function QuickModify({
 
   // Calculate row height on mount
   useEffect(() => {
-    if (rowRefs.current[0]) {
-      setRowHeight(rowRefs.current[0].offsetHeight);
-    }
+    if (rowRefs.current[0]) setRowHeight(rowRefs.current[0].offsetHeight);
   }, []);
 
   // Reset animation state after animation completes
@@ -126,11 +133,11 @@ export default function QuickModify({
     const newMemoResult = [...memoResult];
     // Shift to the next element in the cycle (second element becomes the new start)
     const nextElement = memo[1];
-    if (type === "edge") {
-      newMemoResult[index] = shiftCycleEdge(memo, nextElement);
-    } else {
-      newMemoResult[index] = shiftCycleCorner(memo, nextElement);
-    }
+    newMemoResult[index] =
+      type === "edge"
+        ? shiftCycleEdge(memo, nextElement)
+        : shiftCycleCorner(memo, nextElement);
+
     setMemoResult(newMemoResult);
   };
 
@@ -139,13 +146,8 @@ export default function QuickModify({
     if (memo.length === 0) return;
 
     const newMemoResult = [...memoResult];
-    if (type === "edge") {
-      // For edges, flip all edges in the cycle
-      newMemoResult[index] = flipAllEdges(memo);
-    } else {
-      // For corners, rotate all corners (clockwise by default)
-      newMemoResult[index] = rotateAllCorners(memo, true);
-    }
+    newMemoResult[index] =
+      type === "edge" ? flipAllEdges(memo) : rotateAllCorners(memo, true);
     setMemoResult(newMemoResult);
   };
 
@@ -167,11 +169,17 @@ export default function QuickModify({
     };
   };
 
+  const isFirstBufferBlocked =
+    memoResult[0].length === 1 ||
+    !(type === "edge" ? isSameEdgeSpeffz : isSameCornerSpeffz)(
+      memoResult[0][0],
+      memoResult[0].at(-1) as Speffz,
+    );
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Index</TableHead>
           <TableHead>Memo</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -189,8 +197,11 @@ export default function QuickModify({
               animatingRows[index]?.animating && "bg-muted/30",
             )}
           >
-            <TableCell>{index + 1}</TableCell>
-            <TableCell>{memo.join(" ")}</TableCell>
+            <TableCell>
+              {memo
+                .map((speffz) => speffzToScheme(scheme, speffz, type))
+                .join(" ")}
+            </TableCell>
             <TableCell className="flex justify-end gap-2">
               <Button
                 variant="outline"
@@ -199,10 +210,7 @@ export default function QuickModify({
                 disabled={
                   memo.length <= 1 ||
                   Object.values(animatingRows).some((row) => row.animating) ||
-                  !(type === "edge" ? isSameEdgeSpeffz : isSameCornerSpeffz)(
-                    memo[0],
-                    memo.at(-1) as Speffz,
-                  )
+                  (index === 0 && isFirstBufferBlocked)
                 }
                 title={
                   type === "edge"
@@ -210,7 +218,7 @@ export default function QuickModify({
                     : "Shift cycle (corner)"
                 }
               >
-                <RotateCcw className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
@@ -219,16 +227,19 @@ export default function QuickModify({
                 disabled={
                   memo.length === 0 ||
                   Object.values(animatingRows).some((row) => row.animating) ||
-                  !(type === "edge" ? isSameEdgeSpeffz : isSameCornerSpeffz)(
-                    memo[0],
-                    memo.at(-1) as Speffz,
-                  )
+                  (index === 0 && isFirstBufferBlocked)
                 }
                 title={
-                  type === "edge" ? "Flip all edges" : "Rotate all corners"
+                  type === "edge"
+                    ? "Flip all edges"
+                    : "Rotate all corners to CW"
                 }
               >
-                <FlipHorizontal className="h-4 w-4" />
+                {type === "edge" ? (
+                  <FlipHorizontal className="h-4 w-4" />
+                ) : (
+                  <RotateCw className="h-4 w-4" />
+                )}
               </Button>
               <Button
                 variant="outline"
@@ -236,7 +247,8 @@ export default function QuickModify({
                 onClick={() => moveUp(index)}
                 disabled={
                   index === 0 ||
-                  Object.values(animatingRows).some((row) => row.animating)
+                  Object.values(animatingRows).some((row) => row.animating) ||
+                  (index === 1 && isFirstBufferBlocked)
                 }
               >
                 <ArrowUp className="h-4 w-4" />
@@ -249,10 +261,7 @@ export default function QuickModify({
                   index === memoResult.length - 1 ||
                   Object.values(animatingRows).some((row) => row.animating) ||
                   memo.length === 1 ||
-                  !(type === "edge" ? isSameEdgeSpeffz : isSameCornerSpeffz)(
-                    memo[0],
-                    memo.at(-1) as Speffz,
-                  )
+                  (index === 0 && isFirstBufferBlocked)
                 }
               >
                 <ArrowDown className="h-4 w-4" />
