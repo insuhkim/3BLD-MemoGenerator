@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table";
 import { SettingsContext } from "@/context/SettingsContext";
 import { SpeffzCornerToPosition } from "@/utils/BLDDB/CornerToURL";
-import { SpeffzEdgeToOrientedPosition } from "@/utils/BLDDB/EdgeToURL";
+import { SpeffzEdgeToPosition } from "@/utils/BLDDB/EdgeToURL";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
@@ -54,7 +54,7 @@ export default function BufferSelection() {
   );
 
   const applyEdgePreset = (speffz: Speffz) =>
-    `${speffzToScheme(letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
+    `${speffzToScheme(letteringScheme, speffz, "edge")} (${SpeffzEdgeToPosition(speffz)})`;
   const applyCornerPreset = (speffz: Speffz) =>
     `${speffzToScheme(letteringScheme, speffz, "corner")} (${SpeffzCornerToPosition(speffz)})`;
 
