@@ -29,25 +29,25 @@ function orientationToRotation(orientation: Orientation): Rotation {
     case "wb": return "y2";
     case "wo": return "y'";
     case "yg": return "z2";
-    case "yr": return "z2 y";
+    case "yr": return "z2 y'";
     case "yb": return "z2 y2";
-    case "yo": return "z2 y'";
-    case "ob": return "z'";
-    case "ow": return "z' y";
-    case "oy": return "z' y2";
-    case "og": return "z' y'";
-    case "rb": return "z";
-    case "rw": return "z y";
-    case "ry": return "z y2";
-    case "rg": return "z y'";
-    case "go": return "x'";
-    case "gy": return "x' y";
-    case "gw": return "x' y2";
-    case "gr": return "x' y'";
-    case "bo": return "x";
-    case "by": return "x y";
-    case "bw": return "x y2";
-    case "br": return "x y'";
+    case "yo": return "z2 y";
+    case "ob": return "z y2";
+    case "ow": return "z y";
+    case "oy": return "z y'";
+    case "og": return "z";
+    case "rb": return "z' y2";
+    case "rw": return "z' y'";
+    case "ry": return "z' y";
+    case "rg": return "z'";
+    case "go": return "x y'";
+    case "gy": return "x";
+    case "gw": return "x y2";
+    case "gr": return "x y";
+    case "bo": return "x' y'";
+    case "by": return "x' y2";
+    case "bw": return "x'";
+    case "br": return "x' y";
   }
 }
 export default function CubeSidebar({
