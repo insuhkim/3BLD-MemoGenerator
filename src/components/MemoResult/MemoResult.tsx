@@ -14,12 +14,7 @@ import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import QuickModify from "./QuickModify";
 
 export default function MemoResult({ scramble }: { scramble: string }) {
@@ -115,23 +110,26 @@ export default function MemoResult({ scramble }: { scramble: string }) {
           <div className="break-words pt-2">
             {edge.length > 0 && (
               <div className="mb-2">
-                <Dialog>
-                  <DialogTrigger>
+                <Sheet>
+                  <SheetTrigger>
                     <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
                       Edge
                       <Edit className="h-4 w-4" />
                     </h2>
-                  </DialogTrigger>
-                  <DialogContent className="overflow-y-auto">
-                    <DialogTitle> Quick Modify Edge </DialogTitle>
+                  </SheetTrigger>
+                  <SheetContent
+                    className="overflow-y-auto max-w-2xl mx-auto"
+                    side="bottom"
+                  >
+                    <SheetTitle> Quick Modify Edge Cycle </SheetTitle>
                     <QuickModify
                       memoResult={edgeMemo}
                       setMemoResult={setEdgeMemo}
                       type="edge"
                       scheme={settings.letteringScheme}
                     />
-                  </DialogContent>
-                </Dialog>
+                  </SheetContent>
+                </Sheet>
                 <MemoResultEdge
                   memo={edgeMemo}
                   showFlippedEdge={settings.showFlippedEdge}
@@ -147,23 +145,23 @@ export default function MemoResult({ scramble }: { scramble: string }) {
             )}
             {corner.length > 0 && (
               <div className="mb-2">
-                <Dialog>
-                  <DialogTrigger>
+                <Sheet>
+                  <SheetTrigger>
                     <h2 className="text-xl font-semibold text-muted-foreground flex items-center justify-center gap-2 cursor-pointer mb-2 rounded-md hover:bg-accent">
                       Corner
                       <Edit className="h-4 w-4" />
                     </h2>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogTitle> Quick Modify Corner</DialogTitle>
+                  </SheetTrigger>
+                  <SheetContent className="max-w-2xl mx-auto" side="bottom">
+                    <SheetTitle> Quick Modify Corner Cycle</SheetTitle>
                     <QuickModify
                       memoResult={cornerMemo}
                       setMemoResult={setCornerMemo}
                       type="corner"
                       scheme={settings.letteringScheme}
                     />
-                  </DialogContent>
-                </Dialog>
+                  </SheetContent>
+                </Sheet>
                 <MemoResultCorner
                   memo={cornerMemo}
                   showFlippedCorner={settings.showFlippedCorner}
