@@ -36,7 +36,7 @@ import {
 import { Speffz } from "@/utils/types/Speffz";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("") as Speffz[];
 
 export default function LetterPair() {
   const context = useContext(SettingsContext);
@@ -58,10 +58,7 @@ export default function LetterPair() {
   const applyScheme = (speffz: Speffz) =>
     speffzToScheme(letteringScheme, speffz, "corner");
 
-  // Sort alphabet by the scheme-transformed letters
-  const sortedAlphabet = [...alphabet].sort((a, b) =>
-    applyScheme(a as Speffz).localeCompare(applyScheme(b as Speffz)),
-  );
+  const schemeLetters = alphabet.map(applyScheme).sort();
 
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
@@ -107,10 +104,7 @@ export default function LetterPair() {
   };
 
   const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase();
-    // Only allow A-X characters
-    const filtered = value.replace(/[^A-X]/g, "");
-    setPair(filtered);
+    setPair(e.target.value);
   };
 
   return (
@@ -121,11 +115,6 @@ export default function LetterPair() {
           Enable and manage custom memos for your letter pairs. These will
           override the default generated words.
         </CardDescription>
-        <p className="text-sm text-red-600 dark:text-red-400 font-semibold">
-          Note: If you are using a custom letter scheme other than Speffz, the
-          letter pair will still be saved as Speffz. Don't be confused by this!
-          Also, corner custom scheme is used.
-        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4 rounded-lg border p-4">
@@ -197,7 +186,7 @@ export default function LetterPair() {
                 <div className="flex gap-2">
                   <Button
                     onClick={handleAdd}
-                    disabled={!pair || !memo}
+                    disabled={!pair || !memo || pair.length < 2}
                     className="flex-1"
                   >
                     Add/Update
@@ -205,7 +194,7 @@ export default function LetterPair() {
                   <Button
                     onClick={handleDelete}
                     variant="destructive"
-                    disabled={!pair}
+                    disabled={!pair || !memo || pair.length < 2}
                     className="flex-1"
                   >
                     Delete
@@ -224,20 +213,20 @@ export default function LetterPair() {
                       <TooltipProvider>
                         <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
                           <div className="p-1 bg-muted sticky left-0 z-10"></div>
-                          {sortedAlphabet.map((letter) => (
+                          {schemeLetters.map((letter) => (
                             <div
                               key={letter}
                               className="p-1 font-bold text-center bg-muted"
                             >
-                              {applyScheme(letter as Speffz)}
+                              {letter}
                             </div>
                           ))}
-                          {sortedAlphabet.map((rowLetter) => (
+                          {schemeLetters.map((rowLetter) => (
                             <Fragment key={rowLetter}>
                               <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
-                                {applyScheme(rowLetter as Speffz)}
+                                {rowLetter}
                               </div>
-                              {sortedAlphabet.map((colLetter) => {
+                              {schemeLetters.map((colLetter) => {
                                 const currentPair = rowLetter + colLetter;
                                 const currentMemo = letterPairs[currentPair];
                                 const cell = (
@@ -261,16 +250,7 @@ export default function LetterPair() {
                                     </TooltipTrigger>
                                     <TooltipContent>
                                       <p>
-                                        {speffzToScheme(
-                                          letteringScheme,
-                                          currentPair[0] as Speffz,
-                                          "corner",
-                                        ) +
-                                          speffzToScheme(
-                                            letteringScheme,
-                                            currentPair[1] as Speffz,
-                                            "corner",
-                                          ) +
+                                        {currentPair +
                                           (currentMemo
                                             ? ` (${currentMemo})`
                                             : "")}
@@ -315,23 +295,14 @@ export default function LetterPair() {
                                     .toLowerCase()
                                     .includes(filter.toLowerCase())),
                             )
-                            .sort(([a], [b]) => {
-                              const schemeA =
-                                applyScheme(a[0] as Speffz) +
-                                applyScheme(a[1] as Speffz);
-                              const schemeB =
-                                applyScheme(b[0] as Speffz) +
-                                applyScheme(b[1] as Speffz);
-                              return schemeA.localeCompare(schemeB);
-                            })
+                            .sort()
                             .map(([pair, memo]) => (
                               <TableRow
                                 key={pair}
                                 onClick={() => handleCellClick(pair)}
                               >
                                 <TableCell className="font-medium text-center">
-                                  {applyScheme(pair[0] as Speffz) +
-                                    applyScheme(pair[1] as Speffz)}
+                                  {pair}
                                 </TableCell>
                                 <TableCell className="text-center">
                                   {memo}

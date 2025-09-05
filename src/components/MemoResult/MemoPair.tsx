@@ -46,17 +46,16 @@ export default function MemoPair({
   useCustomLetterPairs,
 }: MemoPairProps) {
   const context = useContext(SettingsContext);
-  if (!context) {
+  if (!context)
     throw new Error("MemoPair must be used within a SettingsProvider");
-  }
+
   const {
     settings: { letterPairs, letteringScheme },
     addLetterPair,
   } = context;
 
   const [isModifyOpen, setIsModifyOpen] = useState(false);
-  const pairString = `${target1}${target2 ?? target1}`;
-  const pairStringScheme =
+  const pairString =
     speffzToScheme(letteringScheme, target1, "corner") +
     speffzToScheme(letteringScheme, target2 ?? target1, "corner");
   const customMemo = letterPairs[pairString];
@@ -73,9 +72,7 @@ export default function MemoPair({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSave();
-    }
+    if (e.key === "Enter") handleSave();
   };
 
   return (
@@ -116,9 +113,7 @@ export default function MemoPair({
       </DropdownMenu>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Modify Memo for {pairStringScheme} ({pairString} in Speffz)
-          </DialogTitle>
+          <DialogTitle>Modify Memo for {pairString}</DialogTitle>
         </DialogHeader>
         <Input
           value={modifiedMemo}
