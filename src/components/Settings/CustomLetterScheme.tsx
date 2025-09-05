@@ -14,6 +14,7 @@ import {
 
 import { SettingsContext } from "@/context/SettingsContext";
 import "@/styles/letterScheme.css";
+import { colorName, orientations } from "@/utils/orientation";
 import { isValidScheme } from "@/utils/scheme/isValidScheme";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -51,27 +52,7 @@ function LetterScheme() {
   ]);
   const faceList = ["u", "l", "f", "r", "b", "d"];
 
-  const colorName = (color: string) => {
-    //prettier-ignore
-    switch (color) {
-      case "w": return "White";
-      case "r": return "Red";
-      case "o": return "Orange";
-      case "g": return "Green";
-      case "b": return "Blue";
-      case "y": return "Yellow";
-    }
-  };
   const colorList = ["white", "orange", "green", "red", "blue", "yellow"];
-  // prettier-ignore
-  const orientations = [
-    "wg", "wr", "wb", "wo",
-    "yg", "yr", "yb", "yo",
-    "ob", "ow", "oy", "og",
-    "rb", "rw", "ry", "rg",
-    "go", "gy", "gw", "gr",
-    "bo", "by", "bw", "br",
-  ];
   // prettier-ignore
   const facesMap = [
     [0, 1, 2, 3, 4, 5], [0, 2, 3, 4, 1, 5], [0, 3, 4, 1, 2, 5], [0, 4, 1, 2, 3, 5],

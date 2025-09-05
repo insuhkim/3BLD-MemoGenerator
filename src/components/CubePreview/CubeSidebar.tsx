@@ -5,51 +5,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Orientation } from "@/utils/types/Settings";
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import { Button } from "../ui/button";
 import Cube2DPlayer from "./Cube2DPlayer";
 import Cube3DPlayer from "./Cube3DPlayer";
 
-//prettier-ignore
-type Rotation =
-  | "" | "y" | "y2" | "y'"
-  | "z2" | "z2 y" | "z2 y2" | "z2 y'"
-  | "z'" | "z' y" | "z' y2" | "z' y'"
-  | "z" | "z y" | "z y2" | "z y'"
-  | "x'" | "x' y" | "x' y2" | "x' y'"
-  | "x" | "x y" | "x y2" | "x y'";
+import { orientationToRotation } from "@/utils/orientation";
 
-function orientationToRotation(orientation: Orientation): Rotation {
-  //prettier-ignore
-  switch (orientation) {
-    case "wg": return "";
-    case "wr": return "y";
-    case "wb": return "y2";
-    case "wo": return "y'";
-    case "yg": return "z2";
-    case "yr": return "z2 y'";
-    case "yb": return "z2 y2";
-    case "yo": return "z2 y";
-    case "ob": return "z y2";
-    case "ow": return "z y";
-    case "oy": return "z y'";
-    case "og": return "z";
-    case "rb": return "z' y2";
-    case "rw": return "z' y'";
-    case "ry": return "z' y";
-    case "rg": return "z'";
-    case "go": return "x y'";
-    case "gy": return "x";
-    case "gw": return "x y2";
-    case "gr": return "x y";
-    case "bo": return "x' y'";
-    case "by": return "x' y2";
-    case "bw": return "x'";
-    case "br": return "x' y";
-  }
-}
 export default function CubeSidebar({
   scramble,
   rotation,
@@ -78,9 +41,6 @@ export default function CubeSidebar({
   }
 
   const cube3DBackground = isLightMode ? "auto" : "none";
-  const sheetContentBackground = isLightMode
-    ? "bg-neutral-200"
-    : "bg-neutral-800";
 
   return (
     <Sheet modal={false}>
