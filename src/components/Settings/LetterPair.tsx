@@ -28,10 +28,11 @@ import {
 import { SettingsContext } from "@/context/SettingsContext";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
-import { Download, Loader2, Trash2, Upload } from "lucide-react"; // Updated import
+import { Download, Loader2, Trash2, Upload } from "lucide-react";
 import {
   Fragment,
   KeyboardEvent,
+  ReactNode,
   useContext,
   useEffect,
   useRef,
@@ -48,7 +49,142 @@ import {
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("") as Speffz[];
 
-function EditLetterPair({
+// Types for components
+type LetterPairType = "edge" | "corner";
+
+interface ResetConfirmDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  onReset: () => void;
+}
+
+interface CSVImportButtonsProps {
+  type: LetterPairType;
+  onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
+  status: string;
+}
+
+// Reusable Reset Confirmation Dialog
+function ResetConfirmDialog({
+  open,
+  onOpenChange,
+  title,
+  onReset,
+}: ResetConfirmDialogProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete these letter pairs? This action
+            cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={onReset}>
+            Reset
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// CSV Import and Download component
+function CSVImportButtons({
+  type,
+  onImport,
+  fileInputRef,
+  status,
+}: CSVImportButtonsProps) {
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const typeLabel = type === "edge" ? "Edge" : "Corner";
+
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-2">
+        <input
+          type="file"
+          accept=".csv"
+          onChange={onImport}
+          ref={fileInputRef}
+          className="hidden"
+        />
+        <Button
+          onClick={triggerFileInput}
+          variant="outline"
+          className="flex gap-2"
+        >
+          <Upload size={16} />
+          Import {type !== "corner" ? "Edge" : ""} Letter Pairs
+        </Button>
+        <Button variant="outline" className="flex gap-2" asChild>
+          <a
+            href="https://bestsiteever.ru/colpi/api/csv.php"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={16} />
+            Download Example CSV
+          </a>
+        </Button>
+      </div>
+      {status && (
+        <p
+          className={`text-sm ${
+            status.includes("Error") ? "text-destructive" : "text-green-600"
+          }`}
+        >
+          {status}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// Letter Pair Toggle Setting
+function LetterPairToggle({
+  id,
+  title,
+  description,
+  checked,
+  onCheckedChange,
+  children,
+}: {
+  id: string;
+  title: string;
+  description: string;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  children?: ReactNode;
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <Label htmlFor={id} className="flex flex-col space-y-1">
+          <span>{title}</span>
+          <span className="font-normal leading-snug text-muted-foreground">
+            {description}
+          </span>
+        </Label>
+        <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// Letter Pair Editor Grid and List View
+function LetterPairEditor({
   addLetterPair,
   deleteLetterPair,
   letterPairs,
@@ -56,11 +192,11 @@ function EditLetterPair({
   type,
   separateLetterPairs,
 }: {
-  addLetterPair: (pair: string, memo: string, type: "edge" | "corner") => void;
-  deleteLetterPair: (pair: string, type: "edge" | "corner") => void;
+  addLetterPair: (pair: string, memo: string, type: LetterPairType) => void;
+  deleteLetterPair: (pair: string, type: LetterPairType) => void;
   letterPairs: Record<string, string>;
   letteringScheme: string;
-  type: "edge" | "corner";
+  type: LetterPairType;
   separateLetterPairs: boolean;
 }) {
   const [pair, setPair] = useState("");
@@ -74,13 +210,9 @@ function EditLetterPair({
 
   const schemeLetters = alphabet.map(applyScheme).sort();
 
-  // Load content after dialog opens
   useEffect(() => {
     if (isOpen) {
-      // Small timeout to allow dialog animation to complete
-      const timer = setTimeout(() => {
-        setContentLoaded(true);
-      }, 100);
+      const timer = setTimeout(() => setContentLoaded(true), 100);
       return () => clearTimeout(timer);
     } else {
       setContentLoaded(false);
@@ -112,34 +244,28 @@ function EditLetterPair({
     if (event.key === "Enter") handleAdd();
   };
 
-  const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPair(e.target.value);
-  };
+  const buttonTitle =
+    type === "edge"
+      ? "Edit Edge Memos"
+      : separateLetterPairs
+      ? "Edit Corner Memos"
+      : "Edit Custom Memos";
+
+  const dialogTitle =
+    type === "edge"
+      ? "Edge Letter Pairs"
+      : separateLetterPairs
+      ? "Corner Letter Pairs"
+      : "Custom Letter Pairs";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          {type === "edge"
-            ? "Edit Edge Memos"
-            : type === "corner"
-            ? separateLetterPairs
-              ? "Edit Corner Memos"
-              : "Edit Custom Memos"
-            : "Manage Custom Letter Pairs"}
-        </Button>
+        <Button variant="outline">{buttonTitle}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-4xl">
         <DialogHeader>
-          <DialogTitle>
-            {type === "edge"
-              ? "Edge Letter Pairs"
-              : type === "corner"
-              ? separateLetterPairs
-                ? "Corner Letter Pairs"
-                : "Custom Letter Pairs"
-              : "Custom Letter Pairs"}
-          </DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
 
         {!contentLoaded ? (
@@ -153,7 +279,7 @@ function EditLetterPair({
                 <Input
                   placeholder="Pair (AP)"
                   value={pair}
-                  onChange={handlePairChange}
+                  onChange={(e) => setPair(e.target.value)}
                   maxLength={2}
                   className="w-24"
                   onKeyDown={handleKeyDown}
@@ -222,7 +348,7 @@ function EditLetterPair({
                                       : "bg-background hover:bg-muted"
                                   }`}
                                   style={{ maxWidth: "100%" }}
-                                  title={currentMemo || ""} // Add title attribute for easier viewing on hover
+                                  title={currentMemo || ""}
                                 >
                                   {currentMemo || "-"}
                                 </div>
@@ -316,6 +442,41 @@ function EditLetterPair({
   );
 }
 
+// Parse CSV function extracted for better organization
+function parseCSV(csvContent: string): string[][] {
+  const parseCSVLine = (line: string) => {
+    const result = [];
+    let currentCell = "";
+    let insideQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"' && (i === 0 || line[i - 1] !== "\\")) {
+        insideQuotes = !insideQuotes;
+        continue;
+      }
+
+      if (char === "," && !insideQuotes) {
+        result.push(currentCell.trim());
+        currentCell = "";
+        continue;
+      }
+
+      currentCell += char;
+    }
+
+    if (currentCell) {
+      result.push(currentCell.trim());
+    }
+
+    return result;
+  };
+
+  return csvContent.split("\n").map((line) => parseCSVLine(line));
+}
+
+// Main component
 export default function LetterPair() {
   const context = useContext(SettingsContext);
   if (!context)
@@ -335,22 +496,20 @@ export default function LetterPair() {
     },
   } = context;
 
-  // Add state for CSV import status and refs
+  // State for CSV import and reset dialog
   const [importStatusEdge, setImportStatusEdge] = useState("");
   const [importStatusCorner, setImportStatusCorner] = useState("");
   const fileInputRefEdge = useRef<HTMLInputElement>(null);
   const fileInputRefCorner = useRef<HTMLInputElement>(null);
-
-  // Add state for reset confirmation dialogs
   const [resetEdgeDialogOpen, setResetEdgeDialogOpen] = useState(false);
   const [resetCornerDialogOpen, setResetCornerDialogOpen] = useState(false);
   const [resetAllDialogOpen, setResetAllDialogOpen] = useState(false);
 
+  // Toggle handlers
   const handleToggleEdge = (checked: boolean) => {
     setSettings((prev) => ({
       ...prev,
       useCustomLetterPairsEdge: checked,
-      // If disabling edge pairs, also disable separate letter pairs
       separateLetterPairs:
         checked && useCustomLetterPairsCorner
           ? prev.separateLetterPairs
@@ -362,7 +521,6 @@ export default function LetterPair() {
     setSettings((prev) => ({
       ...prev,
       useCustomLetterPairsCorner: checked,
-      // If disabling corner pairs, also disable separate letter pairs
       separateLetterPairs:
         checked && useCustomLetterPairsEdge ? prev.separateLetterPairs : false,
     }));
@@ -375,20 +533,14 @@ export default function LetterPair() {
     }));
   };
 
-  // Add letter pairs reset handlers
+  // Reset handlers
   const handleResetEdgePairs = () => {
-    setSettings((prev) => ({
-      ...prev,
-      letterPairsEdge: {},
-    }));
+    setSettings((prev) => ({ ...prev, letterPairsEdge: {} }));
     setResetEdgeDialogOpen(false);
   };
 
   const handleResetCornerPairs = () => {
-    setSettings((prev) => ({
-      ...prev,
-      letterPairs: {},
-    }));
+    setSettings((prev) => ({ ...prev, letterPairs: {} }));
     setResetCornerDialogOpen(false);
   };
 
@@ -401,10 +553,10 @@ export default function LetterPair() {
     setResetAllDialogOpen(false);
   };
 
-  // Add CSV import handlers
+  // CSV import handler
   const handleCSVImport = (
     e: React.ChangeEvent<HTMLInputElement>,
-    type: "edge" | "corner",
+    type: LetterPairType,
     setImportStatus: React.Dispatch<React.SetStateAction<string>>
   ) => {
     const file = e.target.files?.[0];
@@ -414,38 +566,7 @@ export default function LetterPair() {
     reader.onload = (event) => {
       try {
         const csvContent = event.target?.result as string;
-
-        // Improved CSV parsing that handles quoted values
-        const parseCSVLine = (line: string) => {
-          const result = [];
-          let currentCell = "";
-          let insideQuotes = false;
-
-          for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-
-            if (char === '"' && (i === 0 || line[i - 1] !== "\\")) {
-              insideQuotes = !insideQuotes;
-              continue;
-            }
-
-            if (char === "," && !insideQuotes) {
-              result.push(currentCell.trim());
-              currentCell = "";
-              continue;
-            }
-
-            currentCell += char;
-          }
-
-          if (currentCell) {
-            result.push(currentCell.trim());
-          }
-
-          return result;
-        };
-
-        const rows = csvContent.split("\n").map((line) => parseCSVLine(line));
+        const rows = parseCSV(csvContent);
 
         if (rows.length < 2 || rows[0].length < 2) {
           setImportStatus(
@@ -454,18 +575,15 @@ export default function LetterPair() {
           return;
         }
 
-        // Extract headers (first row without the first cell)
+        // Extract headers and process rows
         const headers = rows[0].slice(1);
-
-        // Process each data row
         let importCount = 0;
+
         for (let i = 1; i < rows.length; i++) {
           const row = rows[i];
           if (row.length < 2 || !row[0]) continue;
 
           const firstLetter = row[0];
-
-          // Process each cell in the row
           for (let j = 1; j < row.length; j++) {
             if (j - 1 >= headers.length || !headers[j - 1] || !row[j]) continue;
 
@@ -485,9 +603,7 @@ export default function LetterPair() {
         // Clear the file input
         const fileInput =
           type === "edge" ? fileInputRefEdge : fileInputRefCorner;
-        if (fileInput.current) {
-          fileInput.current.value = "";
-        }
+        if (fileInput.current) fileInput.current.value = "";
       } catch (error) {
         setImportStatus(
           `Error importing CSV: ${
@@ -500,11 +616,6 @@ export default function LetterPair() {
     reader.readAsText(file);
   };
 
-  const triggerFileInput = (type: "edge" | "corner") => {
-    const fileInput = type === "edge" ? fileInputRefEdge : fileInputRefCorner;
-    fileInput.current?.click();
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -515,29 +626,18 @@ export default function LetterPair() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Settings section */}
         <div className="space-y-4 rounded-lg border p-4">
-          {/* Edge Letter Pairs Section */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label
-                htmlFor="use-custom-pairs-edge"
-                className="flex flex-col space-y-1"
-              >
-                <span>Use Custom Edge Pairs</span>
-                <span className="font-normal leading-snug text-muted-foreground">
-                  Enable to use your custom memos for edge pieces.
-                </span>
-              </Label>
-              <Switch
-                id="use-custom-pairs-edge"
-                checked={useCustomLetterPairsEdge}
-                onCheckedChange={handleToggleEdge}
-              />
-            </div>
-
+          <LetterPairToggle
+            id="use-custom-pairs-edge"
+            title="Use Custom Edge Pairs"
+            description="Enable to use your custom memos for edge pieces."
+            checked={useCustomLetterPairsEdge}
+            onCheckedChange={handleToggleEdge}
+          >
             {useCustomLetterPairsEdge && separateLetterPairs && (
               <div className="mt-2">
-                <EditLetterPair
+                <LetterPairEditor
                   addLetterPair={addLetterPair}
                   deleteLetterPair={deleteLetterPair}
                   letterPairs={letterPairsEdge}
@@ -547,33 +647,20 @@ export default function LetterPair() {
                 />
               </div>
             )}
-          </div>
+          </LetterPairToggle>
 
           <div className="border-t" />
 
-          {/* Corner Letter Pairs Section */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label
-                htmlFor="use-custom-pairs-corner"
-                className="flex flex-col space-y-1"
-              >
-                <span>Use Custom Corner Pairs</span>
-                <span className="font-normal leading-snug text-muted-foreground">
-                  Enable to use your custom memos for corner pieces.
-                </span>
-              </Label>
-              <Switch
-                id="use-custom-pairs-corner"
-                checked={useCustomLetterPairsCorner}
-                onCheckedChange={handleToggleCorner}
-              />
-            </div>
-
-            {/* Show the edit button next to corner pairs setting when not separated */}
+          <LetterPairToggle
+            id="use-custom-pairs-corner"
+            title="Use Custom Corner Pairs"
+            description="Enable to use your custom memos for corner pieces."
+            checked={useCustomLetterPairsCorner}
+            onCheckedChange={handleToggleCorner}
+          >
             {useCustomLetterPairsCorner && !separateLetterPairs && (
               <div className="mt-2">
-                <EditLetterPair
+                <LetterPairEditor
                   addLetterPair={addLetterPair}
                   deleteLetterPair={deleteLetterPair}
                   letterPairs={letterPairs}
@@ -583,34 +670,21 @@ export default function LetterPair() {
                 />
               </div>
             )}
-          </div>
+          </LetterPairToggle>
 
-          {/* Only show the separate letter pairs option when both custom pairs are enabled */}
           {useCustomLetterPairsEdge && useCustomLetterPairsCorner && (
             <>
               <div className="border-t" />
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label
-                    htmlFor="separate-letter-pairs"
-                    className="flex flex-col space-y-1"
-                  >
-                    <span>Separate Edge and Corner Letter Pairs</span>
-                    <span className="font-normal leading-snug text-muted-foreground">
-                      Enable to manage edge and corner letter pairs separately.
-                    </span>
-                  </Label>
-                  <Switch
-                    id="separate-letter-pairs"
-                    checked={separateLetterPairs}
-                    onCheckedChange={handleToggleSeparateLetterPairs}
-                  />
-                </div>
-
-                {/* Show corner edit button when separated */}
+              <LetterPairToggle
+                id="separate-letter-pairs"
+                title="Separate Edge and Corner Letter Pairs"
+                description="Enable to manage edge and corner letter pairs separately."
+                checked={separateLetterPairs}
+                onCheckedChange={handleToggleSeparateLetterPairs}
+              >
                 {useCustomLetterPairsCorner && separateLetterPairs && (
                   <div className="mt-2">
-                    <EditLetterPair
+                    <LetterPairEditor
                       addLetterPair={addLetterPair}
                       deleteLetterPair={deleteLetterPair}
                       letterPairs={letterPairs}
@@ -620,7 +694,7 @@ export default function LetterPair() {
                     />
                   </div>
                 )}
-              </div>
+              </LetterPairToggle>
             </>
           )}
         </div>
@@ -638,150 +712,37 @@ export default function LetterPair() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Edge Letter Pairs</Label>
-                <div className="flex gap-2">
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={(e) =>
-                      handleCSVImport(e, "edge", setImportStatusEdge)
-                    }
-                    ref={fileInputRefEdge}
-                    className="hidden"
-                  />
-                  <Button
-                    onClick={() => triggerFileInput("edge")}
-                    variant="outline"
-                    className="flex gap-2"
-                  >
-                    <Upload size={16} />
-                    Import Edge Letter Pairs
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex gap-2"
-                    asChild
-                  >
-                    <a
-                      href="https://bestsiteever.ru/colpi/api/csv.php"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Download size={16} />
-                      Download Example CSV
-                    </a>
-                  </Button>
-                </div>
-                {importStatusEdge && (
-                  <p
-                    className={`text-sm ${
-                      importStatusEdge.includes("Error")
-                        ? "text-destructive"
-                        : "text-green-600"
-                    }`}
-                  >
-                    {importStatusEdge}
-                  </p>
-                )}
+                <CSVImportButtons
+                  type="edge"
+                  onImport={(e) =>
+                    handleCSVImport(e, "edge", setImportStatusEdge)
+                  }
+                  fileInputRef={fileInputRefEdge}
+                  status={importStatusEdge}
+                />
               </div>
 
               <div className="space-y-2">
                 <Label>Corner Letter Pairs</Label>
-                <div className="flex gap-2">
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={(e) =>
-                      handleCSVImport(e, "corner", setImportStatusCorner)
-                    }
-                    ref={fileInputRefCorner}
-                    className="hidden"
-                  />
-                  <Button
-                    onClick={() => triggerFileInput("corner")}
-                    variant="outline"
-                    className="flex gap-2"
-                  >
-                    <Upload size={16} />
-                    Import Corner Letter Pairs
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex gap-2"
-                    asChild
-                  >
-                    <a
-                      href="https://bestsiteever.ru/colpi/api/csv.php"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Download size={16} />
-                      Download Example CSV
-                    </a>
-                  </Button>
-                </div>
-                {importStatusCorner && (
-                  <p
-                    className={`text-sm ${
-                      importStatusCorner.includes("Error")
-                        ? "text-destructive"
-                        : "text-green-600"
-                    }`}
-                  >
-                    {importStatusCorner}
-                  </p>
-                )}
+                <CSVImportButtons
+                  type="corner"
+                  onImport={(e) =>
+                    handleCSVImport(e, "corner", setImportStatusCorner)
+                  }
+                  fileInputRef={fileInputRefCorner}
+                  status={importStatusCorner}
+                />
               </div>
             </div>
           ) : (
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <input
-                  type="file"
-                  accept=".csv"
-                  onChange={(e) =>
-                    handleCSVImport(e, "corner", setImportStatusCorner)
-                  }
-                  ref={fileInputRefCorner}
-                  className="hidden"
-                />
-                <Button
-                  onClick={() => triggerFileInput("corner")}
-                  variant="outline"
-                  className="flex gap-2"
-                >
-                  <Upload size={16} />
-                  Import Letter Pairs
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex gap-2"
-                  asChild
-                >
-                  <a
-                    href="https://bestsiteever.ru/colpi/api/csv.php"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Download size={16} />
-                    Download Example CSV
-                  </a>
-                </Button>
-              </div>
-              {importStatusCorner && (
-                <p
-                  className={`text-sm ${
-                    importStatusCorner.includes("Error")
-                      ? "text-destructive"
-                      : "text-green-600"
-                  }`}
-                >
-                  {importStatusCorner}
-                </p>
-              )}
-            </div>
+            <CSVImportButtons
+              type="corner"
+              onImport={(e) =>
+                handleCSVImport(e, "corner", setImportStatusCorner)
+              }
+              fileInputRef={fileInputRefCorner}
+              status={importStatusCorner}
+            />
           )}
         </div>
 
@@ -804,29 +765,12 @@ export default function LetterPair() {
                     Reset Edge Letter Pairs
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Reset Edge Letter Pairs</DialogTitle>
-                    <DialogDescription>
-                      Are you sure you want to delete all edge letter pairs?
-                      This action cannot be undone.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setResetEdgeDialogOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={handleResetEdgePairs}
-                    >
-                      Reset
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
+                <ResetConfirmDialog
+                  open={resetEdgeDialogOpen}
+                  onOpenChange={setResetEdgeDialogOpen}
+                  title="Reset Edge Letter Pairs"
+                  onReset={handleResetEdgePairs}
+                />
               </Dialog>
 
               <Dialog
@@ -839,29 +783,12 @@ export default function LetterPair() {
                     Reset Corner Letter Pairs
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Reset Corner Letter Pairs</DialogTitle>
-                    <DialogDescription>
-                      Are you sure you want to delete all corner letter pairs?
-                      This action cannot be undone.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setResetCornerDialogOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={handleResetCornerPairs}
-                    >
-                      Reset
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
+                <ResetConfirmDialog
+                  open={resetCornerDialogOpen}
+                  onOpenChange={setResetCornerDialogOpen}
+                  title="Reset Corner Letter Pairs"
+                  onReset={handleResetCornerPairs}
+                />
               </Dialog>
             </div>
           ) : (
@@ -875,26 +802,12 @@ export default function LetterPair() {
                   Reset All Letter Pairs
                 </Button>
               </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Reset All Letter Pairs</DialogTitle>
-                  <DialogDescription>
-                    Are you sure you want to delete all letter pairs? This
-                    action cannot be undone.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setResetAllDialogOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button variant="destructive" onClick={handleResetAllPairs}>
-                    Reset
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
+              <ResetConfirmDialog
+                open={resetAllDialogOpen}
+                onOpenChange={setResetAllDialogOpen}
+                title="Reset All Letter Pairs"
+                onReset={handleResetAllPairs}
+              />
             </Dialog>
           )}
         </div>
