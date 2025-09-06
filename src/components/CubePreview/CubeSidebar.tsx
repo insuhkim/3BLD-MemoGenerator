@@ -34,11 +34,9 @@ export default function CubeSidebar({
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  if (settings.cubePreviewStyle === "3D") {
-    if (settings.applyScrambleRotationToPreview)
-      scramble = `${scramble} ${rotation}`;
-    scramble = `${scramble} ${orientationToRotation(settings.orientation)}`;
-  }
+  if (!settings.applyScrambleRotationToPreview)
+    scramble = `${scramble} ${rotation}`;
+  scramble = `${scramble} ${orientationToRotation(settings.orientation)}`;
 
   const cube3DBackground = isLightMode ? "auto" : "none";
 

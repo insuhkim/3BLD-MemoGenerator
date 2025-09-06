@@ -1,4 +1,5 @@
-import { DisplayCube, applyScramble } from "react-rubiks-cube-utils";
+import { DisplayCube } from "react-rubiks-cube-utils";
+import { applyScramble } from "@/utils/scramble/applyScramble";
 
 export default function Cube2DPlayer({ scramble }: { scramble: string }) {
   const cube = applyScramble({ type: "3x3", scramble });

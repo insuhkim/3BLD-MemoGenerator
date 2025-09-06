@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
 import { ChevronsUpDown, Edit } from "lucide-react";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { applyScramble } from "react-rubiks-cube-utils";
+import { applyScramble } from "@/utils/scramble/applyScramble";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
@@ -16,8 +16,10 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
 import QuickModify from "./QuickModify";
+import { invertRotation, orientationToRotation } from "@/utils/orientation";
+import { Cube } from "react-rubiks-cube-utils";
 
-export default function MemoResult({ scramble }: { scramble: string }) {
+export default function MemoResult({ cube }: { cube: Cube }) {
   const context = useContext(SettingsContext);
   if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
@@ -25,16 +27,11 @@ export default function MemoResult({ scramble }: { scramble: string }) {
   const { settings } = context;
   const [isResultOpen, setIsResultOpen] = useState(true);
 
-  const cube = useMemo(
-    () => applyScramble({ type: "3x3", scramble: scramble }),
-    [scramble]
-  );
-
   if (!cube) {
     return (
       <div className="mt-2 bg-card text-card-foreground rounded-xl p-3 shadow-md max-w-[600px] mx-auto text-center">
         <h2 className="text-xl font-semibold text-muted-foreground">
-          Invalid Scramble {scramble}
+          Invalid Scramble
         </h2>
         <p className="text-sm text-muted-foreground">
           Please enter a valid scramble in standard notation.
@@ -47,7 +44,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
     const cornerMemo = makeCornerMemo(
       cube,
       settings.cornerBuffer,
-      settings.cornerPriority
+      settings.cornerPriority,
     );
     const hasParity = (memo: string[][]) =>
       memo.reduce((sum, cycle) => sum + cycle.length, 0) % 2 === 1;
@@ -61,7 +58,7 @@ export default function MemoResult({ scramble }: { scramble: string }) {
       cube,
       settings.edgeBuffer,
       settings.edgePriority,
-      swap
+      swap,
     );
 
     return {

@@ -1,3 +1,4 @@
+import { Cube } from "react-rubiks-cube-utils";
 import { Orientation } from "./types/Settings";
 
 //prettier-ignore
@@ -8,6 +9,37 @@ type Rotation =
   | "z" | "z y" | "z y2" | "z y'"
   | "x'" | "x' y" | "x' y2" | "x' y'"
   | "x" | "x y" | "x y2" | "x y'";
+
+function invertRotation(rotation: Rotation): Rotation {
+  //prettier-ignore
+  switch (rotation) {
+    case "":
+    case "y2":
+    case "z2":
+    case "z2 y":
+    case "z2 y2":
+    case "z2 y'":
+    case "z' y2":
+    case "z y2":
+    case "x' y2":
+    case "x y2":
+      return rotation
+    case "y": return "y'";
+    case "y'": return "y";
+    case "z'": return "z";
+    case "z' y": return "x' y'";
+    case "z' y'": return "x y";
+    case "z": return "z'";
+    case "z y": return "x y'";
+    case "z y'": return "x' y";
+    case "x'": return "x";
+    case "x' y": return "z y'";
+    case "x' y'": return "z' y";
+    case "x": return "x'";
+    case "x y": return "z' y'";
+    case "x y'": return "z y";
+  }
+}
 
 //prettier-ignore
 const orientations : Orientation[] = [
@@ -59,4 +91,17 @@ function orientationToRotation(orientation: Orientation): Rotation {
     case "br": return "x' y";
   }
 }
-export { orientations, colorName, orientationToRotation };
+
+function makeWhiteTopGreenFront(cube: Cube): Rotation {
+  const currentOrientation = (
+    cube.U[1][1] + cube.F[1][1]
+  ).toLowerCase() as Orientation;
+  return invertRotation(orientationToRotation(currentOrientation));
+}
+export {
+  orientations,
+  colorName,
+  orientationToRotation,
+  invertRotation,
+  makeWhiteTopGreenFront,
+};
