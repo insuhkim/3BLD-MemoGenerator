@@ -28,7 +28,7 @@ import {
 import { SettingsContext } from "@/context/SettingsContext";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
-import { Loader2, Trash2, Upload } from "lucide-react"; // Updated import
+import { Download, Loader2, Trash2, Upload } from "lucide-react"; // Updated import
 import {
   Fragment,
   KeyboardEvent,
@@ -656,6 +656,21 @@ export default function LetterPair() {
                     <Upload size={16} />
                     Import Edge Letter Pairs
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex gap-2"
+                    asChild
+                  >
+                    <a
+                      href="https://bestsiteever.ru/colpi/api/csv.php"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Download size={16} />
+                      Download Example CSV
+                    </a>
+                  </Button>
                 </div>
                 {importStatusEdge && (
                   <p
@@ -690,6 +705,21 @@ export default function LetterPair() {
                     <Upload size={16} />
                     Import Corner Letter Pairs
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex gap-2"
+                    asChild
+                  >
+                    <a
+                      href="https://bestsiteever.ru/colpi/api/csv.php"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Download size={16} />
+                      Download Example CSV
+                    </a>
+                  </Button>
                 </div>
                 {importStatusCorner && (
                   <p
@@ -723,6 +753,21 @@ export default function LetterPair() {
                 >
                   <Upload size={16} />
                   Import Letter Pairs
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex gap-2"
+                  asChild
+                >
+                  <a
+                    href="https://bestsiteever.ru/colpi/api/csv.php"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download size={16} />
+                    Download Example CSV
+                  </a>
                 </Button>
               </div>
               {importStatusCorner && (
