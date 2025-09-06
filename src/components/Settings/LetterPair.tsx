@@ -26,7 +26,14 @@ import {
 import { SettingsContext } from "@/context/SettingsContext";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
-import { Fragment, KeyboardEvent, useContext, useState } from "react";
+import { Loader2 } from "lucide-react"; // Add this import
+import {
+  Fragment,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   Table,
   TableBody,
@@ -56,11 +63,26 @@ function EditLetterPair({
   const [pair, setPair] = useState("");
   const [memo, setMemo] = useState("");
   const [filter, setFilter] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [contentLoaded, setContentLoaded] = useState(false);
 
   const applyScheme = (speffz: Speffz) =>
     speffzToScheme(letteringScheme, speffz, type);
 
   const schemeLetters = alphabet.map(applyScheme).sort();
+
+  // Load content after dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      // Small timeout to allow dialog animation to complete
+      const timer = setTimeout(() => {
+        setContentLoaded(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      setContentLoaded(false);
+    }
+  }, [isOpen]);
 
   const handleAdd = () => {
     if (pair && memo) {
@@ -91,7 +113,7 @@ function EditLetterPair({
     setPair(e.target.value);
   };
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           {type === "edge"
@@ -114,162 +136,172 @@ function EditLetterPair({
                 : "Custom Letter Pairs"
               : "Custom Letter Pairs"}
           </DialogTitle>
-          {/* <DialogDescription>
-            Create, modify, or delete your custom letter pairs. These will
-            override the default memos. Click a cell to edit.
-          </DialogDescription> */}
         </DialogHeader>
-        <div className="py-4 space-y-4">
-          <div className="space-y-2">
-            <div className="flex gap-2 flex-wrap">
-              <Input
-                placeholder="Pair (AP)"
-                value={pair}
-                onChange={handlePairChange}
-                maxLength={2}
-                className="w-24"
-                onKeyDown={handleKeyDown}
-              />
-              <Input
-                placeholder="Memo (Apple)"
-                value={memo}
-                onChange={(e) => setMemo(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="flex-1 min-w-[150px]"
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={handleAdd}
-                disabled={!pair || !memo || pair.length < 2}
-                className="flex-1"
-              >
-                Add/Update
-              </Button>
-              <Button
-                onClick={handleDelete}
-                variant="destructive"
-                disabled={!pair || !memo || pair.length < 2}
-                className="flex-1"
-              >
-                Delete
-              </Button>
-            </div>
+
+        {!contentLoaded ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-
-          <Tabs defaultValue="grid">
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="grid">Grid View</TabsTrigger>
-              <TabsTrigger value="list">List View</TabsTrigger>
-            </TabsList>
-            <TabsContent value="grid" className="mt-2">
-              <div className="overflow-x-auto pb-2 relative">
-                <div className="overflow-y-visible">
-                  <TooltipProvider>
-                    <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
-                      <div className="p-1 bg-muted sticky left-0 z-10"></div>
-                      {schemeLetters.map((letter) => (
-                        <div
-                          key={letter}
-                          className="p-1 font-bold text-center bg-muted"
-                        >
-                          {letter}
-                        </div>
-                      ))}
-                      {schemeLetters.map((rowLetter) => (
-                        <Fragment key={rowLetter}>
-                          <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
-                            {rowLetter}
-                          </div>
-                          {schemeLetters.map((colLetter) => {
-                            const currentPair = rowLetter + colLetter;
-                            const currentMemo = letterPairs[currentPair];
-                            const cell = (
-                              <div
-                                key={currentPair}
-                                onClick={() => handleCellClick(currentPair)}
-                                className={`p-1 cursor-pointer text-center ${
-                                  currentMemo
-                                    ? "bg-primary/20 hover:bg-primary/30"
-                                    : "bg-background hover:bg-muted"
-                                }`}
-                              >
-                                {currentMemo || "-"}
-                              </div>
-                            );
-
-                            return (
-                              <Tooltip key={currentPair}>
-                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
-                                <TooltipContent>
-                                  <p>
-                                    {currentPair +
-                                      (currentMemo ? ` (${currentMemo})` : "")}
-                                  </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            );
-                          })}
-                        </Fragment>
-                      ))}
-                    </div>
-                  </TooltipProvider>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="list" className="mt-2">
-              <div className="space-y-2">
+        ) : (
+          <div className="py-4 space-y-4">
+            <div className="space-y-2">
+              <div className="flex gap-2 flex-wrap">
                 <Input
-                  placeholder="Filter pairs or memos..."
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  className="mb-2"
+                  placeholder="Pair (AP)"
+                  value={pair}
+                  onChange={handlePairChange}
+                  maxLength={2}
+                  className="w-24"
+                  onKeyDown={handleKeyDown}
                 />
-                <div className="max-h-[50vh] overflow-y-auto border rounded-md">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-center">PAIR</TableHead>
-                        <TableHead className="text-center">MEMO</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {Object.entries(letterPairs)
-                        .filter(
-                          ([pair, memo]) =>
-                            memo !== "" &&
-                            (filter === "" ||
-                              pair
-                                .toLowerCase()
-                                .includes(filter.toLowerCase()) ||
-                              memo.toLowerCase().includes(filter.toLowerCase()))
-                        )
-                        .sort()
-                        .map(([pair, memo]) => (
-                          <TableRow
-                            key={pair}
-                            onClick={() => handleCellClick(pair)}
-                          >
-                            <TableCell className="font-medium text-center">
-                              {pair}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {memo}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                  {Object.keys(letterPairs).length === 0 && (
-                    <div className="p-4 text-center text-muted-foreground">
-                      No letter pairs added yet
-                    </div>
-                  )}
-                </div>
+                <Input
+                  placeholder="Memo (Apple)"
+                  value={memo}
+                  onChange={(e) => setMemo(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 min-w-[150px]"
+                />
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleAdd}
+                  disabled={!pair || !memo || pair.length < 2}
+                  className="flex-1"
+                >
+                  Add/Update
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  variant="destructive"
+                  disabled={!pair || !memo || pair.length < 2}
+                  className="flex-1"
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+
+            <Tabs defaultValue="grid">
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="grid">Grid View</TabsTrigger>
+                <TabsTrigger value="list">List View</TabsTrigger>
+              </TabsList>
+              <TabsContent value="grid" className="mt-2">
+                <div className="overflow-x-auto pb-2 relative">
+                  <div className="overflow-y-visible">
+                    <TooltipProvider>
+                      <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
+                        <div className="p-1 bg-muted sticky left-0 z-10"></div>
+                        {schemeLetters.map((letter) => (
+                          <div
+                            key={letter}
+                            className="p-1 font-bold text-center bg-muted"
+                          >
+                            {letter}
+                          </div>
+                        ))}
+                        {schemeLetters.map((rowLetter) => (
+                          <Fragment key={rowLetter}>
+                            <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
+                              {rowLetter}
+                            </div>
+                            {schemeLetters.map((colLetter) => {
+                              const currentPair = rowLetter + colLetter;
+                              const currentMemo = letterPairs[currentPair];
+                              const cell = (
+                                <div
+                                  key={currentPair}
+                                  onClick={() => handleCellClick(currentPair)}
+                                  className={`p-1 cursor-pointer text-center ${
+                                    currentMemo
+                                      ? "bg-primary/20 hover:bg-primary/30"
+                                      : "bg-background hover:bg-muted"
+                                  }`}
+                                >
+                                  {currentMemo || "-"}
+                                </div>
+                              );
+
+                              return (
+                                <Tooltip key={currentPair}>
+                                  <TooltipTrigger asChild>
+                                    {cell}
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>
+                                      {currentPair +
+                                        (currentMemo
+                                          ? ` (${currentMemo})`
+                                          : "")}
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              );
+                            })}
+                          </Fragment>
+                        ))}
+                      </div>
+                    </TooltipProvider>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="list" className="mt-2">
+                <div className="space-y-2">
+                  <Input
+                    placeholder="Filter pairs or memos..."
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="mb-2"
+                  />
+                  <div className="max-h-[50vh] overflow-y-auto border rounded-md">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-center">PAIR</TableHead>
+                          <TableHead className="text-center">MEMO</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {Object.entries(letterPairs)
+                          .filter(
+                            ([pair, memo]) =>
+                              memo !== "" &&
+                              (filter === "" ||
+                                pair
+                                  .toLowerCase()
+                                  .includes(filter.toLowerCase()) ||
+                                memo
+                                  .toLowerCase()
+                                  .includes(filter.toLowerCase()))
+                          )
+                          .sort()
+                          .map(([pair, memo]) => (
+                            <TableRow
+                              key={pair}
+                              onClick={() => handleCellClick(pair)}
+                            >
+                              <TableCell className="font-medium text-center">
+                                {pair}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {memo}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                    {Object.keys(letterPairs).length === 0 && (
+                      <div className="p-4 text-center text-muted-foreground">
+                        No letter pairs added yet
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
+
         <p className="text-sm text-muted-foreground">
           {Object.keys(letterPairs).length} custom pair(s).
         </p>
