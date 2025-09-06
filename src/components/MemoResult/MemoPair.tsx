@@ -31,6 +31,7 @@ interface MemoPairProps {
   target2Character?: string;
   entireString?: string;
   useCustomLetterPairs: boolean;
+  type: "corner" | "edge";
 }
 
 export default function MemoPair({
@@ -44,21 +45,24 @@ export default function MemoPair({
   target2Character = target2,
   entireString,
   useCustomLetterPairs,
+  type,
 }: MemoPairProps) {
   const context = useContext(SettingsContext);
   if (!context)
     throw new Error("MemoPair must be used within a SettingsProvider");
 
   const {
-    settings: { letterPairs, letteringScheme },
+    settings: { letterPairs, letterPairsEdge, letteringScheme },
     addLetterPair,
   } = context;
 
   const [isModifyOpen, setIsModifyOpen] = useState(false);
   const pairString =
-    speffzToScheme(letteringScheme, target1, "corner") +
-    speffzToScheme(letteringScheme, target2 ?? target1, "corner");
-  const customMemo = letterPairs[pairString];
+    speffzToScheme(letteringScheme, target1, type) +
+    speffzToScheme(letteringScheme, target2 ?? target1, type);
+  const customMemo = (type === "edge" ? letterPairsEdge : letterPairs)[
+    pairString
+  ];
   const [modifiedMemo, setModifiedMemo] = useState(customMemo || "");
 
   const handleModify = () => {
@@ -67,7 +71,7 @@ export default function MemoPair({
   };
 
   const handleSave = () => {
-    addLetterPair(pairString, modifiedMemo);
+    addLetterPair(pairString, modifiedMemo, type);
     setIsModifyOpen(false);
   };
 

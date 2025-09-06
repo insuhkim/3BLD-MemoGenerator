@@ -24,6 +24,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SettingsContext } from "@/context/SettingsContext";
+import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
+import { Speffz } from "@/utils/types/Speffz";
 import { Fragment, KeyboardEvent, useContext, useState } from "react";
 import {
   Table,
@@ -33,11 +35,248 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Speffz } from "@/utils/types/Speffz";
-import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("") as Speffz[];
 
+function EditLetterPair({
+  addLetterPair,
+  deleteLetterPair,
+  letterPairs,
+  letteringScheme,
+  type,
+  separateLetterPairs,
+}: {
+  addLetterPair: (pair: string, memo: string, type: "edge" | "corner") => void;
+  deleteLetterPair: (pair: string, type: "edge" | "corner") => void;
+  letterPairs: Record<string, string>;
+  letteringScheme: string;
+  type: "edge" | "corner";
+  separateLetterPairs: boolean;
+}) {
+  const [pair, setPair] = useState("");
+  const [memo, setMemo] = useState("");
+  const [filter, setFilter] = useState("");
+
+  const applyScheme = (speffz: Speffz) =>
+    speffzToScheme(letteringScheme, speffz, type);
+
+  const schemeLetters = alphabet.map(applyScheme).sort();
+
+  const handleAdd = () => {
+    if (pair && memo) {
+      addLetterPair(pair, memo, type);
+      setPair("");
+      setMemo("");
+    }
+  };
+
+  const handleDelete = () => {
+    if (pair) {
+      deleteLetterPair(pair, type);
+      setPair("");
+      setMemo("");
+    }
+  };
+
+  const handleCellClick = (p: string) => {
+    setPair(p);
+    setMemo(letterPairs[p] || "");
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") handleAdd();
+  };
+
+  const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPair(e.target.value);
+  };
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          {type === "edge"
+            ? "Edit Edge Memos"
+            : type === "corner"
+            ? separateLetterPairs
+              ? "Edit Corner Memos"
+              : "Edit Custom Memos"
+            : "Manage Custom Letter Pairs"}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-4xl">
+        <DialogHeader>
+          <DialogTitle>
+            {type === "edge"
+              ? "Edge Letter Pairs"
+              : type === "corner"
+              ? separateLetterPairs
+                ? "Corner Letter Pairs"
+                : "Custom Letter Pairs"
+              : "Custom Letter Pairs"}
+          </DialogTitle>
+          {/* <DialogDescription>
+            Create, modify, or delete your custom letter pairs. These will
+            override the default memos. Click a cell to edit.
+          </DialogDescription> */}
+        </DialogHeader>
+        <div className="py-4 space-y-4">
+          <div className="space-y-2">
+            <div className="flex gap-2 flex-wrap">
+              <Input
+                placeholder="Pair (AP)"
+                value={pair}
+                onChange={handlePairChange}
+                maxLength={2}
+                className="w-24"
+                onKeyDown={handleKeyDown}
+              />
+              <Input
+                placeholder="Memo (Apple)"
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="flex-1 min-w-[150px]"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleAdd}
+                disabled={!pair || !memo || pair.length < 2}
+                className="flex-1"
+              >
+                Add/Update
+              </Button>
+              <Button
+                onClick={handleDelete}
+                variant="destructive"
+                disabled={!pair || !memo || pair.length < 2}
+                className="flex-1"
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+
+          <Tabs defaultValue="grid">
+            <TabsList className="w-full justify-start">
+              <TabsTrigger value="grid">Grid View</TabsTrigger>
+              <TabsTrigger value="list">List View</TabsTrigger>
+            </TabsList>
+            <TabsContent value="grid" className="mt-2">
+              <div className="overflow-x-auto pb-2 relative">
+                <div className="overflow-y-visible">
+                  <TooltipProvider>
+                    <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
+                      <div className="p-1 bg-muted sticky left-0 z-10"></div>
+                      {schemeLetters.map((letter) => (
+                        <div
+                          key={letter}
+                          className="p-1 font-bold text-center bg-muted"
+                        >
+                          {letter}
+                        </div>
+                      ))}
+                      {schemeLetters.map((rowLetter) => (
+                        <Fragment key={rowLetter}>
+                          <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
+                            {rowLetter}
+                          </div>
+                          {schemeLetters.map((colLetter) => {
+                            const currentPair = rowLetter + colLetter;
+                            const currentMemo = letterPairs[currentPair];
+                            const cell = (
+                              <div
+                                key={currentPair}
+                                onClick={() => handleCellClick(currentPair)}
+                                className={`p-1 cursor-pointer text-center ${
+                                  currentMemo
+                                    ? "bg-primary/20 hover:bg-primary/30"
+                                    : "bg-background hover:bg-muted"
+                                }`}
+                              >
+                                {currentMemo || "-"}
+                              </div>
+                            );
+
+                            return (
+                              <Tooltip key={currentPair}>
+                                <TooltipTrigger asChild>{cell}</TooltipTrigger>
+                                <TooltipContent>
+                                  <p>
+                                    {currentPair +
+                                      (currentMemo ? ` (${currentMemo})` : "")}
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          })}
+                        </Fragment>
+                      ))}
+                    </div>
+                  </TooltipProvider>
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="list" className="mt-2">
+              <div className="space-y-2">
+                <Input
+                  placeholder="Filter pairs or memos..."
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="mb-2"
+                />
+                <div className="max-h-[50vh] overflow-y-auto border rounded-md">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-center">PAIR</TableHead>
+                        <TableHead className="text-center">MEMO</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {Object.entries(letterPairs)
+                        .filter(
+                          ([pair, memo]) =>
+                            memo !== "" &&
+                            (filter === "" ||
+                              pair
+                                .toLowerCase()
+                                .includes(filter.toLowerCase()) ||
+                              memo.toLowerCase().includes(filter.toLowerCase()))
+                        )
+                        .sort()
+                        .map(([pair, memo]) => (
+                          <TableRow
+                            key={pair}
+                            onClick={() => handleCellClick(pair)}
+                          >
+                            <TableCell className="font-medium text-center">
+                              {pair}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {memo}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  {Object.keys(letterPairs).length === 0 && (
+                    <div className="p-4 text-center text-muted-foreground">
+                      No letter pairs added yet
+                    </div>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {Object.keys(letterPairs).length} custom pair(s).
+        </p>
+      </DialogContent>
+    </Dialog>
+  );
+}
 export default function LetterPair() {
   const context = useContext(SettingsContext);
   if (!context)
@@ -52,33 +291,10 @@ export default function LetterPair() {
       letteringScheme,
       useCustomLetterPairsEdge,
       useCustomLetterPairsCorner,
+      separateLetterPairs,
+      letterPairsEdge,
     },
   } = context;
-
-  const applyScheme = (speffz: Speffz) =>
-    speffzToScheme(letteringScheme, speffz, "corner");
-
-  const schemeLetters = alphabet.map(applyScheme).sort();
-
-  const [pair, setPair] = useState("");
-  const [memo, setMemo] = useState("");
-  const [filter, setFilter] = useState("");
-
-  const handleAdd = () => {
-    if (pair && memo) {
-      addLetterPair(pair, memo);
-      setPair("");
-      setMemo("");
-    }
-  };
-
-  const handleDelete = () => {
-    if (pair) {
-      deleteLetterPair(pair);
-      setPair("");
-      setMemo("");
-    }
-  };
 
   const handleToggleEdge = (checked: boolean) => {
     setSettings((prev) => ({
@@ -94,17 +310,11 @@ export default function LetterPair() {
     }));
   };
 
-  const handleCellClick = (p: string) => {
-    setPair(p);
-    setMemo(letterPairs[p] || "");
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") handleAdd();
-  };
-
-  const handlePairChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPair(e.target.value);
+  const handleToggleSeparateLetterPairs = (checked: boolean) => {
+    setSettings((prev) => ({
+      ...prev,
+      separateLetterPairs: checked,
+    }));
   };
 
   return (
@@ -151,181 +361,53 @@ export default function LetterPair() {
               onCheckedChange={handleToggleCorner}
             />
           </div>
+          <div className="border-t" />
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="separate-letter-pairs"
+              className="flex flex-col space-y-1"
+            >
+              <span>Separate Edge and Corner Letter Pairs</span>
+              <span className="font-normal leading-snug text-muted-foreground">
+                Enable to manage edge and corner letter pairs separately.
+              </span>
+            </Label>
+            <Switch
+              id="separate-letter-pairs"
+              checked={separateLetterPairs}
+              onCheckedChange={handleToggleSeparateLetterPairs}
+            />
+          </div>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">Manage Custom Letter Pairs</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-4xl">
-            <DialogHeader>
-              <DialogTitle>Custom Letter Pairs</DialogTitle>
-              {/* <DialogDescription>
-                Create, modify, or delete your custom letter pairs. These will
-                override the default memos. Click a cell to edit.
-              </DialogDescription> */}
-            </DialogHeader>
-            <div className="py-4 space-y-4">
-              <div className="space-y-2">
-                <div className="flex gap-2 flex-wrap">
-                  <Input
-                    placeholder="Pair (AP)"
-                    value={pair}
-                    onChange={handlePairChange}
-                    maxLength={2}
-                    className="w-24"
-                    onKeyDown={handleKeyDown}
-                  />
-                  <Input
-                    placeholder="Memo (Apple)"
-                    value={memo}
-                    onChange={(e) => setMemo(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="flex-1 min-w-[150px]"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={handleAdd}
-                    disabled={!pair || !memo || pair.length < 2}
-                    className="flex-1"
-                  >
-                    Add/Update
-                  </Button>
-                  <Button
-                    onClick={handleDelete}
-                    variant="destructive"
-                    disabled={!pair || !memo || pair.length < 2}
-                    className="flex-1"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-
-              <Tabs defaultValue="grid">
-                <TabsList className="w-full justify-start">
-                  <TabsTrigger value="grid">Grid View</TabsTrigger>
-                  <TabsTrigger value="list">List View</TabsTrigger>
-                </TabsList>
-                <TabsContent value="grid" className="mt-2">
-                  <div className="overflow-x-auto pb-2 relative">
-                    <div className="overflow-y-visible">
-                      <TooltipProvider>
-                        <div className="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-px bg-border text-xs">
-                          <div className="p-1 bg-muted sticky left-0 z-10"></div>
-                          {schemeLetters.map((letter) => (
-                            <div
-                              key={letter}
-                              className="p-1 font-bold text-center bg-muted"
-                            >
-                              {letter}
-                            </div>
-                          ))}
-                          {schemeLetters.map((rowLetter) => (
-                            <Fragment key={rowLetter}>
-                              <div className="p-1 font-bold text-center bg-muted sticky left-0 z-10">
-                                {rowLetter}
-                              </div>
-                              {schemeLetters.map((colLetter) => {
-                                const currentPair = rowLetter + colLetter;
-                                const currentMemo = letterPairs[currentPair];
-                                const cell = (
-                                  <div
-                                    key={currentPair}
-                                    onClick={() => handleCellClick(currentPair)}
-                                    className={`p-1 cursor-pointer text-center ${
-                                      currentMemo
-                                        ? "bg-primary/20 hover:bg-primary/30"
-                                        : "bg-background hover:bg-muted"
-                                    }`}
-                                  >
-                                    {currentMemo || "-"}
-                                  </div>
-                                );
-
-                                return (
-                                  <Tooltip key={currentPair}>
-                                    <TooltipTrigger asChild>
-                                      {cell}
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>
-                                        {currentPair +
-                                          (currentMemo
-                                            ? ` (${currentMemo})`
-                                            : "")}
-                                      </p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                );
-                              })}
-                            </Fragment>
-                          ))}
-                        </div>
-                      </TooltipProvider>
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="list" className="mt-2">
-                  <div className="space-y-2">
-                    <Input
-                      placeholder="Filter pairs or memos..."
-                      value={filter}
-                      onChange={(e) => setFilter(e.target.value)}
-                      className="mb-2"
-                    />
-                    <div className="max-h-[50vh] overflow-y-auto border rounded-md">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-center">PAIR</TableHead>
-                            <TableHead className="text-center">MEMO</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {Object.entries(letterPairs)
-                            .filter(
-                              ([pair, memo]) =>
-                                memo !== "" &&
-                                (filter === "" ||
-                                  pair
-                                    .toLowerCase()
-                                    .includes(filter.toLowerCase()) ||
-                                  memo
-                                    .toLowerCase()
-                                    .includes(filter.toLowerCase())),
-                            )
-                            .sort()
-                            .map(([pair, memo]) => (
-                              <TableRow
-                                key={pair}
-                                onClick={() => handleCellClick(pair)}
-                              >
-                                <TableCell className="font-medium text-center">
-                                  {pair}
-                                </TableCell>
-                                <TableCell className="text-center">
-                                  {memo}
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                      {Object.keys(letterPairs).length === 0 && (
-                        <div className="p-4 text-center text-muted-foreground">
-                          No letter pairs added yet
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {Object.keys(letterPairs).length} custom pair(s).
-            </p>
-          </DialogContent>
-        </Dialog>
+        {separateLetterPairs ? (
+          <div className="space-y-4">
+            <EditLetterPair
+              addLetterPair={addLetterPair}
+              deleteLetterPair={deleteLetterPair}
+              letterPairs={letterPairsEdge}
+              letteringScheme={letteringScheme}
+              type="edge"
+              separateLetterPairs={separateLetterPairs}
+            />
+            <EditLetterPair
+              addLetterPair={addLetterPair}
+              deleteLetterPair={deleteLetterPair}
+              letterPairs={letterPairs}
+              letteringScheme={letteringScheme}
+              type="corner"
+              separateLetterPairs={separateLetterPairs}
+            />
+          </div>
+        ) : (
+          <EditLetterPair
+            addLetterPair={addLetterPair}
+            deleteLetterPair={deleteLetterPair}
+            letterPairs={letterPairs}
+            letteringScheme={letteringScheme}
+            type="corner"
+            separateLetterPairs={separateLetterPairs}
+          />
+        )}
       </CardContent>
     </Card>
   );

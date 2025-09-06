@@ -18,6 +18,7 @@ export default function MemoResultEdge({
   cycleStyle,
   scheme,
   useCustomLetterPairsEdge,
+  useSeparateEdgeLetterPairs,
 }: {
   memo: Speffz[][];
   showFlippedEdge: FlippedEdgeStyle;
@@ -25,6 +26,7 @@ export default function MemoResultEdge({
   cycleStyle: CycleNotationStyle;
   scheme: string;
   useCustomLetterPairsEdge: boolean;
+  useSeparateEdgeLetterPairs: boolean;
 }) {
   if (memo.length === 0) return null;
 
@@ -48,7 +50,7 @@ export default function MemoResultEdge({
       acc.push(lastIndex + cycle.length);
       return acc;
     },
-    [-1],
+    [-1]
   );
 
   for (let i = 0; i < allTargets.length; i += 2) {
@@ -60,8 +62,8 @@ export default function MemoResultEdge({
       ? cycleStyle === "parenthesis"
         ? ")("
         : cycleStyle === "vertical"
-          ? "|"
-          : ""
+        ? "|"
+        : ""
       : "";
     const prefix = cycleBreakStart && cycleStyle === "parenthesis" ? "(" : "";
     const suffix =
@@ -74,7 +76,7 @@ export default function MemoResultEdge({
       components.push(
         <span key={`cycle-break-start-${i}`} className="p-0">
           |
-        </span>,
+        </span>
       );
     }
     const url = allTargets[i + 1]
@@ -100,7 +102,8 @@ export default function MemoResultEdge({
         prefix={prefix}
         suffix={suffix}
         useCustomLetterPairs={useCustomLetterPairsEdge}
-      />,
+        type={useSeparateEdgeLetterPairs ? "edge" : "corner"}
+      />
     );
   }
 
@@ -124,7 +127,8 @@ export default function MemoResultEdge({
           target2Character={speffzToScheme(scheme, cycle[1], "edge")}
           entireString={` [${speffzToScheme(scheme, representation, "edge")}]`}
           useCustomLetterPairs={useCustomLetterPairsEdge}
-        />,
+          type={useSeparateEdgeLetterPairs ? "edge" : "corner"}
+        />
       );
     });
   }

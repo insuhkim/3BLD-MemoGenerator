@@ -119,6 +119,7 @@ export default function MemoResultCorner({
         prefix={prefix}
         suffix={suffix}
         useCustomLetterPairs={useCustomLetterPairsCorner}
+        type="corner"
       />
     );
   }
@@ -153,6 +154,7 @@ export default function MemoResultCorner({
           target2Character={speffzToScheme(scheme, cycle[1], "corner")}
           entireString={representation}
           useCustomLetterPairs={useCustomLetterPairsCorner}
+          type="corner"
         />
       );
     });

@@ -7,7 +7,7 @@ import { Settings } from "@/utils/types/Settings";
 type SettingsContextType = {
   settings: Settings;
   setSettings: React.Dispatch<React.SetStateAction<Settings>>;
-  addLetterPair: (pair: string, memo: string) => void;
+  addLetterPair: (pair: string, memo: string, type: "corner" | "edge") => void;
   deleteLetterPair: (pair: string) => void;
 };
 
@@ -36,8 +36,10 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     orientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
-    useCustomLetterPairsEdge: false,
+    useCustomLetterPairsEdge: true,
     useCustomLetterPairsCorner: true,
+    separateLetterPairs: false,
+    letterPairsEdge: {},
   };
 
   // Initialize with default settings on both server and client to prevent hydration mismatch.
@@ -69,24 +71,48 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     }
   }, [settings, defaultSettings]);
 
-  const addLetterPair = (pair: string, memo: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      letterPairs: {
-        ...prev.letterPairs,
-        [pair.toUpperCase()]: memo,
-      },
-    }));
+  const addLetterPair = (
+    pair: string,
+    memo: string,
+    type: "corner" | "edge" = "corner",
+  ) => {
+    setSettings((prev) =>
+      type === "edge"
+        ? {
+            ...prev,
+            letterPairsEdge: {
+              ...prev.letterPairsEdge,
+              [pair]: memo,
+            },
+          }
+        : {
+            ...prev,
+            letterPairs: {
+              ...prev.letterPairs,
+              [pair]: memo,
+            },
+          },
+    );
   };
 
-  const deleteLetterPair = (pair: string) => {
+  const deleteLetterPair = (
+    pair: string,
+    type: "corner" | "edge" = "corner",
+  ) => {
     setSettings((prev) => {
-      const newLetterPairs = { ...prev.letterPairs };
-      delete newLetterPairs[pair.toUpperCase()];
-      return {
-        ...prev,
-        letterPairs: newLetterPairs,
+      const newLetterPairs = {
+        ...(type === "edge" ? prev.letterPairsEdge : prev.letterPairs),
       };
+      delete newLetterPairs[pair];
+      return type === "edge"
+        ? {
+            ...prev,
+            letterPairsEdge: newLetterPairs,
+          }
+        : {
+            ...prev,
+            letterPairs: newLetterPairs,
+          };
     });
   };
 
