@@ -11,17 +11,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { SettingsContext } from "@/context/SettingsContext";
 import "@/styles/letterScheme.css";
+import { colorName, orientations } from "@/utils/orientation";
 import { isValidScheme } from "@/utils/scheme/isValidScheme";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -58,16 +51,8 @@ function LetterScheme() {
     "face-d yellow",
   ]);
   const faceList = ["u", "l", "f", "r", "b", "d"];
+
   const colorList = ["white", "orange", "green", "red", "blue", "yellow"];
-  // prettier-ignore
-  const orientations = [
-    "wg", "wr", "wb", "wo",
-    "yg", "yr", "yb", "yo",
-    "ob", "ow", "oy", "og",
-    "rb", "rw", "ry", "rg",
-    "go", "gy", "gw", "gr",
-    "bo", "by", "bw", "br",
-  ];
   // prettier-ignore
   const facesMap = [
     [0, 1, 2, 3, 4, 5], [0, 2, 3, 4, 1, 5], [0, 3, 4, 1, 2, 5], [0, 4, 1, 2, 3, 5],
@@ -88,7 +73,6 @@ function LetterScheme() {
   };
 
   const [inputValues, setInputValues] = useState("");
-  const dialogCloseRef = useRef<HTMLButtonElement>(null);
 
   const handleSave = () => {
     if (!isValidScheme(inputValues)) {
@@ -107,11 +91,12 @@ function LetterScheme() {
       ] as typeof prev.orientation,
     }));
 
-    // Close dialog on successful save
-    dialogCloseRef.current?.click();
+    toast("Letter scheme saved successfully", {
+      position: "top-center",
+    });
   };
 
-  const handleCancel = () => {
+  const handleReset = () => {
     setInputValues(settings.letteringScheme);
     const index = orientations.indexOf(settings.orientation);
     if (index !== -1) handleOrientationChange(index);
@@ -157,8 +142,8 @@ function LetterScheme() {
   };
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 lg:w-auto lg:flex-none">
+    <div className="flex flex-col gap-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
         <div className="mb-6">
           <label className="mb-2 block font-bold text-black dark:text-white">
             Preset
@@ -191,21 +176,17 @@ function LetterScheme() {
             <SelectContent>
               {orientations.map((orientation, index) => (
                 <SelectItem key={index} value={index.toString()}>
-                  {orientation}
+                  {colorName(orientation[0])}-{colorName(orientation[1])} (
+                  {orientation.toUpperCase()})
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <DialogClose asChild>
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <button ref={dialogCloseRef} className="hidden" />
-          </DialogClose>
+          <Button variant="outline" onClick={handleReset}>
+            Reset
+          </Button>
           <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
@@ -271,31 +252,14 @@ export default function CustomLetterScheme() {
       <CardHeader>
         <CardTitle>Custom Letter Scheme</CardTitle>
         <CardDescription>
-          Define your personal letter scheme for each sticker on the cube. This
-          scheme is used to generate the memo.
+          Set up your own letter scheme for each sticker on the cube. This
+          scheme will be used to generate the memo. Please note that, regardless
+          of the selected orientation, the scramble is always applied to the
+          White top, Green front position.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="mt-4">
-              Edit Letter Scheme
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[725px]">
-            <div>
-              <DialogHeader>
-                <DialogTitle>Custom Letter Scheme</DialogTitle>
-                <DialogDescription>
-                  Set your custom letter scheme for corners and edges.
-                </DialogDescription>
-              </DialogHeader>
-            </div>
-            <div className="p-6 pt-0">
-              <LetterScheme />
-            </div>
-          </DialogContent>
-        </Dialog>
+        <LetterScheme />
       </CardContent>
     </Card>
   );

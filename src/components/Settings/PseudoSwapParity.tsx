@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SettingsContext } from "@/context/SettingsContext";
-import { SpeffzEdgeToOrientedPosition } from "@/utils/BLDDB/EdgeToURL";
+import { SpeffzEdgeToPosition } from "@/utils/BLDDB/EdgeToURL";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
@@ -35,7 +35,7 @@ export default function PseudoSwap() {
   );
 
   const applyPreset = (speffz: Speffz) =>
-    `${speffzToScheme(settings.letteringScheme, speffz, "edge")} (${SpeffzEdgeToOrientedPosition(speffz)})`;
+    `${speffzToScheme(settings.letteringScheme, speffz, "edge")} (${SpeffzEdgeToPosition(speffz)})`;
 
   const handleValueChange = (value: string) => {
     setSettings((prev) => ({

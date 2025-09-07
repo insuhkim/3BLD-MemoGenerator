@@ -12,7 +12,7 @@ import { SettingsContext } from "@/context/SettingsContext";
 import { Speffz } from "@/utils/types/Speffz";
 import { useContext } from "react";
 import { X } from "lucide-react";
-import { SpeffzEdgeToOrientedPosition } from "@/utils/BLDDB/EdgeToURL";
+import { SpeffzEdgeToPosition } from "@/utils/BLDDB/EdgeToURL";
 import { SpeffzCornerToPosition } from "@/utils/BLDDB/CornerToURL";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { speffzToScheme } from "@/utils/scheme/speffzToScheme";
@@ -76,7 +76,7 @@ function PriorityTable({
                       <Tooltip>
                         <TooltipContent>
                           {type === "edge"
-                            ? SpeffzEdgeToOrientedPosition(letter)
+                            ? SpeffzEdgeToPosition(letter)
                             : SpeffzCornerToPosition(letter)}
                         </TooltipContent>
                         <TooltipTrigger asChild>
@@ -120,7 +120,7 @@ function PriorityTable({
               <Tooltip key={`${letter}-${index}`}>
                 <TooltipContent>
                   {type === "edge"
-                    ? SpeffzEdgeToOrientedPosition(letter)
+                    ? SpeffzEdgeToPosition(letter)
                     : SpeffzCornerToPosition(letter)}
                 </TooltipContent>
                 <TooltipTrigger asChild>

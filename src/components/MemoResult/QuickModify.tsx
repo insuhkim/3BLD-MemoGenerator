@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -15,20 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { GripVertical } from "lucide-react";
 import {
-  ArrowUp,
-  ArrowDown,
-  ArrowLeft,
-  FlipHorizontal,
-  RotateCw,
-} from "lucide-react";
-import { useState, useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import {
   shiftCycleCorner,
   shiftCycleEdge,
-  flipAllEdges,
-  rotateAllCorners,
   getAllVisitingCorners,
   getAllVisitingEdges,
 } from "@/utils/makeMemo/postProcess";
@@ -47,135 +42,37 @@ export default function QuickModify({
   type: "edge" | "corner";
   scheme: string;
 }) {
-  // Animation states for rows
-  const [animatingRows, setAnimatingRows] = useState<{
-    [key: number]: { direction: "up" | "down" | null; animating: boolean };
-  }>({});
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
 
-  // Reference to row heights
-  const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
-  const [rowHeight, setRowHeight] = useState(0);
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
 
-  // Calculate row height on mount
-  useEffect(() => {
-    if (rowRefs.current[0]) setRowHeight(rowRefs.current[0].offsetHeight);
-  }, []);
+    if (sourceIndex === destinationIndex) return;
 
-  // Reset animation state after animation completes
-  useEffect(() => {
-    const animatingRowIndices = Object.entries(animatingRows)
-      .filter(([_, { animating }]) => animating)
-      .map(([index]) => parseInt(index));
+    // Check if moving the first buffer when it's blocked
+    const isFirstBufferBlocked =
+      memoResult[0].length === 1 ||
+      !(type === "edge" ? isSameEdgeSpeffz : isSameCornerSpeffz)(
+        memoResult[0][0],
+        memoResult[0].at(-1) as Speffz,
+      );
 
-    if (animatingRowIndices.length > 0) {
-      const timeoutIds = animatingRowIndices.map((index) => {
-        return setTimeout(() => {
-          setAnimatingRows((prev) => ({
-            ...prev,
-            [index]: { ...prev[index], animating: false },
-          }));
-        }, 300); // Match this with CSS transition duration
-      });
-
-      return () => timeoutIds.forEach(clearTimeout);
+    // Prevent moving first buffer or moving to first position when blocked
+    if ((sourceIndex === 0 || destinationIndex === 0) && isFirstBufferBlocked) {
+      return;
     }
-  }, [animatingRows]);
 
-  const moveUp = (index: number) => {
-    if (index === 0) return;
+    // Prevent moving single-piece cycles (except first buffer)
+    if (sourceIndex !== 0 && memoResult[sourceIndex].length === 1) {
+      return;
+    }
 
-    // Start animation
-    setAnimatingRows({
-      ...animatingRows,
-      [index]: { direction: "up", animating: true },
-      [index - 1]: { direction: "down", animating: true },
-    });
+    const newMemoResult = Array.from(memoResult);
+    const [reorderedItem] = newMemoResult.splice(sourceIndex, 1);
+    newMemoResult.splice(destinationIndex, 0, reorderedItem);
 
-    // Update state after animation
-    setTimeout(() => {
-      const newMemoResult = [...memoResult];
-      const temp = newMemoResult[index];
-      newMemoResult[index] = newMemoResult[index - 1];
-      newMemoResult[index - 1] = temp;
-      setMemoResult(newMemoResult);
-
-      // Reset animation states
-      setAnimatingRows({
-        ...animatingRows,
-        [index]: { direction: null, animating: false },
-        [index - 1]: { direction: null, animating: false },
-      });
-    }, 300); // Match this with CSS transition duration
-  };
-
-  const moveDown = (index: number) => {
-    if (index === memoResult.length - 1) return;
-
-    // Start animation
-    setAnimatingRows({
-      ...animatingRows,
-      [index]: { direction: "down", animating: true },
-      [index + 1]: { direction: "up", animating: true },
-    });
-
-    // Update state after animation
-    setTimeout(() => {
-      const newMemoResult = [...memoResult];
-      const temp = newMemoResult[index];
-      newMemoResult[index] = newMemoResult[index + 1];
-      newMemoResult[index + 1] = temp;
-      setMemoResult(newMemoResult);
-
-      // Reset animation states
-      setAnimatingRows({
-        ...animatingRows,
-        [index]: { direction: null, animating: false },
-        [index + 1]: { direction: null, animating: false },
-      });
-    }, 200); // Match this with CSS transition duration
-  };
-
-  // const handleShift = (index: number) => {
-  //   const memo = memoResult[index];
-  //   if (memo.length <= 1) return;
-
-  //   const newMemoResult = [...memoResult];
-  //   // Shift to the next element in the cycle (second element becomes the new start)
-  //   const nextElement = memo[1];
-  //   newMemoResult[index] =
-  //     type === "edge"
-  //       ? shiftCycleEdge(memo, nextElement)
-  //       : shiftCycleCorner(memo, nextElement);
-
-  //   setMemoResult(newMemoResult);
-  // };
-
-  // const handleFlip = (index: number) => {
-  //   const memo = memoResult[index];
-  //   if (memo.length === 0) return;
-
-  //   const newMemoResult = [...memoResult];
-  //   newMemoResult[index] =
-  //     type === "edge" ? flipAllEdges(memo) : rotateAllCorners(memo, true);
-  //   setMemoResult(newMemoResult);
-  // };
-
-  // Get animation style for a row
-  const getRowStyle = (index: number) => {
-    const rowState = animatingRows[index];
-    if (!rowState || !rowState.animating || !rowHeight) return {};
-
-    return {
-      position: "relative",
-      transition: "transform 300ms ease",
-      transform:
-        rowState.direction === "up"
-          ? `translateY(-${rowHeight}px)`
-          : rowState.direction === "down"
-            ? `translateY(${rowHeight}px)`
-            : "none",
-      zIndex: rowState.animating ? 10 : 1,
-    };
+    setMemoResult(newMemoResult);
   };
 
   const isFirstBufferBlocked =
@@ -186,132 +83,99 @@ export default function QuickModify({
     );
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Cycle Start</TableHead>
-          <TableHead>Memo</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {memoResult.map((memo, index) => (
-          <TableRow
-            key={index}
-            ref={(el) => {
-              rowRefs.current[index] = el;
-            }}
-            style={getRowStyle(index) as React.CSSProperties}
-            className={cn(
-              "transition-colors duration-300",
-              animatingRows[index]?.animating && "bg-muted/30",
-            )}
-          >
-            <TableCell className="flex items-center">
-              <Select
-                value={memo[0]}
-                onValueChange={(value) => {
-                  const newMemoResult = [...memoResult];
-                  newMemoResult[index] = (
-                    type === "edge" ? shiftCycleEdge : shiftCycleCorner
-                  )(memo, value as Speffz);
-                  setMemoResult(newMemoResult);
-                }}
-                disabled={index === 0 && isFirstBufferBlocked}
-              >
-                <SelectTrigger className="w-[70px]">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  {(type === "edge"
-                    ? getAllVisitingEdges(memo)
-                    : getAllVisitingCorners(memo)
-                  ).map((piece, pieceIndex) => (
-                    <SelectItem key={`${index}-${pieceIndex}`} value={piece}>
-                      {speffzToScheme(scheme, piece, type)}
-                      {/*(
-                      {(type === "edge"
-                        ? SpeffzEdgeToOrientedPosition
-                        : SpeffzCornerToPosition)(piece)}
-                      )*/}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </TableCell>
-            <TableCell>
-              {memo
-                .map((speffz) => speffzToScheme(scheme, speffz, type))
-                .join(" ")}
-            </TableCell>
-            <TableCell className="flex justify-end gap-2">
-              {/*<Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleShift(index)}
-                disabled={
-                  memo.length <= 1 ||
-                  Object.values(animatingRows).some((row) => row.animating) ||
-                  (index === 0 && isFirstBufferBlocked)
-                }
-                title={
-                  type === "edge"
-                    ? "Shift cycle (edge)"
-                    : "Shift cycle (corner)"
-                }
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleFlip(index)}
-                disabled={
-                  memo.length === 0 ||
-                  Object.values(animatingRows).some((row) => row.animating) ||
-                  (index === 0 && isFirstBufferBlocked)
-                }
-                title={
-                  type === "edge"
-                    ? "Flip all edges"
-                    : "Rotate all corners to CW"
-                }
-              >
-                {type === "edge" ? (
-                  <FlipHorizontal className="h-4 w-4" />
-                ) : (
-                  <RotateCw className="h-4 w-4" />
-                )}
-              </Button>*/}
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => moveUp(index)}
-                disabled={
-                  index === 0 ||
-                  Object.values(animatingRows).some((row) => row.animating) ||
-                  (index === 1 && isFirstBufferBlocked)
-                }
-              >
-                <ArrowUp className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => moveDown(index)}
-                disabled={
-                  index === memoResult.length - 1 ||
-                  Object.values(animatingRows).some((row) => row.animating) ||
-                  memo.length === 1 ||
-                  (index === 0 && isFirstBufferBlocked)
-                }
-              >
-                <ArrowDown className="h-4 w-4" />
-              </Button>
-            </TableCell>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-10"></TableHead>
+            <TableHead>Cycle Start</TableHead>
+            <TableHead>Memo</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <Droppable droppableId="memo-table">
+          {(provided) => (
+            <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+              {memoResult.map((memo, index) => {
+                const isDraggingDisabled =
+                  (index === 0 && isFirstBufferBlocked) ||
+                  (index !== 0 && memo.length === 1);
+
+                return (
+                  <Draggable
+                    key={`memo-${index}`}
+                    draggableId={`memo-${index}`}
+                    index={index}
+                    isDragDisabled={isDraggingDisabled}
+                  >
+                    {(provided, snapshot) => (
+                      <TableRow
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className={`
+                          ${snapshot.isDragging ? "bg-muted/50" : ""}
+                          ${isDraggingDisabled ? "opacity-50" : ""}
+                        `}
+                      >
+                        <TableCell className="w-10">
+                          <div
+                            {...provided.dragHandleProps}
+                            className={`
+                              flex items-center justify-center p-1 rounded
+                              ${isDraggingDisabled ? "cursor-not-allowed text-muted-foreground" : "cursor-grab active:cursor-grabbing hover:bg-muted"}
+                            `}
+                          >
+                            <GripVertical className="h-4 w-4" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            value={memo[0]}
+                            onValueChange={(value) => {
+                              const newMemoResult = [...memoResult];
+                              newMemoResult[index] = (
+                                type === "edge"
+                                  ? shiftCycleEdge
+                                  : shiftCycleCorner
+                              )(memo, value as Speffz);
+                              setMemoResult(newMemoResult);
+                            }}
+                            disabled={index === 0 && isFirstBufferBlocked}
+                          >
+                            <SelectTrigger className="w-[70px]">
+                              <SelectValue placeholder="Select" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {(type === "edge"
+                                ? getAllVisitingEdges(memo)
+                                : getAllVisitingCorners(memo)
+                              ).map((piece, pieceIndex) => (
+                                <SelectItem
+                                  key={`${index}-${pieceIndex}`}
+                                  value={piece}
+                                >
+                                  {speffzToScheme(scheme, piece, type)}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          {memo
+                            .map((speffz) =>
+                              speffzToScheme(scheme, speffz, type),
+                            )
+                            .join(" ")}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </TableBody>
+          )}
+        </Droppable>
+      </Table>
+    </DragDropContext>
   );
 }
