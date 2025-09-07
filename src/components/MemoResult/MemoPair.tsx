@@ -83,7 +83,7 @@ export default function MemoPair({
     <Dialog open={isModifyOpen} onOpenChange={setIsModifyOpen}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="cursor-pointer p-1 rounded-md hover:bg-accent">
+          <span className="cursor-pointer p-1 rounded-md bg-accent/75 hover:bg-accent">
             {useCustomLetterPairs && customMemo
               ? customMemo
               : (entireString ??
