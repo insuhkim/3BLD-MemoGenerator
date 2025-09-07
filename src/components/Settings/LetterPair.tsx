@@ -107,8 +107,6 @@ function CSVImportButtons({
     fileInputRef.current?.click();
   };
 
-  const typeLabel = type === "edge" ? "Edge" : "Corner";
-
   return (
     <div className="space-y-2">
       <div className="flex gap-2">
@@ -248,15 +246,15 @@ function LetterPairEditor({
     type === "edge"
       ? "Edit Edge Memos"
       : separateLetterPairs
-      ? "Edit Corner Memos"
-      : "Edit Custom Memos";
+        ? "Edit Corner Memos"
+        : "Edit Custom Memos";
 
   const dialogTitle =
     type === "edge"
       ? "Edge Letter Pairs"
       : separateLetterPairs
-      ? "Corner Letter Pairs"
-      : "Custom Letter Pairs";
+        ? "Corner Letter Pairs"
+        : "Custom Letter Pairs";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -404,7 +402,7 @@ function LetterPairEditor({
                                   .includes(filter.toLowerCase()) ||
                                 memo
                                   .toLowerCase()
-                                  .includes(filter.toLowerCase()))
+                                  .includes(filter.toLowerCase())),
                           )
                           .sort()
                           .map(([pair, memo]) => (
@@ -557,7 +555,7 @@ export default function LetterPair() {
   const handleCSVImport = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: LetterPairType,
-    setImportStatus: React.Dispatch<React.SetStateAction<string>>
+    setImportStatus: React.Dispatch<React.SetStateAction<string>>,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -570,7 +568,7 @@ export default function LetterPair() {
 
         if (rows.length < 2 || rows[0].length < 2) {
           setImportStatus(
-            "Invalid CSV format. First row and column must contain letters."
+            "Invalid CSV format. First row and column must contain letters.",
           );
           return;
         }
@@ -608,7 +606,7 @@ export default function LetterPair() {
         setImportStatus(
           `Error importing CSV: ${
             error instanceof Error ? error.message : String(error)
-          }`
+          }`,
         );
       }
     };
@@ -678,7 +676,7 @@ export default function LetterPair() {
               <LetterPairToggle
                 id="separate-letter-pairs"
                 title="Separate Edge and Corner Letter Pairs"
-                description="Enable to manage edge and corner letter pairs separately."
+                description="Enable to manage edge and corner letter pairs separately. It is useful when different alphabets are used in corner and edge scheme"
                 checked={separateLetterPairs}
                 onCheckedChange={handleToggleSeparateLetterPairs}
               >
@@ -705,7 +703,16 @@ export default function LetterPair() {
           <p className="text-sm text-muted-foreground mb-4">
             Import letter pairs from a CSV file. The CSV should have single
             letters in the first row and column. Cell values will be used as
-            letter pair memos.
+            letter pair memos. You can download example CSV file provided by{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://bestsiteever.ru/colpi/"
+              className="underline"
+            >
+              CoLPI
+            </a>
+            , where you can also find more letter pairs.
           </p>
 
           {separateLetterPairs ? (

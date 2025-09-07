@@ -252,8 +252,10 @@ export default function CustomLetterScheme() {
       <CardHeader>
         <CardTitle>Custom Letter Scheme</CardTitle>
         <CardDescription>
-          Define your personal letter scheme for each sticker on the cube. This
-          scheme is used to generate the memo.
+          Set up your own letter scheme for each sticker on the cube. This
+          scheme will be used to generate the memo. Please note that, regardless
+          of the selected orientation, the scramble is always applied to the
+          White top, Green front position.
         </CardDescription>
       </CardHeader>
       <CardContent>

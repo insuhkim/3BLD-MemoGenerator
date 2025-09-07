@@ -65,6 +65,10 @@ export default function ResultStyle() {
           <Label htmlFor="cycleStyleSelect" className="text-sm font-medium">
             Cycle Break Style
           </Label>
+          <p className="text-sm text-muted-foreground">
+            Choose how cycle breaks are displayed. Note that when using custom
+            letter pairs, cycle breaks between letter pairs will not be shown.
+          </p>
           <Select
             value={settings.cycleStyle}
             onValueChange={(value) => {

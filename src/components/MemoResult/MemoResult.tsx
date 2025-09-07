@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { SettingsContext } from "@/context/SettingsContext";
 import { ChevronsUpDown, Edit } from "lucide-react";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { applyScramble } from "@/utils/scramble/applyScramble";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
@@ -16,7 +15,6 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
 import QuickModify from "./QuickModify";
-import { invertRotation, orientationToRotation } from "@/utils/orientation";
 import { Cube } from "react-rubiks-cube-utils";
 
 export default function MemoResult({ cube }: { cube: Cube }) {
