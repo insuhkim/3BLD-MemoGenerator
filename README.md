@@ -19,8 +19,10 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 - [x] Hyperlink letterpair to [BLDDB](https://v2.blddb.net/)
 - [x] Customizable Letter Scheme
 - [x] Customizable Letter Pair
-- [ ] Support for Floating Buffer
 - [x] Inline cycle break edit
+- [ ] Support for Floating Buffer
+- [ ] Support for LTCT, T2C
+- [ ] Cycle break notation by color
 
 ### Improvements
 
@@ -33,7 +35,7 @@ Inspired by the [MemoGenerator for Blindsolving](https://play.google.com/store/a
 
 ## 🚀 Getting Started
 
-1. Open the app in your browser: [3bld-memo-generator.vercel.app](https://3bld-memo-generator.vercel.app/)
+1. Open the app in your browser: [memo3bld.com](memo3bld.com)
 2. Set your buffer, priority, and scheme in the options panel.
 3. Click the "Scramble" button to generate a new scramble.
 4. The result will be displayed automatically. You can modify the order of cycles or search corresponding 3style algorithms in [BLDDB](https://v2.blddb.net/)
