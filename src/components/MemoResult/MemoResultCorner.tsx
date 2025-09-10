@@ -56,7 +56,7 @@ export default function MemoResultCorner({
       acc.push(lastIndex + cycle.length);
       return acc;
     },
-    [-1]
+    [-1],
   );
 
   const allTargets =
@@ -71,8 +71,8 @@ export default function MemoResultCorner({
       ? cycleStyle === "parenthesis"
         ? ")("
         : cycleStyle === "vertical"
-        ? "|"
-        : ""
+          ? "|"
+          : ""
       : "";
     const prefix = cycleBreakStart && cycleStyle === "parenthesis" ? "(" : "";
     const suffix =
@@ -85,7 +85,7 @@ export default function MemoResultCorner({
       components.push(
         <span key={`cycle-break-start-${i}`} className="p-0.5">
           |
-        </span>
+        </span>,
       );
     }
 
@@ -95,12 +95,12 @@ export default function MemoResultCorner({
       ? isSameCornerSpeffz(allTargets[i], allTargets[i + 1])
         ? ((isCW: boolean) =>
             CornerTwistURL(buffer, !isCW, allTargets[i], isCW))(
-            isCWRotation(allTargets[i], allTargets[i + 1])
+            isCWRotation(allTargets[i], allTargets[i + 1]),
           )
         : CornerToURL(buffer, allTargets[i], allTargets[i + 1])
       : memoSwap
-      ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
-      : undefined;
+        ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
+        : undefined;
 
     const target2 = allTargets[i + 1];
     const target2Character = target2
@@ -120,20 +120,15 @@ export default function MemoResultCorner({
         suffix={suffix}
         useCustomLetterPairs={useCustomLetterPairsCorner}
         type="corner"
-      />
+      />,
     );
   }
 
   if (showFlippedCorner !== "none") {
     flippedCycles.forEach((cycle, index) => {
       const isCW = isCWRotation(cycle[0], cycle[1]);
-      let stickerOrientationToShow: 1 | 2;
-      if (showFlippedCorner === "W/Y") {
-        stickerOrientationToShow = isCW ? 1 : 2;
-      } else {
-        // flippedCornerStyle === "top/bottom"
-        stickerOrientationToShow = isCW ? 2 : 1;
-      }
+      let stickerOrientationToShow: 1 | 2 =
+        showFlippedCorner === "W/Y" ? (isCW ? 2 : 1) : isCW ? 1 : 2;
 
       const showingCorner: Corner = [
         speffzToCorner(cycle[0])[0],
@@ -142,7 +137,7 @@ export default function MemoResultCorner({
       const representation = ` [${speffzToScheme(
         scheme,
         cornerToSpeffz(showingCorner),
-        "corner"
+        "corner",
       )}]`;
       components.push(
         <MemoPair
@@ -155,7 +150,7 @@ export default function MemoResultCorner({
           entireString={representation}
           useCustomLetterPairs={useCustomLetterPairsCorner}
           type="corner"
-        />
+        />,
       );
     });
   }
