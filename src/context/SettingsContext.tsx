@@ -32,7 +32,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     showFlippedCorner: "none",
     cubePreviewStyle: "3D",
     memoSwap: "none",
-    applyScrambleRotationToPreview: false,
     orientation: "wg",
     scrambleOrientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",

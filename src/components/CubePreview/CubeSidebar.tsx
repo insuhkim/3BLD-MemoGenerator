@@ -24,6 +24,7 @@ export default function CubeSidebar({
   if (!context)
     throw new Error("SettingsPanel must be used within a SettingsProvider");
   const { settings } = context;
+
   const [isLightMode, setIsLightMode] = useState(false);
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
@@ -33,12 +34,9 @@ export default function CubeSidebar({
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
-
-  if (!settings.applyScrambleRotationToPreview)
-    scramble = `${scramble} ${rotation}`;
-  scramble = `${scramble} ${orientationToRotation(settings.orientation)}`;
-
   const cube3DBackground = isLightMode ? "auto" : "none";
+
+  scramble = `${scramble} ${rotation} ${orientationToRotation(settings.orientation)}`;
 
   return (
     <Sheet modal={false}>
