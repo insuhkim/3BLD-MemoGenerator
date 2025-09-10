@@ -25,6 +25,7 @@ export type Settings = {
   memoSwap: "none" | Speffz;
   applyScrambleRotationToPreview: boolean;
   orientation: Orientation;
+  scrambleOrientation: Orientation;
   letteringScheme: string;
   letterPairs: { [key: string]: string };
   useCustomLetterPairsEdge: boolean;

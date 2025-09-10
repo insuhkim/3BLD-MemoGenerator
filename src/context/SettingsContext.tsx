@@ -34,6 +34,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     memoSwap: "none",
     applyScrambleRotationToPreview: false,
     orientation: "wg",
+    scrambleOrientation: "wg",
     letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
     letterPairs: {},
     useCustomLetterPairsEdge: true,

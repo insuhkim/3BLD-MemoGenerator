@@ -24,6 +24,7 @@ import LetterPair from "./LetterPair";
 import PreviewStyle from "./PreviewStyle";
 import PseudoSwap from "./PseudoSwapParity";
 import ResultStyle from "./ResultStyle";
+import Scramble from "./Scramble";
 
 const settingsSections = [
   {
@@ -47,13 +48,18 @@ const settingsSections = [
     Component: PseudoSwap,
   },
   {
+    value: "item-4.5",
+    title: "Scramble",
+    Component: Scramble,
+  },
+  {
     value: "item-5",
     title: "Cube Preview",
     Component: PreviewStyle,
   },
   {
     value: "item-6",
-    title: "Custom Letter Scheme",
+    title: "Letter Scheme",
     Component: CustomLetterScheme,
   },
   { value: "item-7", title: "Custom Letter Pairs", Component: LetterPair },
@@ -90,7 +96,7 @@ export default function Settings() {
                   variant="ghost"
                   className={cn(
                     "justify-start",
-                    activeSection === value && "bg-muted"
+                    activeSection === value && "bg-muted",
                   )}
                   onClick={() => setActiveSection(value)}
                 >
