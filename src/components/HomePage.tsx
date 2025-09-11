@@ -26,24 +26,39 @@ export default function HomePage() {
     throw new Error("SettingsPanel must be used within a SettingsProvider");
 
   const {
-    settings: { orientation },
+    settings: { orientation, scrambleOrientation },
   } = context;
+
   const simplifiedScramble = simplifyScramble(scramble);
+
   const rotation = orientationToRotation(orientation);
-  const afterRotation = makeWhiteTopGreenFront(
-    applyScramble({ type: "3x3", scramble: scramble }),
+  const scrambleRotation = orientationToRotation(scrambleOrientation);
+
+  const scrambleForPreview = `${scrambleRotation} ${simplifiedScramble}`;
+
+  const rotationForPreview = makeWhiteTopGreenFront(
+    applyScramble({ type: "3x3", scramble: scrambleForPreview }),
   );
-  const realScramble = `${invertRotation(rotation)} ${scramble} ${rotation} ${afterRotation}`;
+
+  const realScramble = `${invertRotation(rotation)} ${scrambleRotation} ${scramble} ${rotation}`;
+  const afterRotation = makeWhiteTopGreenFront(
+    applyScramble({ type: "3x3", scramble: realScramble }),
+  );
+  // Make White Top Green Front
+  const realScrambleWG = `${realScramble} ${afterRotation}`;
   const cube = applyScramble({
     type: "3x3",
-    scramble: realScramble,
+    scramble: realScrambleWG,
   });
 
   return (
     <div className="container mx-auto max-w-3xl p-4 sm:p-6 space-y-6">
       <div className="flex flex-wrap items-center gap-2">
         <Settings />
-        <CubeSidebar scramble={simplifiedScramble} rotation={afterRotation} />
+        <CubeSidebar
+          scramble={scrambleForPreview}
+          rotation={rotationForPreview}
+        />
         <ScrambleButton setScramble={setScramble} />
       </div>
       <ScrambleInputField scramble={scramble} setScramble={setScramble} />

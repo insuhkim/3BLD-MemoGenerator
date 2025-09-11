@@ -17,6 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import { Orientation } from "../../utils/types/Settings";
+import { colorName, orientations } from "@/utils/orientation";
 
 const CUBE_PREVIEW_STYLE_OPTIONS: {
   value: "2D" | "3D";
@@ -26,36 +27,6 @@ const CUBE_PREVIEW_STYLE_OPTIONS: {
   { value: "3D", label: "3D" },
 ];
 
-const ORIENTATION_OPTIONS: {
-  value: Orientation;
-  label: string;
-}[] = [
-  { value: "wg", label: "White-Green (WG)" },
-  { value: "wr", label: "White-Red (WR)" },
-  { value: "wb", label: "White-Blue (WB)" },
-  { value: "wo", label: "White-Orange (WO)" },
-  { value: "yg", label: "Yellow-Green (YG)" },
-  { value: "yr", label: "Yellow-Red (YR)" },
-  { value: "yb", label: "Yellow-Blue (YB)" },
-  { value: "yo", label: "Yellow-Orange (YO)" },
-  { value: "ob", label: "Orange-Blue (OB)" },
-  { value: "ow", label: "Orange-White (OW)" },
-  { value: "oy", label: "Orange-Yellow (OY)" },
-  { value: "og", label: "Orange-Green (OG)" },
-  { value: "rb", label: "Red-Blue (RB)" },
-  { value: "rw", label: "Red-White (RW)" },
-  { value: "ry", label: "Red-Yellow (RY)" },
-  { value: "rg", label: "Red-Green (RG)" },
-  { value: "go", label: "Green-Orange (GO)" },
-  { value: "gy", label: "Green-Yellow (GY)" },
-  { value: "gw", label: "Green-White (GW)" },
-  { value: "gr", label: "Green-Red (GR)" },
-  { value: "bo", label: "Blue-Orange (BO)" },
-  { value: "by", label: "Blue-Yellow (BY)" },
-  { value: "bw", label: "Blue-White (BW)" },
-  { value: "br", label: "Blue-Red (BR)" },
-];
-
 export default function PreviewStyle() {
   const context = useContext(SettingsContext);
   if (!context)
@@ -63,27 +34,6 @@ export default function PreviewStyle() {
 
   const { settings, setSettings } = context;
 
-  const colorName = (color: string) => {
-    //prettier-ignore
-    switch (color) {
-      case "w": return "White";
-      case "r": return "Red";
-      case "o": return "Orange";
-      case "g": return "Green";
-      case "b": return "Blue";
-      case "y": return "Yellow";
-    }
-  };
-
-  //prettier-ignore
-  const orientations = [
-    "wg", "wr", "wb", "wo",
-    "yg", "yr", "yb", "yo",
-    "ob", "ow", "oy", "og",
-    "rb", "rw", "ry", "rg",
-    "go", "gy", "gw", "gr",
-    "bo", "by", "bw", "br",
-  ];
   return (
     <Card>
       <CardHeader>
@@ -93,30 +43,6 @@ export default function PreviewStyle() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-center justify-between rounded-lg border p-4">
-          <Label
-            htmlFor="applyScrambleRotationToPreview"
-            className="flex flex-col space-y-1"
-          >
-            <span>Apply scramble rotations to preview</span>
-            <span className="font-normal leading-snug text-muted-foreground">
-              If enabled, the preview will rotate according to the scramble
-              rotations. For example, if the scramble is "Fw", the preview will
-              also rotate with "z" move.
-            </span>
-          </Label>
-          <Switch
-            id="applyScrambleRotationToPreview"
-            checked={settings.applyScrambleRotationToPreview}
-            onCheckedChange={(checked) => {
-              setSettings((prev) => ({
-                ...prev,
-                applyScrambleRotationToPreview: !!checked,
-              }));
-            }}
-          />
-        </div>
-
         <div className="rounded-lg border p-4">
           <div className="space-y-2">
             <Label
