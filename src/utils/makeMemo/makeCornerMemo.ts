@@ -9,17 +9,20 @@ import {
 export function makeCornerMemo(
   cube: Cube,
   buffer: Speffz,
-  priority: Speffz[] = []
+  priority: Speffz[] = [],
 ) {
   const solved = solvedCube({ type: "3x3" });
 
   const nextTarget = (current: Speffz) =>
     cornerToSpeffz(speffzToCubeCorner(cube, current));
 
-  const getCycle = (target: Speffz, cycleStart: Speffz): Speffz[] =>
+  const getCycleHelper = (target: Speffz, cycleStart: Speffz): Speffz[] =>
     isSameCornerSpeffz(target, cycleStart)
       ? [target]
-      : [target, ...getCycle(nextTarget(target), cycleStart)];
+      : [target, ...getCycleHelper(nextTarget(target), cycleStart)];
+
+  const getCycle = (cycleStart: Speffz) =>
+    getCycleHelper(nextTarget(cycleStart), cycleStart);
 
   const allOrientedCorners: Speffz[] = ["A", "B", "C", "D", "U", "V", "W", "X"];
   let unsolvedCorners = [...new Set([...priority, ...allOrientedCorners])]
@@ -36,10 +39,10 @@ export function makeCornerMemo(
 
   let firstCycle: Speffz[] = [];
   if (!isBufferBlocked) {
-    firstCycle = getCycle(nextTarget(buffer), buffer);
+    firstCycle = getCycle(buffer);
     firstCycle.pop();
     unsolvedCorners = unsolvedCorners.filter((c) =>
-      firstCycle.every((c1) => !isSameCornerSpeffz(c, c1))
+      firstCycle.every((c1) => !isSameCornerSpeffz(c, c1)),
     );
   }
 
@@ -48,9 +51,9 @@ export function makeCornerMemo(
   while (unsolvedCorners.length > 0) {
     const start = unsolvedCorners[0];
     const target = nextTarget(start);
-    const cycle = getCycle(target, start);
+    const cycle = getCycle(start);
     unsolvedCorners = unsolvedCorners.filter((c) =>
-      cycle.every((c1) => !isSameCornerSpeffz(c, c1))
+      cycle.every((c1) => !isSameCornerSpeffz(c, c1)),
     );
     result.push([start, ...cycle]);
   }
