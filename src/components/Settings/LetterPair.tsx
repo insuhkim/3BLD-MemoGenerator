@@ -109,7 +109,7 @@ function CSVImportButtons({
 
   return (
     <div className="space-y-2">
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2 mt-2 w-full">
         <input
           type="file"
           accept=".csv"
@@ -120,12 +120,16 @@ function CSVImportButtons({
         <Button
           onClick={triggerFileInput}
           variant="outline"
-          className="flex gap-2"
+          className="flex gap-2 w-full sm:w-auto"
         >
           <Upload size={16} />
           Import {type !== "corner" ? "Edge" : ""} Letter Pairs
         </Button>
-        <Button variant="outline" className="flex gap-2" asChild>
+        <Button
+          variant="outline"
+          className="flex gap-2 w-full sm:w-auto"
+          asChild
+        >
           <a
             href="https://bestsiteever.ru/colpi/api/csv.php"
             target="_blank"

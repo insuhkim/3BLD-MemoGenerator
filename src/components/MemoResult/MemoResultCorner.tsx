@@ -24,7 +24,7 @@ export default function MemoResultCorner({
   showFlippedCorner,
   cycleStyle,
   memoSwap,
-  edgeBuffer,
+  memoSwap2,
   scheme,
   useCustomLetterPairsCorner,
 }: {
@@ -32,9 +32,9 @@ export default function MemoResultCorner({
   showFlippedCorner: FlippedCornerStyle;
   buffer: Speffz;
   cycleStyle: CycleNotationStyle;
-  edgeBuffer: Speffz;
   scheme: string;
   memoSwap?: Speffz;
+  memoSwap2: Speffz;
   useCustomLetterPairsCorner: boolean;
 }) {
   if (memo.length === 0) return null;
@@ -99,7 +99,7 @@ export default function MemoResultCorner({
           )
         : CornerToURL(buffer, allTargets[i], allTargets[i + 1])
       : memoSwap
-        ? ParityURL(edgeBuffer, memoSwap, buffer, allTargets[i])
+        ? ParityURL(memoSwap2, memoSwap, buffer, allTargets[i])
         : undefined;
 
     const target2 = allTargets[i + 1];

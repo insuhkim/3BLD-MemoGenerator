@@ -51,12 +51,17 @@ export default function MemoResult({ cube }: { cube: Cube }) {
       cornerParity && settings.memoSwap !== "none"
         ? settings.memoSwap
         : settings.edgeBuffer;
+    const swap2 =
+      cornerParity && settings.memoSwap2 !== "buffer"
+        ? settings.memoSwap2
+        : settings.edgeBuffer;
 
     const edgeMemo = makeEdgeMemo(
       cube,
       settings.edgeBuffer,
       settings.edgePriority,
       swap,
+      swap2,
     );
 
     return {
@@ -70,6 +75,7 @@ export default function MemoResult({ cube }: { cube: Cube }) {
     settings.cornerBuffer,
     settings.cornerPriority,
     settings.memoSwap,
+    settings.memoSwap2,
     settings.edgeBuffer,
     settings.edgePriority,
   ]);
@@ -163,8 +169,12 @@ export default function MemoResult({ cube }: { cube: Cube }) {
                   showFlippedCorner={settings.showFlippedCorner}
                   buffer={settings.cornerBuffer}
                   cycleStyle={settings.cycleStyle}
-                  edgeBuffer={settings.edgeBuffer}
                   memoSwap={settings.memoSwap === "none" ? undefined : memoSwap}
+                  memoSwap2={
+                    settings.memoSwap2 === "buffer"
+                      ? settings.edgeBuffer
+                      : settings.memoSwap2
+                  }
                   scheme={settings.letteringScheme}
                   useCustomLetterPairsCorner={
                     settings.useCustomLetterPairsCorner

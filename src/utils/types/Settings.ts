@@ -23,6 +23,7 @@ export type Settings = {
   showFlippedCorner: FlippedCornerStyle;
   cubePreviewStyle: CubePreviewStyle;
   memoSwap: "none" | Speffz;
+  memoSwap2: "buffer" | Speffz;
   orientation: Orientation;
   scrambleOrientation: Orientation;
   letteringScheme: string;
