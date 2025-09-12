@@ -30,44 +30,36 @@ export default function Scramble() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Scramble Setting</CardTitle>
-        <CardDescription>Settings about scramble.</CardDescription>
+        <CardTitle>Scramble Orientation</CardTitle>
+        <CardDescription>
+          Choose the orientation of the cube when scramble starts.
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="rounded-lg border p-4">
-          <div className="space-y-2">
-            <Label
-              htmlFor="scrambleOrientation"
-              className="text-sm font-medium"
-            >
-              Scramble Orientation
-            </Label>
-            <Select
-              value={scrambleOrientation}
-              onValueChange={(value) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  scrambleOrientation: value as Orientation,
-                }));
-              }}
-            >
-              <SelectTrigger
-                id="cubePreviewStyleSelect"
-                className="w-full sm:w-[180px]"
-              >
-                <SelectValue placeholder="Select preview style" />
-              </SelectTrigger>
-              <SelectContent>
-                {orientations.map((orientation) => (
-                  <SelectItem key={orientation} value={orientation}>
-                    {colorName(orientation[0])}-{colorName(orientation[1])} (
-                    {orientation.toUpperCase()})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+        <Select
+          value={scrambleOrientation}
+          onValueChange={(value) => {
+            setSettings((prev) => ({
+              ...prev,
+              scrambleOrientation: value as Orientation,
+            }));
+          }}
+        >
+          <SelectTrigger
+            id="cubePreviewStyleSelect"
+            className="w-full sm:w-[180px]"
+          >
+            <SelectValue placeholder="Select preview style" />
+          </SelectTrigger>
+          <SelectContent>
+            {orientations.map((orientation) => (
+              <SelectItem key={orientation} value={orientation}>
+                {colorName(orientation[0])}-{colorName(orientation[1])} (
+                {orientation.toUpperCase()})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </CardContent>
     </Card>
   );
