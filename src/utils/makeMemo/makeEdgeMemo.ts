@@ -50,8 +50,8 @@ export function makeEdgeMemo(
   let unsolvedEdges = [...new Set([...priority, ...allOrientedEdges])]
     .filter((edge) => !isSameEdgeSpeffz(edge, buffer))
     .filter((c) => {
-      const edge = speffzToCubeEdge(cube, swap(c));
-      const solvedEdge = speffzToCubeEdge(solved, c);
+      const edge = speffzToCubeEdge(cube, c);
+      const solvedEdge = speffzToCubeEdge(solved, swap(c));
       return edge[0] !== solvedEdge[0] || edge[1] !== solvedEdge[1];
     });
 
