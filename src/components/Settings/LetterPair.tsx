@@ -109,6 +109,48 @@ function CSVImportButtons({
     fileInputRef.current?.click();
   };
 
+  const downloadExampleCSV = () => {
+    const csvContent = `en,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,ʧ,
+A,"AA BATTERY","ABS","AIR CONDITIONER","AD (ADVERTISEMENT)","AEROPLANE","AFRO","ANGEL","ASH","ARTIFICIAL INTELLIGENCE","APPLE JUICE","AK-47","ALIEN","AMMO","ANT","AORTA","APPLE","AQUARIUM","ARROW","ASS","ATOM","GOLD","AVOCADO","""AWWW""","AXE","AYYY LMAO","ARIZONA","ASH",
+B,"BANANA","BABY","BACON","BED","BEE","BLINDFOLD","BAG","BEEHIVE","BIKE","BLOWJOB","BOOK","BALL","BOMB","BANANA","BARACK OBAMA","BACKPACK","BBQ","BEAR","BUS","BAT","BUBBLES","BEAVER","BOW","BOX","BOY","BUZZ LIGHTYEAR","BITCH",
+C,"CANADA","CUBE","COCONUT","CD","CEREAL","COFFEE","COG","CHAIR","CIA","CAJUN","CAKE","CELL","CUM","CAN","COCONUT","CUP","CROQUET","CAR","CSTIMER","CAT","CUBE","CAVE","COW","COX","CLAY","CZECH REPUBLIC","CASH",
+D,"DAD","DAB","DICE","DONALD DUCK","DEER","DOOFENSHMIRTZ","DOG","DOUGH","DIAMOND","DJ","DONKEY KONG","DOLL","DIRECT MESSAGE","DONUT","DO","DEEP","DISQUALIFIED","DOCTOR","NINTENDO DS","DOT","DUDE","DARTH VADER","DWARF","DUCKS","DAY","DEEZ NUTS","DASH (FROM INCREDIBLES)",
+E,"EAGLE","EYEBALL","ECLIPSE","ENDERMAN","EEL","ELF","EGG","EARTH","EIFFEL TOWER","EDGE","ELK","EEL","EMINEM","ENVELOPE","EEYORE","EGGPLANT","EARTHQUAKE","EAR","ESKIMO","E.T.","EUROPE","ELEVATOR","EWW","EXCEL","EYE","EZ (EASY)","ETCH",
+F,"FART","FACEBOOK","FACE","FOOD","IRON","FIREFIGHTER","FROG","FISH","FIRE","FOOTJOB","FUCK","FLY","FOAM","FAN","FOO FIGHTERS","FAP","FARQUAAD","FIRE","FOSSIL","FEET","FUEL","FIVE","FLOWER","FOX","FLY","FELIKS ZEMDEGS","FISH",
+G,"GAG","GLOBE","GAME CUBE","GOD","GENIE","GOLF","GOOD GAME","GHOST","GI JANE 2 CAN'T WAIT TO SEE IT","GOOD JOB","GOALKEEPER","GOAL","GYM","GUN","GO","GAP","GUACAMOLE","GRASS","GAS","GOAT","GUITAR","GRAVEL","GWEN","GALAXY","GAY","GODZILLA","GLITCH",
+H,"HAHA (LAUGHING)","HOBBIT","HELICOPTER","HOT DOG","HELIUM","HIGH FIVE","HUG","HEDGEHOG","HI (HELLO)","HIJAB","HOOK","HELL","HAM","HONEY","HOE","HARRY POTTER","HEADQUARTERS","HAIR","HIGHSCOOL","HAT","HUT","HIVE","HAWK","HEXAGON","HYENA","HAZARD","HATCH",
+I,"IAN","ICEBERG","ICE","ID CARD","ICE","EIFFEL TOWER","INSTAGRAM","INCREDIBLE HULK","TWO (II)","INDIANA JONES","INK","ILL","IRON MAN","INN","IO (JUPITER'S MOON)","IP ADDRESS","IQ","IRON","ISIS","IT (CLOWN)","ILLUMINATI","IVY","IOWA","NINE (IX)","IVY","IZZY","ITCH",
+J,"JAR","JOB","JESUS CHRIST","JEDI","JEEP","JEFF","JAGUAR","JABBA THE HUTT (STAR WARS)","JIGSAW","JOJO","JUKE BOX","JAIL","JAM","JEANS","JOE","J-PERM (YOUTUBER)","JOAQUIN PHOENIX","JAR","JESUS","JET","JUICE","JAVELIN","JEW","JINX (HARRY POTTER)","JAY","JAZZ","JOSH",
+K,"KAYAK","KEBAB","KFC","KID","KEY","KFC","KANGAROO","KEYHOLE","KITE","CAGE","KIT KAT","KILL","KILOMETER","KEN","KOALA","KELP","CHESS (KING AND QUEEN)","KIRBY","KISS","KIT KAT","KU KLUX KLAN","KEVIN HAYS","KIWI","KIX","KEY","KAZOO","KITCHEN",
+L,"LOS ANGELES","LOBSTER","LACE","LADDER","LEMON","LEAF","LEGO","LIGHTHOUSE","LION","LEBRON JAMES","LAKE","LAST LAYER","LEMON","LINE","LOG","LAPTOP","LIQUID","LASER","LIGHTSABER","LETTUCE","LUBE","LOVE","LAW","LORAX","LAYS","LIZARD","LEECH",
+M,"MARIO","MOB","MINECRAFT","MUD","ME","MUFFIN","MAGAZINE","MOHAWK","MII (NINTENDO)","MICHAEL JACKSON","MONKEY","MAIL","M&MS","MONEY","MOM","MAX PARK","MOSQUITO","MIRROR","MOUSE","MOUNTAIN","MUSHROOM","MOVIE","MICROWAVE","MAX PARK","MOYU","MAZE","MATCH",
+N,"NACHOS","NOTEBOOK","NACHOS","NOODLES","KNEE","NERF","NIGGER","NOAH","NINE","NINJA","NIKE","NAIL","NEMO","NUN","NO","NAP","NESQUIK","NATIONAL RECORD","NISS","NET","NUN","NAVEL","NEWSPAPER","NEXT","NEW YORK","NAZI","NOTCH",
+O,"OATMEAL","BARACK OBAMA","OCTOPUS","OXFORD DICTIONARY","OREO","ONLY FANS","OGRE","ONE HAND","OIL","ORANGE JUICE","OAK","OLL","OMELETTE","ONION","OLOR","OPERA","OLD QUACKMAN (DUCK DOING BLD)","ORANGE","OSTRICH","OTTER","ORANGUTAN","OVEN","OWL","OX","OYSTER","WIZARD OF OZ","OUCH",
+P,"PANDA","PB (PERSONAL BEST)","PC","PANDA","PEE","PERFUME","PIG","PHONE","PIE","PAJAMAS","PIKACHU","PLUNGER","POKEMON","PINK","PO (KUNG FU PANDA)","POOP","PORCUPINE","PERSONAL RECORD","PISS","POT","PUSH-UP","POLE VAULT","POWER","PIXEL","PYRAMINX","PIZZA","PEACH (MARIO)",
+Q,"QATAR","QUARTERBACK","QUICK","QUANDALE DINGLE","QUEEN ELIZABETH","QUEEF","QUAGMIRE","SQUASH","QIYI","QUI-GON JINN","QUICK","QUILL","QUESTION MARK","QUEEN","QUAKER OATS","CUPID","QUEUE","QR CODE","QUICKSAND","Q-TIP","QUEUE","QUIVER","KEYBOARD (QWERTY)","QUICKSAND","QIYI","QUIZ","QUIDDITCH (HARRY POTTER)",
+R,"RA (EGYPTIAN GOD)","RUBY","RUBIKS CUBE","R2D2","REESE'S","REFEREE","RUG","RHINO","RICE","RAGE","ROCK","RAIL","REMOTE","RAIN","ROSE","ROPE","RACQUET","RICKROLL","ROSS","RAT","RUSSIA","RIVER","RAINBOW","ROUX","RYE","RAZOR","ROACH",
+S,"SANTA","SPONGEBOB","STANLEY CHAPEL","SD CARD","SEA","SAFE","SPAGHETTI","SHHHH","SIRI","SAUSAGE","SOCK","SAIL","GANS AIR SM","SUN","SOAP","SOAP","SQUARE-1","STAR","SCISSORS","SAINT","SUUUUUUUUUUUUUUUUUUUUUUUUUUI","SEAN VILLANUEVA","STAR WARS","SEX","SYRUP","SEIZURE","SUSHI",
+T,"TANK","TENNIS BALL","TACO","TEDDY BEAR","TEA","TOFU","TIGER","THANOS","TIE","TAJ MAHAL","TYMON KOLASINKSI","TAIL","TOMATO","TENT","TOE","TOILET PAPER","TEQUILA","TREE","TAYLOR SWIFT","TETRIS","TUTU","TV","TOWEL","TAXI","TOY","TAZER","TEACHER",
+U,"USA","USAIN BOLT","UNICORN","UDDER","UWE MEFFERTS","UFO","UGLY","UHHH (THINKING)","USER INTERFACE","FUJI (MOUNTAIN)","UNITED KINGDOM","URINAL","UMBRELLA","UNITED NATIONS","UNO","UP (PIXAR MOVIES)","UNIQUE","URINE","U.S. (FLAG)","UTERUS","UBUNTU (LINUX)","ULTRAVIOLET","UNDERWEAR","HORCRUX","URUGUAY","UZI","URCHIN",
+V,"VASE","VOLLEYBALL","VACUUM","VIDEO","VENUS","VENUS FLYTRAP","VAGINA","VEHICLE","VIRUS","VEGGIES","VIKING","VIOLA","VOMIT","VAN","VOLCANO","VAPE","VENTRILOQUIST","VR HEADSET","VSAUCE","VET","VULTURE","VOLVO","VOLKSWAGEN","VACCINE","VINYL","VENEZUELA","VOUCHER",
+W,"WALUIGI","WEB","TOILET","WOOD","WE","WAFFLE","WIG","WHITE HOUSE","WII","WOAJ","WOK","WALL","WATERMELON","WINE","WOLF","WHIP","WUQUE","WAR","WASABI","WATER","WALUIGI","WAVE","WONDER WOMAN","WAX","WANG YIHENG","WIZARD","WATCH",
+X,"XAVIER","X-BOX","X-CROSS","XD","XENON","CHEF","EXAGGERATE","EXHALE","XI JINPING","EXAGGERATE","SHARK","EXCEL","X-MEN","XENON","TIC-TAC-TOE","EXPERIENCE POINTS","EXQUISITE","X-RAY","EXTRA SMALL","EXIT","XU RUIHANG","SHAVE","X-WING","XBOX","XYLOPHONE","SHAZAM","EXCHANGE",
+Y,"YAY","YEARBOOK","YACHT","YODA","YE","YELLOW FLOWER","YOGURT","YACHT","MASTER YI (GAME CHARACTER)","YJ CUBE","YOLK","YELL","YAM","YIN","YO-YO","YIPPIE","YAASS QUEEN","YOUR","""YES""","YOUTUBE","PHIL YU","YVELTAL","YAWN","YUXIN","YOYO","YAZ (FROM DOCTOR WHO)","YOSHI",
+Z,"ZAZU (THE LION KING)","ZEBRA","ZUCCHINI","ZELDA","ZEBRA","ZOMBIFY","ZIGZAGOON (POKEMON)","ZHANCHI (DAYAN)","ZIPPER","ZHANCHI","ZAYN KHANANI","ZELDA","ZOOM","ZENDAYA","ZOO","ZAP","ZZZQUIL","ZERO","ZEUS","ZIT","ZOO","XAVIER","ZIMBABWE","ZAXBYS","ZENDAYA","ZIG ZAG","ZANCHI",
+ʧ,"CHA CHA CHA","CHUBBY","CHOCOLATE","CHEDDAR","CHEESE","CHEF","CHUG","CHIHUAHUA","CHAI","CHARGE","CHEEK","CHILL","CHIMNEY","CHINA","SHAQUILLE O'NEAL","(COMPUTER) CHIP","CHEQUE","CHORE","CHESS","CHAT","CHOOSE","CHIVES","CHEW","CHECKS","CHAI","CHEESE","CHURCH",`;
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "letter-pair-images-en.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-2">
       <div className="flex flex-col lg:flex-row gap-2 mt-2 w-full">
@@ -136,18 +178,12 @@ function CSVImportButtons({
           Export {type !== "corner" ? "Edge" : ""}
         </Button>
         <Button
+          onClick={downloadExampleCSV}
           variant="outline"
           className="flex gap-2 w-full sm:w-auto"
-          asChild
         >
-          <a
-            href="https://bestsiteever.ru/colpi/api/csv.php"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Download size={16} />
-            Example CSV
-          </a>
+          <Download size={16} />
+          Example CSV
         </Button>
       </div>
       {status && (
@@ -749,7 +785,7 @@ export default function LetterPair() {
               <LetterPairToggle
                 id="separate-letter-pairs"
                 title="Separate Edge and Corner Letter Pairs"
-                description="Enable to manage edge and corner letter pairs separately. It is useful when different alphabets are used in corner and edge scheme"
+                description="Enable to manage edge and corner letter pairs separately. It is useful when different alphabets are used in corner and edge scheme."
                 checked={separateLetterPairs}
                 onCheckedChange={handleToggleSeparateLetterPairs}
               >
@@ -776,16 +812,7 @@ export default function LetterPair() {
           <p className="text-sm text-muted-foreground mb-4">
             Import letter pairs from a CSV file. The CSV should have single
             letters in the first row and column. Cell values will be used as
-            letter pair memos. You can download example CSV file provided by{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://bestsiteever.ru/colpi/"
-              className="underline"
-            >
-              CoLPI
-            </a>
-            , where you can also find more letter pairs.
+            letter pair memos.
           </p>
 
           {separateLetterPairs ? (
