@@ -62,6 +62,7 @@ interface ResetConfirmDialogProps {
 interface CSVImportButtonsProps {
   type: LetterPairType;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onExport: () => void;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   status: string;
 }
@@ -100,6 +101,7 @@ function ResetConfirmDialog({
 function CSVImportButtons({
   type,
   onImport,
+  onExport,
   fileInputRef,
   status,
 }: CSVImportButtonsProps) {
@@ -109,7 +111,7 @@ function CSVImportButtons({
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-col sm:flex-row gap-2 mt-2 w-full">
+      <div className="flex flex-col lg:flex-row gap-2 mt-2 w-full">
         <input
           type="file"
           accept=".csv"
@@ -123,7 +125,15 @@ function CSVImportButtons({
           className="flex gap-2 w-full sm:w-auto"
         >
           <Upload size={16} />
-          Import {type !== "corner" ? "Edge" : ""} Letter Pairs
+          Import {type !== "corner" ? "Edge" : ""}
+        </Button>
+        <Button
+          onClick={onExport}
+          variant="outline"
+          className="flex gap-2 w-full sm:w-auto"
+        >
+          <Download size={16} />
+          Export {type !== "corner" ? "Edge" : ""}
         </Button>
         <Button
           variant="outline"
@@ -136,7 +146,7 @@ function CSVImportButtons({
             rel="noopener noreferrer"
           >
             <Download size={16} />
-            Download Example CSV
+            Example CSV
           </a>
         </Button>
       </div>
@@ -478,6 +488,56 @@ function parseCSV(csvContent: string): string[][] {
   return csvContent.split("\n").map((line) => parseCSVLine(line));
 }
 
+// Export CSV function
+function exportToCSV(
+  letterPairs: Record<string, string>,
+  letteringScheme: string,
+  type: LetterPairType,
+  filename: string,
+) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
+  const applyScheme = (speffz: string) =>
+    speffzToScheme(letteringScheme, speffz as any, type);
+
+  const schemeLetters = alphabet.map(applyScheme).sort();
+
+  // Create CSV content
+  const csvRows: string[] = [];
+
+  // Header row: empty cell + all letters
+  csvRows.push("," + schemeLetters.join(","));
+
+  // Data rows
+  schemeLetters.forEach((rowLetter) => {
+    const row = [rowLetter];
+    schemeLetters.forEach((colLetter) => {
+      const pair = rowLetter + colLetter;
+      const memo = letterPairs[pair] || "";
+      // Escape quotes and wrap in quotes if contains comma or quote
+      const escapedMemo =
+        memo.includes(",") || memo.includes('"')
+          ? `"${memo.replace(/"/g, '""')}"`
+          : memo;
+      row.push(escapedMemo);
+    });
+    csvRows.push(row.join(","));
+  });
+
+  const csvContent = csvRows.join("\n");
+
+  // Create and download file
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", filename);
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 // Main component
 export default function LetterPair() {
   const context = useContext(SettingsContext);
@@ -618,6 +678,15 @@ export default function LetterPair() {
     reader.readAsText(file);
   };
 
+  // CSV export handler
+  const handleCSVExport = (type: LetterPairType) => {
+    const pairs = type === "edge" ? letterPairsEdge : letterPairs;
+    const typeLabel = type === "edge" ? "edge" : "corner";
+    const filename = `letter-pairs-${typeLabel}-${new Date().toISOString().split("T")[0]}.csv`;
+
+    exportToCSV(pairs, letteringScheme, type, filename);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -728,6 +797,7 @@ export default function LetterPair() {
                   onImport={(e) =>
                     handleCSVImport(e, "edge", setImportStatusEdge)
                   }
+                  onExport={() => handleCSVExport("edge")}
                   fileInputRef={fileInputRefEdge}
                   status={importStatusEdge}
                 />
@@ -740,6 +810,7 @@ export default function LetterPair() {
                   onImport={(e) =>
                     handleCSVImport(e, "corner", setImportStatusCorner)
                   }
+                  onExport={() => handleCSVExport("corner")}
                   fileInputRef={fileInputRefCorner}
                   status={importStatusCorner}
                 />
@@ -751,6 +822,7 @@ export default function LetterPair() {
               onImport={(e) =>
                 handleCSVImport(e, "corner", setImportStatusCorner)
               }
+              onExport={() => handleCSVExport("corner")}
               fileInputRef={fileInputRefCorner}
               status={importStatusCorner}
             />
