@@ -11,11 +11,11 @@ import { useContext, useEffect, useMemo, useState } from "react";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
+import { Cube } from "react-rubiks-cube-utils";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
 import QuickModify from "./QuickModify";
-import { Cube } from "react-rubiks-cube-utils";
 
 export default function MemoResult({ cube }: { cube: Cube }) {
   const context = useContext(SettingsContext);
@@ -52,7 +52,9 @@ export default function MemoResult({ cube }: { cube: Cube }) {
         ? settings.memoSwap
         : settings.edgeBuffer;
     const swap2 =
-      cornerParity && settings.memoSwap2 !== "buffer"
+      cornerParity &&
+      settings.memoSwap !== "none" &&
+      settings.memoSwap2 !== "buffer"
         ? settings.memoSwap2
         : settings.edgeBuffer;
 
