@@ -1,4 +1,4 @@
-import { Cube } from "react-rubiks-cube-utils";
+import type { Cube } from "react-rubiks-cube-utils";
 import { Orientation } from "./types/Settings";
 
 //prettier-ignore

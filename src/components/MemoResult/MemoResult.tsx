@@ -11,7 +11,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 
 import { makeCornerMemo } from "@/utils/makeMemo/makeCornerMemo";
 import { makeEdgeMemo } from "@/utils/makeMemo/makeEdgeMemo";
-import { Cube } from "react-rubiks-cube-utils";
+import type { Cube } from "react-rubiks-cube-utils";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import MemoResultCorner from "./MemoResultCorner";
 import MemoResultEdge from "./MemoResultEdge";
