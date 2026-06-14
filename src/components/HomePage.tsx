@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import simplifyScramble from "@/utils/scramble/simplifyScramble";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import CubeSidebar from "./CubePreview/CubeSidebar";
 import MemoResult from "./MemoResult/MemoResult";
 import ScrambleButton from "./ScrambleGenerator/ScrambleButton";
@@ -29,27 +29,44 @@ export default function HomePage() {
     settings: { orientation, scrambleOrientation },
   } = context;
 
-  const simplifiedScramble = simplifyScramble(scramble);
+  // simplifyScramble is now async (dynamic import of cubing/alg + cubing/puzzles).
+  // Use state + effect to resolve it without blocking renders.
+  const [simplifiedScramble, setSimplifiedScramble] = useState(scramble);
 
-  const rotation = orientationToRotation(orientation);
-  const scrambleRotation = orientationToRotation(scrambleOrientation);
+  useEffect(() => {
+    let cancelled = false;
+    simplifyScramble(scramble).then((result) => {
+      if (!cancelled) setSimplifiedScramble(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [scramble]);
 
-  const scrambleForPreview = `${scrambleRotation} ${simplifiedScramble}`;
+  // Memoize all heavy cube computations.
+  const { scrambleForPreview, rotationForPreview, cube } = useMemo(() => {
+    const rotation = orientationToRotation(orientation);
+    const scrambleRotation = orientationToRotation(scrambleOrientation);
 
-  const rotationForPreview = makeWhiteTopGreenFront(
-    applyScramble({ type: "3x3", scramble: scrambleForPreview }),
-  );
+    const scrambleForPreview = `${scrambleRotation} ${simplifiedScramble}`;
 
-  const realScramble = `${invertRotation(rotation)} ${scrambleRotation} ${scramble} ${rotation}`;
-  const afterRotation = makeWhiteTopGreenFront(
-    applyScramble({ type: "3x3", scramble: realScramble }),
-  );
-  // Make White Top Green Front
-  const realScrambleWG = `${realScramble} ${afterRotation}`;
-  const cube = applyScramble({
-    type: "3x3",
-    scramble: realScrambleWG,
-  });
+    const rotationForPreview = makeWhiteTopGreenFront(
+      applyScramble({ type: "3x3", scramble: scrambleForPreview }),
+    );
+
+    const realScramble = `${invertRotation(rotation)} ${scrambleRotation} ${scramble} ${rotation}`;
+    const afterRotation = makeWhiteTopGreenFront(
+      applyScramble({ type: "3x3", scramble: realScramble }),
+    );
+    // Make White Top Green Front
+    const realScrambleWG = `${realScramble} ${afterRotation}`;
+    const cube = applyScramble({
+      type: "3x3",
+      scramble: realScrambleWG,
+    });
+
+    return { scrambleForPreview, rotationForPreview, cube };
+  }, [scramble, simplifiedScramble, orientation, scrambleOrientation]);
 
   return (
     <div className="container mx-auto max-w-3xl p-4 sm:p-6 space-y-6">
