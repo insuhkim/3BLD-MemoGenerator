@@ -6,9 +6,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import cstimer from "cstimer_module";
 import { ChevronDown } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Button } from "../ui/button";
 
 type ScrambleTypeOption = "333" | "edges" | "corners" | "333ni";
@@ -32,9 +31,14 @@ export default function ScrambleButton({
   setScramble: (scramble: string) => void;
 }) {
   const [scrambleType, setScrambleType] = useState<ScrambleTypeOption>("333");
+  // Lazy-load cstimer_module only when the user clicks Scramble for the first time.
+  const cstimerRef = useRef<typeof import("cstimer_module") | null>(null);
 
-  const handleGenerate = useCallback(() => {
-    setScramble(cstimer.getScramble(scrambleType));
+  const handleGenerate = useCallback(async () => {
+    if (!cstimerRef.current) {
+      cstimerRef.current = await import("cstimer_module");
+    }
+    setScramble(cstimerRef.current.getScramble(scrambleType));
   }, [scrambleType, setScramble]);
 
   const handleSelectType = useCallback((type: ScrambleTypeOption) => {
