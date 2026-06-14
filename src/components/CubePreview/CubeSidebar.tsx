@@ -8,10 +8,24 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import { Button } from "../ui/button";
-import Cube2DPlayer from "./Cube2DPlayer";
-import Cube3DPlayer from "./Cube3DPlayer";
+import dynamic from "next/dynamic";
 
 import { orientationToRotation } from "@/utils/orientation";
+
+// Lazy-load the heavy cube players so the cubing/twisty bundle (Three.js, WebGL,
+// WASM workers) is only downloaded when the Preview sheet is opened for the first time.
+const Cube3DPlayer = dynamic(() => import("./Cube3DPlayer"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center w-full h-48 text-muted-foreground text-sm">
+      Loading 3D preview...
+    </div>
+  ),
+});
+
+const Cube2DPlayer = dynamic(() => import("./Cube2DPlayer"), {
+  ssr: false,
+});
 
 export default function CubeSidebar({
   scramble,
