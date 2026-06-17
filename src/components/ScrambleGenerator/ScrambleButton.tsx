@@ -35,10 +35,14 @@ export default function ScrambleButton({
   const cstimerRef = useRef<typeof import("cstimer_module") | null>(null);
 
   const handleGenerate = useCallback(async () => {
-    if (!cstimerRef.current) {
-      cstimerRef.current = await import("cstimer_module");
+    try {
+      const cstimer =
+        cstimerRef.current ??
+        (cstimerRef.current = await import("cstimer_module"));
+      setScramble(cstimer.getScramble(scrambleType));
+    } catch (error) {
+      console.error("Failed to generate scramble:", error);
     }
-    setScramble(cstimerRef.current.getScramble(scrambleType));
   }, [scrambleType, setScramble]);
 
   const handleSelectType = useCallback((type: ScrambleTypeOption) => {

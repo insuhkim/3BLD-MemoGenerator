@@ -35,6 +35,8 @@ export default function HomePage() {
 
   useEffect(() => {
     let cancelled = false;
+    // Keep computations consistent while the async simplification is in-flight.
+    setSimplifiedScramble(scramble);
     simplifyScramble(scramble).then((result) => {
       if (!cancelled) setSimplifiedScramble(result);
     });

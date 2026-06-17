@@ -19,6 +19,7 @@ export default function ScrambleInputField({
 
   // Keep local value in sync when the scramble is changed externally (e.g. Scramble button).
   useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     setLocalValue(scramble);
   }, [scramble]);
 

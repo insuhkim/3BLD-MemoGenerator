@@ -6,12 +6,14 @@ let puzzlesModule: typeof import("cubing/puzzles") | null = null;
 
 async function loadCubingModules() {
   if (!algModule || !puzzlesModule) {
-    [algModule, puzzlesModule] = await Promise.all([
+    const [alg, puzzles] = await Promise.all([
       import("cubing/alg"),
       import("cubing/puzzles"),
     ]);
+    algModule = alg;
+    puzzlesModule = puzzles;
   }
-  return { Alg: algModule.Alg, cube3x3x3: puzzlesModule.cube3x3x3 };
+  return { Alg: algModule!.Alg, cube3x3x3: puzzlesModule!.cube3x3x3 };
 }
 
 export default async function simplifyScramble(
