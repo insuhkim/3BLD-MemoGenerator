@@ -1,14 +1,31 @@
-import { Alg } from "cubing/alg";
-import { cube3x3x3 } from "cubing/puzzles";
 import { isValidScramble } from "./isValidScramble";
 
-export default function simplifyScramble(scramble: string): string {
+// Cache the dynamically imported modules so they are only loaded once.
+let algModule: typeof import("cubing/alg") | null = null;
+let puzzlesModule: typeof import("cubing/puzzles") | null = null;
+
+async function loadCubingModules() {
+  if (!algModule || !puzzlesModule) {
+    const [alg, puzzles] = await Promise.all([
+      import("cubing/alg"),
+      import("cubing/puzzles"),
+    ]);
+    algModule = alg;
+    puzzlesModule = puzzles;
+  }
+  return { Alg: algModule!.Alg, cube3x3x3: puzzlesModule!.cube3x3x3 };
+}
+
+export default async function simplifyScramble(
+  scramble: string,
+): Promise<string> {
   if (isValidScramble(scramble) === false) {
     console.warn("Invalid scramble provided for simplification:", scramble);
-    return scramble; // Return the original scramble if it's invalid
+    return scramble;
   }
 
   try {
+    const { Alg, cube3x3x3 } = await loadCubingModules();
     const alg = Alg.fromString(scramble).experimentalSimplify({
       puzzleLoader: cube3x3x3,
       cancel: { puzzleSpecificModWrap: "canonical-centered" },
@@ -16,6 +33,6 @@ export default function simplifyScramble(scramble: string): string {
     return alg.toString();
   } catch (error) {
     console.error("Error simplifying scramble:", error);
-    return scramble; // Return the original scramble if simplification fails
+    return scramble;
   }
 }

@@ -16,33 +16,33 @@ export const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined,
 );
 
+const defaultSettings: Settings = {
+  edgePriority: [],
+  cornerPriority: [],
+  edgeBuffer: "C",
+  cornerBuffer: "C",
+  cycleStyle: "vertical",
+  showFlippedEdge: "none",
+  showFlippedCorner: "none",
+  cubePreviewStyle: "3D",
+  memoSwap: "none",
+  memoSwap2: "buffer",
+  orientation: "wg",
+  scrambleOrientation: "wg",
+  letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
+  letterPairs: {},
+  useCustomLetterPairsEdge: true,
+  useCustomLetterPairsCorner: true,
+  separateLetterPairs: false,
+  letterPairsEdge: {},
+};
+
 type SettingsProviderProps = {
   children: ReactNode;
 };
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   children,
 }) => {
-  const defaultSettings: Settings = {
-    edgePriority: [],
-    cornerPriority: [],
-    edgeBuffer: "C",
-    cornerBuffer: "C",
-    cycleStyle: "vertical",
-    showFlippedEdge: "none",
-    showFlippedCorner: "none",
-    cubePreviewStyle: "3D",
-    memoSwap: "none",
-    memoSwap2: "buffer",
-    orientation: "wg",
-    scrambleOrientation: "wg",
-    letteringScheme: "AABD BDCCEEFH FHGGIIJL JLKKMMNP NPOOQQRT RTSSUUVX VXWW",
-    letterPairs: {},
-    useCustomLetterPairsEdge: true,
-    useCustomLetterPairsCorner: true,
-    separateLetterPairs: false,
-    letterPairsEdge: {},
-  };
-
   // Initialize with default settings on both server and client to prevent hydration mismatch.
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
@@ -70,7 +70,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
         console.error("Failed to save settings to localStorage", error);
       }
     }
-  }, [settings, defaultSettings]);
+  }, [settings]);
 
   const addLetterPair = (
     pair: string,

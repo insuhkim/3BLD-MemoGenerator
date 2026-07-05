@@ -1,15 +1,12 @@
-import { Alg } from "cubing/alg";
+// Pure regex validation — no cubing/alg dependency needed.
+// Matches standard 3x3 notation: R, L, U, D, F, B (with optional 'w' for wide),
+// slice moves M, E, S, and rotations x, y, z, all with optional 2/' modifiers.
+const VALID_MOVE = /^([RLUDFB]w?|[MESxyz])(2|')?$/;
 
 export function isValidScramble(scramble: string): boolean {
-  const TEST_ONE_MOVE = /^([RLUDFB]w?|[MESxyz])(\d+)?'?$/;
-  try {
-    const alg = Alg.fromString(scramble).experimentalSimplify();
-    for (const node of alg.childAlgNodes()) {
-      const move = node.toString().trim();
-      if (!TEST_ONE_MOVE.test(move)) return false;
-    }
-    return true;
-  } catch (error) {
-    return false;
-  }
+  const trimmed = scramble.trim();
+  if (trimmed === "") return true; // empty is valid (no scramble)
+
+  const moves = trimmed.split(/\s+/);
+  return moves.every((move) => VALID_MOVE.test(move));
 }

@@ -1,4 +1,4 @@
-import { Color, Cube } from "react-rubiks-cube-utils";
+import type { Color, Cube } from "react-rubiks-cube-utils";
 import { Edge } from "../types/Edge";
 import { Speffz } from "../types/Speffz";
 
